@@ -20,8 +20,6 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
                             period = 1, dt = 0.01, max.periods = 10, plotme = TRUE) {
   #Simulates mortalities using a right-censored method with a random censoring time
   
-  require(survival);
-  
   t = seq(0, max.periods, dt);
   
   #Hazard function could theoretically vary, but parameters required for simPeriodicMorts would change

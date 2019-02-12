@@ -1,17 +1,18 @@
 #'Obtain log-likelihood value from a data set given a set of parameter values
 #'
-#'@param T times of death or sensoring as Surv objects
+#'@param T times of death or censoring as Surv objects
 #'@param A average annual hazard
 #'@param p k-vector of peaks
 #'@param r k-vector of rhos (concentration parameters)
 #'@param w (k-1)-vector of weights
+#'@param period period of one mortality cycle
+#'@param dt interval for plots as well as precision of random samples
 #'
 #'@value the maximum likelihood value for this set of data
 #'
 #'@export
 
 loglike <- function(T, A, p, r, w, dt, period) {
-  require(survival);
   
   hazard <- function(t, amplitude, peaks, rhos, weights, period, dt){
     tt <- t/period * 2*pi

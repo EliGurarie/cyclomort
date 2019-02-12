@@ -1,6 +1,8 @@
 #' Mixed Cauchy distribution
 #' 
-#' Very basic Wrapped Cauchy shaped function
+#' Very basic Wrapped Cauchy shaped function. Incorporates any number of mixed
+#' distributions in order to simulate a potential function with a variety of differently
+#' shaped peaks over a finite period.
 #' 
 #' @param theta angle 
 #' @param mus k-vector of mean parameters

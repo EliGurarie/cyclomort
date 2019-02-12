@@ -1,6 +1,6 @@
 #' Wrapped Cauchy distribution
 #' 
-#' Very basic Wrapped Cauchy distribution function
+#' Very basic Wrapped Cauchy distribution function.
 #' 
 #' @param theta angle 
 #' @param mu mean parameter
