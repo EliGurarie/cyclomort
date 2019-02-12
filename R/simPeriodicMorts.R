@@ -1,5 +1,17 @@
 #' Simulate periodic mortality process
 #' 
+#' @param n number of random values
+#' @param A average hazard value
+#' @param peaks k-vector of peaks
+#' @param rhos k-vector of concentration parameters
+#' @param weights (k-1)-vector of weights
+#' @param fixedCensoring boolean value representing whether censoring points are fixed or random
+#' @param period period of one mortality cycle
+#' @param dt interval for plots as well as precision of random samples
+#' @param max.periods maximum number of cycles
+#' 
+#' @value a set of Surv objects representing random times of survival or censoring
+#' 
 #' @example examples/simPeriodicMort_example.R
 #' @export
 
@@ -7,6 +19,8 @@ simPeriodicMorts <-
 function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5), fixedCensoring = FALSE,
                             period = 1, dt = 0.01, max.periods = 10, plotme = TRUE) {
   #Simulates mortalities using a right-censored method with a random censoring time
+  
+  require(survival);
   
   t = seq(0, max.periods, dt);
   
@@ -54,7 +68,7 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
   morts_d[!censored] = 1;
   #morts_u are the times of death or the times of censoring
   #morts_d is an indicator function for whether the data is censored or not (1 if not censored)
-  morts = matrix(c(morts_u, morts_d), ncol = 2);
+  morts = Surv(morts_u), Surv(morts_d);
   
   attributes(morts)$A <- A;
   attributes(morts)$peaks <- peaks;
