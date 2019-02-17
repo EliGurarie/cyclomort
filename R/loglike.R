@@ -10,6 +10,7 @@
 #'
 #'@value the maximum likelihood value for this set of data
 #'
+#'@example examples/loglike_example.R
 #'@export
 
 loglike <- function(T, A, p, r, w, dt, period) {

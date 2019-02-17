@@ -9,6 +9,7 @@
 #'
 #'@value parameter estimates for weights, rhos, peaks and A
 #'
+#'@example examples/cyclomortFit_example.R
 #'@export
 
 fit_cyclomort = function(T, p0, dt, period) {
