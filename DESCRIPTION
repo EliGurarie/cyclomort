@@ -1,11 +1,11 @@
 Package: cyclomort
 Type: Package
-Title: What the package does (short line)
+Title: R package for survival modeling with periodic mortality function
 Version: 1.0
 Date: 2019-02-07
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
+Author: Elie Gurarie, Peter Thompson
+Maintainer: Elie Gurarie (egurarie@umd.edu)
+Description: This package can be used to fit survival curves to mortality data when the mortality rates may vary periodically over the course of a year. Migratory animals and even humans (more susceptible to many disesases during the winter) may exhibit a periodic mortality curve. Here we use a modified version of the Cauchy distribution to produce fits for mortality data when this periodicity may exist.
 License: What license is it under?
 RoxygenNote: 6.1.0
 Depends: magrittr, survival, plyr
