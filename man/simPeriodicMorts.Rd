@@ -8,6 +8,28 @@ simPeriodicMorts(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6,
   0.6), weights = c(0.5), fixedCensoring = FALSE, period = 1,
   dt = 0.01, max.periods = 10, plotme = TRUE)
 }
+\arguments{
+\item{n}{number of random values}
+
+\item{A}{average hazard value}
+
+\item{peaks}{k-vector of peaks}
+
+\item{rhos}{k-vector of concentration parameters}
+
+\item{weights}{(k-1)-vector of weights}
+
+\item{fixedCensoring}{boolean value representing whether censoring points are fixed or random}
+
+\item{period}{period of one mortality cycle}
+
+\item{dt}{interval for plots as well as precision of random samples}
+
+\item{max.periods}{maximum number of cycles}
+}
+\value{
+a Surv object (see \code{\link{Surv}})
+}
 \description{
 Simulate periodic mortality process
 }
@@ -23,5 +45,7 @@ with(attributes(T.morts1),
      title(paste0("A: ", A, "; peaks: ",
                   paste(peaks, collapse = ",")), outer = TRUE));
 
-hist(T.morts1[,1] - floor(T.morts1)[,1], breaks = 20)
+par(mfrow = c(1,1))
+with(as.matrix(T.morts1) \%>\% data.frame \%>\% subset(status == 1),
+    hist(time - floor(time), breaks = 20))
 }

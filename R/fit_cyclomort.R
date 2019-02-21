@@ -7,7 +7,7 @@
 #'@param period period of one mortality cycle
 #'@param dt interval for plots as well as precision of random samples
 #'
-#'@value parameter estimates for weights, rhos, peaks and A
+#'@return parameter estimates for weights, rhos, peaks and A
 #'
 #'@example examples/cyclomortFit_example.R
 #'@export

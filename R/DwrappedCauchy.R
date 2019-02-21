@@ -6,7 +6,7 @@
 #' @param mu mean parameter
 #' @param rho concentration parameter (between -1 and 1), equivalent to the E(cos(theta))
 #' 
-#' @value the value of the p.d.f. of the distribution
+#' @return  the value of the p.d.f. of the distribution
 #' @examples
 #' plot(DwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
 #' @export 

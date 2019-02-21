@@ -9,4 +9,6 @@ with(attributes(T.morts1),
      title(paste0("A: ", A, "; peaks: ",
                   paste(peaks, collapse = ",")), outer = TRUE));
 
-hist(T.morts1[,1] - floor(T.morts1)[,1], breaks = 20)
+par(mfrow = c(1,1))
+with(as.matrix(T.morts1) %>% data.frame %>% subset(status == 1),
+    hist(time - floor(time), breaks = 20))

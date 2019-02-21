@@ -11,7 +11,7 @@
 #' @param A overall magnitude
 #' @seealso DwrappedCauchy
 #' 
-#' @value the value of the p.d.f. of the mixed distribution
+#' @return the value of the p.d.f. of the mixed distribution
 #' @examples
 #' plot(DwrappedMultiCauchy(seq(-pi, pi, .01), 
 #' A = 1, 

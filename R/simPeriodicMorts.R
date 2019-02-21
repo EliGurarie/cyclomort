@@ -10,7 +10,7 @@
 #' @param dt interval for plots as well as precision of random samples
 #' @param max.periods maximum number of cycles
 #' 
-#' @value a set of Surv objects representing random times of survival or censoring
+#' @return  a Surv object (see \code{\link{Surv}})
 #' 
 #' @example examples/simPeriodicMort_example.R
 #' @export
@@ -26,7 +26,7 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
   getHazard = function(t, p, r, w, period, dt) {
     tt = t / period * 2 * pi
     mus = p / period * 2 * pi
-    DwrappedMultiCauchy(tt, A, mus, r, w) / dt
+    DwrappedMultiCauchy(theta = tt, A = A, mus = mus, rhos = r, weights = w) / dt
   }
   
   hazard = getHazard(t, peaks, rhos, weights, period, dt)

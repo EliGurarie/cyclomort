@@ -13,8 +13,11 @@ DwrappedCauchy(theta, mu, rho)
 
 \item{rho}{concentration parameter (between -1 and 1), equivalent to the E(cos(theta))}
 }
+\value{
+the value of the p.d.f. of the distribution
+}
 \description{
-Very basic Wrapped Cauchy distribution function
+Very basic Wrapped Cauchy distribution function.
 }
 \examples{
 plot(DwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
