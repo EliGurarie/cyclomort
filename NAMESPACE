@@ -3,6 +3,7 @@
 export(DwrappedCauchy)
 export(DwrappedMultiCauchy)
 export(fit_cyclomort)
+export(getCIs)
 export(loglike)
 export(loglike_optim)
 export(simPeriodicMorts)

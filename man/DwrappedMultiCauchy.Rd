@@ -26,10 +26,11 @@ distributions in order to simulate a potential function with a variety of differ
 shaped peaks over a finite period.
 }
 \examples{
-plot(DwrappedMultiCauchy(seq(-pi, pi, .01), 
+plot(seq(-pi, pi, .01), 
+DwrappedMultiCauchy(seq(-pi, pi, .01), 
 A = 1, 
 mus = c(-1,1), 
-rhos = c(0.7,.5), 
+rhos = c(0.7,0.5), 
 weights = 0.7), type = "l")
 }
 \seealso{

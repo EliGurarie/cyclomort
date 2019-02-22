@@ -18,12 +18,12 @@ loglike <- function(T, A, p, r, w, dt, period) {
   hazard <- function(t, amplitude, peaks, rhos, weights, period, dt){
     tt <- t/period * 2*pi
     mus <- peaks/period * 2*pi
-    DwrappedMultiCauchy(tt, amplitude, mus, rhos, weights) / dt
+    DwrappedMultiCauchy(theta = tt, A = amplitude, mus = mus, rhos = rhos, weights = weights) / dt
   }
   
-  TT = as.matrix(T);
-  D = TT[,2];
-  TT = TT[,1];
+  TT = as.matrix(T)
+  D = TT[,2]
+  TT = TT[,1]
     
   logcumhaz <- sapply(TT, function(t){
     t.total <- seq(0, t, dt)

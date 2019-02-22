@@ -8,7 +8,7 @@
 #' 
 #' @return  the value of the p.d.f. of the distribution
 #' @examples
-#' plot(DwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
+#' plot(seq(-pi, pi, .01), DwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
 #' @export 
 
 DwrappedCauchy <- function (theta, mu, rho) {

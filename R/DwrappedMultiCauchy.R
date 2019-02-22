@@ -13,18 +13,19 @@
 #' 
 #' @return the value of the p.d.f. of the mixed distribution
 #' @examples
-#' plot(DwrappedMultiCauchy(seq(-pi, pi, .01), 
+#' plot(seq(-pi, pi, .01), 
+#' DwrappedMultiCauchy(seq(-pi, pi, .01), 
 #' A = 1, 
 #' mus = c(-1,1), 
-#' rhos = c(0.7,.5), 
+#' rhos = c(0.7,0.5), 
 #' weights = 0.7), type = "l")
 #' @export 
 #' 
 DwrappedMultiCauchy <-
 function(theta, mus, rhos, weights, A=1) {
-  weights = c(weights, 1 - sum(weights));
+  weights = c(weights, 1 - sum(weights))
   f = function(t) {
-    sum(DwrappedCauchy(t, mus, rhos) * weights);
+    sum(DwrappedCauchy(t, mus, rhos) * weights)
   }
-  A * Vectorize(f)(theta);
+  A * Vectorize(f)(theta)
 }

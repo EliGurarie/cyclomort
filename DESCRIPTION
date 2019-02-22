@@ -6,5 +6,9 @@ Date: 2019-02-07
 Authors@R: c(person("Eliezer", "Gurarie", role = c("aut", "cre"), email = "egurarie@umd.edu"), person("Thompson", "Peter", role = "ctb"))
 Description: This package can be used to fit survival curves to mortality data when the mortality rates may vary periodically over the course of a year. Migratory animals and even humans (more susceptible to many disesases during the winter) may exhibit a periodic mortality curve. Here we use a modified version of the Cauchy distribution to produce fits for mortality data when this periodicity may exist.
 License: What license is it under?
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Depends: magrittr, survival, plyr
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

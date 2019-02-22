@@ -20,5 +20,5 @@ the value of the p.d.f. of the distribution
 Very basic Wrapped Cauchy distribution function.
 }
 \examples{
-plot(DwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
+plot(seq(-pi, pi, .01), DwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
 }
