@@ -10,7 +10,7 @@
 #' @param dt interval for plots as well as precision of random samples
 #' @param max.periods maximum number of cycles
 #' 
-#' @return  a Surv object (see \code{\link{Surv}})
+#' @return  a Surv object (see \code{\link{Surv}}), with times stored as number of periods
 #' 
 #' @example examples/simPeriodicMort_example.R
 #' @export
@@ -62,6 +62,8 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
   }
   censored = (morts_u > morts_d)
   morts_u[censored] = morts_d[censored]
+  morts_u = morts_u / period
+  #normalize mortality dates to fractions of the chosen period
   morts_d[censored] = 0
   morts_d[!censored] = 1
   #morts_u are the times of death or the times of censoring
@@ -72,6 +74,7 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
   attributes(morts)$peaks <- peaks
   attributes(morts)$rhos <- rhos
   attributes(morts)$weights <- weights
+  attributes(morts)$period <- period
   
   return(morts)
 }

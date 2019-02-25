@@ -12,6 +12,6 @@
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, p0, dt, period) {
-  optim(p0, loglike_optim, T = T, dt = dt, period = period, hessian = TRUE)
+fit_cyclomort = function(T, p0, dt) {
+  optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
 }
