@@ -4,7 +4,7 @@
 \alias{loglike_optim}
 \title{Log-likelihood function that is useable for the optim command}
 \usage{
-loglike_optim(pars, T, dt, period)
+loglike_optim(pars, T, dt)
 }
 \arguments{
 \item{pars}{named vector including "A", "peak", "weight" and "rho" names}
@@ -12,8 +12,6 @@ loglike_optim(pars, T, dt, period)
 \item{T}{times of death or censoring as Surv objects}
 
 \item{dt}{interval for plots as well as precision of random samples}
-
-\item{period}{period of one mortality cycle}
 }
 \value{
 likelihood value given named vector of parameters as well as set of observations

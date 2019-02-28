@@ -4,7 +4,7 @@
 \alias{loglike}
 \title{Obtain log-likelihood value from a data set given a set of parameter values}
 \usage{
-loglike(T, A, p, r, w, dt, period)
+loglike(T, A, p, r, w, dt)
 }
 \arguments{
 \item{T}{times of death or censoring as Surv objects}
@@ -18,8 +18,6 @@ loglike(T, A, p, r, w, dt, period)
 \item{w}{(k-1)-vector of weights}
 
 \item{dt}{interval for plots as well as precision of random samples}
-
-\item{period}{period of one mortality cycle}
 }
 \value{
 the maximum likelihood value for this set of data

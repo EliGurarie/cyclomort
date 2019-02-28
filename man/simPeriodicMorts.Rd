@@ -28,7 +28,7 @@ simPeriodicMorts(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6,
 \item{max.periods}{maximum number of cycles}
 }
 \value{
-a Surv object (see \code{\link{Surv}})
+a Surv object (see \code{\link{Surv}}), with times stored as number of periods
 }
 \description{
 Simulate periodic mortality process

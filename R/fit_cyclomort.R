@@ -13,5 +13,9 @@
 #'@export
 
 fit_cyclomort = function(T, p0, dt) {
-  optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
+  fits = optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
+  
+  ##class(fits) = "cyclomort_fit"
+  ##S3method(print, cyclomort_fit)
+  fits
 }

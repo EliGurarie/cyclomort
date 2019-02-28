@@ -6,7 +6,7 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, p0, dt, period)
+fit_cyclomort(T, p0, dt)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
