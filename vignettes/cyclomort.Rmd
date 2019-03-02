@@ -28,11 +28,11 @@ This package is the first R package that uses maximum likelihood theory to produ
 To generate a function with multiple, differently shaped peaks in one "period" (allowing for the highest level of customizability for users), we adapted a simple version of the wrapped Cauchy distribution that allows for multiple peaks. This "mixture model" incorporates any number of individual Cauchy distributions, each with an individual mean parameter (the location of the peak of the distribution) as well as a concentration parameter (referred to here as rho; this value ranges from 0 to 1, with a higher rho implying that more data is concentrated around the mean). Because we are mixing multiple individual distributions, we must also specify the corresponding weights for each component of the mixuture. This function is wrapped around a period; i.e., it has a bounded distribution on every period with the same shape.
 
 ```{r, fig.width = 7, fig.align = "center", echo = FALSE}
-plot(seq(-6, 6, .01/pi), DwrappedMultiCauchy(seq(-pi*6, pi * 6, .01), A = 1, mus = c(-1,1), rhos = c(0.7,0.5), weights = 0.7), type = "l", xlab = "x-value (in terms of pi)", ylab = "Probability", main = "peaks = c(-1,1), rhos = c(0.7,0.5), weights = c(0.7,0.3)")
+plot(seq(-6, 6, .01/pi), dwrpMultiCauchy(seq(-pi*6, pi * 6, .01), A = 1, mus = c(-1,1), rhos = c(0.7,0.5), weights = 0.7), type = "l", xlab = "x-value (in terms of pi)", ylab = "Probability", main = "peaks = c(-1,1), rhos = c(0.7,0.5), weights = c(0.7,0.3)")
 ```
 
 ```{r, fig.width = 7, fig.align = "center", echo = FALSE}
-plot(seq(-6, 6, .01/pi), DwrappedMultiCauchy(seq(-pi*6, pi * 6, .01), A = 1, mus = c(-1, 1, 3), rhos = c(0.4, 0.9, 0.6), weights = c(0.4,0.3)), type = "l", xlab = "x-value (in terms of pi)", ylab = "Probability", main = "peaks = c(-1,1,3), rhos = c(0.4,0.9,0.6), weights = c(0.4,0.3,0.3)")
+plot(seq(-6, 6, .01/pi), dwrpMultiCauchy(seq(-pi*6, pi * 6, .01), A = 1, mus = c(-1, 1, 3), rhos = c(0.4, 0.9, 0.6), weights = c(0.4,0.3)), type = "l", xlab = "x-value (in terms of pi)", ylab = "Probability", main = "peaks = c(-1,1,3), rhos = c(0.4,0.9,0.6), weights = c(0.4,0.3,0.3)")
 ```
 
 Here the effects of the parameters on the graph become quite clear. Note how the components of the mixture with higher rho values have distributions with more data closer to the peak. Note how in the second graph, even though the weights are distributed relatively equally, the second peak is much higher (albeit there is a shorter "window" of high mortality) due to the very high rho value of 0.9.
@@ -50,7 +50,7 @@ T.morts1 <- simPeriodicMorts(300, period = 1,
 
 p0 = c(A = 0.05, peak1 = 0.25, peak2 = 0.75, rho1 = 0.5, rho2 = 0.5, weight1 = 0.5)
 ##MLE for parameters based on simulated data
-fits = fit_cyclomort(T.morts1, p0, dt = .01, period = 1)
+fits = fit_cyclomort(T.morts1, p0, dt = .01)
 getCIs(fits)
 ##Actual parameter values from simulated data
 attributes(T.morts1)

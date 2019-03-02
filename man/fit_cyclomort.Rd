@@ -34,7 +34,7 @@ T.morts1 <- simPeriodicMorts(300, period = 1,
 
 p0 = c(A = 0.05, peak1 = 0.25, peak2 = 0.75, rho1 = 0.5, rho2 = 0.5, weight1 = 0.5)
 ##MLE for parameters based on simulated data
-fits = fit_cyclomort(T.morts1, p0, dt = .01, period = 1)
+fits = fit_cyclomort(T.morts1, p0, dt = .01)
 getCIs(fits)
 ##Actual parameter values from simulated data
 attributes(T.morts1)

@@ -14,18 +14,15 @@
 #' @return the value of the p.d.f. of the mixed distribution
 #' @examples
 #' plot(seq(-pi, pi, .01), 
-#' dwrappedMultiCauchy(seq(-pi, pi, .01), 
+#' dwrpMultiCauchy(seq(-pi, pi, .01), 
 #' A = 1, 
 #' mus = c(-1,1), 
 #' rhos = c(0.7,0.5), 
-#' weights = 0.7), type = "l")
+#' weights = 0.7), type = "l", ylab = "Probability Value")
 #' @export 
 #' 
-dwrappedMultiCauchy <-
+dwrpMultiCauchy <-
 function(theta, mus, rhos, weights, A=1) {
   weights = c(weights, 1 - sum(weights))
-  f = function(t) {
-    sum(dwrappedCauchy(t, mus, rhos) * weights)
-  }
-  A * Vectorize(f)(theta)
+  A * rowSums(Vectorize(dwrpCauchy, vectorize.args = c("mu", "rho"))(theta = theta, mu = mus, rho = rhos) %*% weights)
 }

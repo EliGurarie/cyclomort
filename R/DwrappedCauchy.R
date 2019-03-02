@@ -8,10 +8,10 @@
 #' 
 #' @return  the value of the p.d.f. of the distribution
 #' @examples
-#' plot(seq(-pi, pi, .01), dwrappedCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
+#' plot(seq(-pi, pi, .01), dwrpCauchy(seq(-pi, pi, .01), 0, 0.7), type = "l")
 #' @export 
 
-dwrappedCauchy <- function (theta, mu, rho) {
+dwrpCauchy <- function (theta, mu, rho) {
   (1 - rho^2)/((2 * pi) * (1 + rho^2 - 2 * rho * cos(theta - mu)));
 }
 
@@ -26,11 +26,11 @@ dwrappedCauchy <- function (theta, mu, rho) {
 #' @return CDF value for the given point, ranging from 0 to 1
 #' 
 #' @examples
-#' plot(Vectorize(pwrappedCauchy, vectorization.args = "p")(seq(-pi, pi, 0.01), 0, 0.7), type = "l")
+#' plot(Vectorize(pwrpCauchy, vectorization.args = "p")(seq(-pi, pi, 0.01), 0, 0.7), type = "l")
 #' @export
 
-pwrpcauchy = function(q, mu, rho) {
-  integrate(dwrappedcauchy, -pi, q, mu = mu, rho = rho)$value
+pwrpCauchy = function(q, mu, rho) {
+  integrate(dwrpCauchy, -pi, q, mu = mu, rho = rho)$value
 }
 
 #' CDF quantiles for wrapped Cauchy distribution
@@ -43,15 +43,15 @@ pwrpcauchy = function(q, mu, rho) {
 #' 
 #' @return quantile value for the distribution on the scale of -pi to pi
 #' @examples
-#' plot(Vectorize(qwrappedCauchy, vectorization.args = "p")(seq(0, 1, 0.01), 0, 0.7), type = "l")
+#' plot(Vectorize(qwrpCauchy, vectorization.args = "p")(seq(0, 1, 0.01), 0, 0.7), type = "l")
 #' @export
 
-qwrappedCauchy = function(p, mu, rho, tol = 1e-5) {
+qwrpCauchy = function(p, mu, rho, tol = 1e-5) {
   #simple bisection for value
   a = -pi
   b = pi
   mid = 0.5 * (a+b)
-  value = pwrappedCauchy(mid, mu, rho)
+  value = pwrpCauchy(mid, mu, rho)
   while (abs(value - p) > tol) {
     if (value > p) {
       b = mid
@@ -60,7 +60,7 @@ qwrappedCauchy = function(p, mu, rho, tol = 1e-5) {
       a = mid
       mid = 0.5 * (a+b)
     }
-    value = pwrappedCauchy(mid, mu, rho)
+    value = pwrpCauchy(mid, mu, rho)
   }
   mid
 }

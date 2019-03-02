@@ -26,7 +26,7 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
   getHazard = function(t, p, r, w, period, dt) {
     tt = t / period * 2 * pi
     mus = p / period * 2 * pi
-    dwrappedMultiCauchy(theta = tt, A = A, mus = mus, rhos = r, weights = w) / dt
+    dwrpMultiCauchy(theta = tt, A = A, mus = mus, rhos = r, weights = w) / dt
   }
   
   hazard = getHazard(t, peaks, rhos, weights, period, dt)
