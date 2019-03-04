@@ -16,5 +16,5 @@ length of season assuming period length of 1
 Gets the season length in periods based on the concentration parameter rho
 }
 \examples{
-plot(getSeason(seq(0.05, 0.95, 0.05)), type = "l")
+plot(Vectorize(getSeasonLength)(seq(0.05, 0.95, 0.05)), type = "l")
 }

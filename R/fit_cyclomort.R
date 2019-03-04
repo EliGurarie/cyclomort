@@ -14,17 +14,17 @@
 
 fit_cyclomort = function(T, p0, dt) {
   fits = optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
-  CIs = getCIs(fits = fits)
+  CIs = getCIs(fit = fits)
   cm = list()
   fitNames = names(fits$par)
   period = attributes(T)$period
   for (i in 1:length(fitNames)) {
     if (grepl("peak", fitNames[i])) {
-      cm[[i]] = CIs[i] * period
+      cm[[i]] = CIs[i, ] * period
     } else if (grepl("rho", fitNames[i])) {
-      cm[[i]] = getSeasonLength(CIs[i]) * period
+      cm[[i]] = (Vectorize(getSeasonLength)(CIs[i, ]) * period)[c(1,3,2)]
     } else {
-      cm[[i]] = CIs[i]
+      cm[[i]] = CIs[i, ]
     }
     names(cm)[i] = fitNames[i]
   }
