@@ -2,6 +2,7 @@
 
 S3method(AIC,cmfit)
 S3method(logLik,cmfit)
+S3method(plot,cmfit)
 S3method(print,cmfit)
 export(dwrpCauchy)
 export(dwrpMultiCauchy)

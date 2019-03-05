@@ -24,8 +24,8 @@ function(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6), weights = c(0.5
   
   #Hazard function could theoretically vary, but parameters required for simPeriodicMorts would change
   getHazard = function(t, p, r, w, period, dt) {
-    tt = t / period * 2 * pi
-    mus = p / period * 2 * pi
+    tt = (t / period * 2 * pi) - pi
+    mus = (p / period * 2 * pi) - pi
     dwrpMultiCauchy(theta = tt, A = A, mus = mus, rhos = r, weights = w) / dt
   }
   

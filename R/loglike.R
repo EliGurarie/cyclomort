@@ -15,8 +15,8 @@
 loglike <- function(T, A, p, r, w, dt) {
   
   hazard <- function(t, amplitude, peaks, rhos, weights, dt){
-    tt <- t * 2*pi
-    mus <- peaks * 2*pi
+    tt <- t * 2*pi - pi
+    mus <- peaks * 2*pi - pi
     dwrpMultiCauchy(theta = tt, A = amplitude, mus = mus, rhos = rhos, weights = weights) / dt
   }
   
