@@ -18,6 +18,8 @@ fit_cyclomort = function(T, p0, dt) {
   cm = list()
   fitNames = names(fits$par)
   period = attributes(T)$period
+  if (is.null(period)) 
+    period = 1
   extra = 1
   for (i in 1:length(fitNames)) {
     if (grepl("peak", fitNames[i])) {
@@ -55,7 +57,10 @@ fit_cyclomort = function(T, p0, dt) {
 getCIs <- function(fit){
   p <- fit$par
   CIs <- sqrt(diag(solve(fit$hessian)))
-  cbind(estimate = p, CI.low = p - 2*CIs, CI.high = p + 2*CIs)
+  value = cbind(estimate = p, CI.low = p - 2*CIs, CI.high = p + 2*CIs)
+  value[is.na(value[,2]),2] = 0
+  value[is.na(value[,3]),3] = 0.9999
+  value
 }
 
 #' Gets the season length in periods based on the concentration parameter rho
