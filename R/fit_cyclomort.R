@@ -74,5 +74,11 @@ getCIs <- function(fit){
 #' @export
 
 getSeasonLength = function(rho) {
+  if (rho >= 1) {
+    rho = 0.9999
+  }
+  if (rho < 0) {
+    rho = 0
+  }
   (-2 * qwrpCauchy(0.25, 0, rho)) / (2 * pi)
 }
