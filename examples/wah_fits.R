@@ -1,6 +1,8 @@
 ##Turn WAH mortality data into a Surv object for fitting purposes
 
 data(wah_morts)
+require(lubridate)
+wah_morts <- subset(wah_morts, end < ymd("2017 9 1"))
 
 PERIOD_LENGTH = 365
 
@@ -24,3 +26,16 @@ fits = fit_cyclomort(T = wah, p0 = p0, dt = 0.01)
 ####I don't know why this is but maybe there aren't enough data points? I have no idea. For now I've "fixed" the intervals so that they're set to [0,1] in this case.
 
 plot(fits)
+
+myhist <- hist(wah[,1][wah[,2] == 1] %% 1, breaks = 30, col = "grey")
+ts <- seq(0,1,.01)
+h <- getHazard(ts, fits)
+lines(ts, h/max(h) *   max(myhist$counts), lwd = 2)
+s1.low <- with(fits, peak1 - rho1season/2)[1]
+s1.high <- with(fits, peak1 + rho1season/2)[1]
+s2.low <- with(fits, peak2 - rho2season/2)[1]
+s2.high <- with(fits, peak2 + rho2season/2)[1]
+
+abline(v = c(s1.low, s1.high, s2.low, s2.high), col = 1:4)
+
+

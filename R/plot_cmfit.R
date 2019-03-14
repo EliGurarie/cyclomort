@@ -13,20 +13,17 @@ plot.cmfit = function(x) {
   h = hist(uncensoredData, xlab = "Number of periods", ylab = "Number of mortalities",
        main = "Comparing parameter estimates with actual mortality data", breaks = 40)
   
-  A = x$A[1]
   
-  getEstimate = function(par) {
-    par[1]
-  }
-  
-  mus = sapply(x[grepl("peak", names(x))], FUN = getEstimate)
-  rhos = sapply(x[as.logical(grepl("rho", names(x)) * !grepl("season", names(x)))], FUN = getEstimate)
-  weights = sapply(x[grepl("weight", names(x))], FUN = getEstimate)
-  getHazard = function(t) {
-    period = x$period
+  getHazard = function(t, fit) {
+    A = fit$A[1]
+    mus = sapply(fit[grepl("peak", names(fit))], head, 1)
+    rhos = sapply(fit[as.logical(grepl("rho", names(fit)) * !grepl("season", names(fit)))], head, 1)
+    weights = sapply(fit[grepl("weight", names(fit))], head, 1)
+    
+    period = fit$period
     tt = t/period*2*pi - pi
     pks = mus/period*2*pi - pi
-    dwrpMultiCauchy(tt, mus = pks, rhos = rhos, weights = weights, A = A) / x$dt
+    dwrpMultiCauchy(tt, mus = pks, rhos = rhos, weights = weights, A = A) / fit$dt
   }
   
   t <- seq(0, max(uncensoredData), x$dt)

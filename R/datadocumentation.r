@@ -23,3 +23,31 @@
 #' @keywords data
 #' @references 
 "wah_morts"
+
+#' Mortality data for Northwest territory boreal woodland caribou
+#'
+#' Describing the data.
+#'
+#' @usage 
+#' data(nwt_morts)
+#' 
+#' @format Data frame containing movements of roe deer with the following columns:
+#' \describe{
+#'   \item{id}{ID of animal}
+#'   \item{region}{Subpopulation marker - for comparisons}
+#'   \item{start}{Date of beginning of collaring}
+#'   \item{end}{Date of death or censoring}
+#'   \item{Fate}{One of "Accident", "Harvest", "Non-predation", "Pradation", "Unknown",  only for mortality events.}
+#'   \item{Status}{"Mort" or "Cens" (right-censoring of data)}
+#'   \item{interval}{days}}
+#' 
+#' @examples 
+#' data(nwt_morts)
+#' require(ggplot2)
+#' ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
+#' aes(x = start, y = id, col = status)) + 
+#'   geom_errorbarh(aes(xmin = start, xmax = end))
+#' 
+#' @keywords data
+#' @references 
+"nwt_morts"

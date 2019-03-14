@@ -13,7 +13,7 @@
 #' 
 #' @export
 
-getIdealPeakFit = function(T, dt) {
+getIdealPeakFit = function(T, dt = 0.01) {
   ##null parameter estimates should vary a little given how many peaks there are
   p0_twoPeaks = c(A = 0.05, peak1 = 0.25, peak2 = 0.75, rho1 = 0.5, rho2 = 0.5, weight1 = 0.5)
   p0_threePeaks = c(A = 0.05, peak1 = 0.25, peak2 = 0.50, peak3 = 0.75, rho1 = 0.5, rho2 = 0.5, rho3 = 0.5, weight1 = 1/3, weight2 = 1/3)

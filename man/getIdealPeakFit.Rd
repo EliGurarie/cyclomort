@@ -4,7 +4,7 @@
 \alias{getIdealPeakFit}
 \title{Identify the ideal number of peaks for a set of mortality data}
 \usage{
-getIdealPeakFit(T, dt)
+getIdealPeakFit(T, dt = 0.01)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
