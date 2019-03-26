@@ -13,35 +13,44 @@
 #'@export
 
 fit_cyclomort = function(T, p0, dt) {
-  fits = optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
-  CIs = getCIs(fit = fits)
   cm = list()
-  fitNames = names(fits$par)
   period = attributes(T)$period
-  if (is.null(period)) 
-    period = 1
-  extra = 1
-  for (i in 1:length(fitNames)) {
-    if (grepl("peak", fitNames[i])) {
-      cm[[i]] = CIs[i, ] * period
-    } else if (grepl("rho", fitNames[i])) {
-      cm[[i]] = CIs[i, ]
-      cm[[length(fitNames) + extra]] = (Vectorize(getSeasonLength)(CIs[i, ]) * period)[c(1,3,2)]
-      names(cm)[length(fitNames) + extra] = paste0(fitNames[i], "season")
-      extra = extra + 1
-    } else {
-      cm[[i]] = CIs[i, ]
+  if (p0["rho1"] == 0) {
+    ##null model
+    require(flexsurv)
+    fits = flexsurvreg(T ~ 1, dist = "exp")
+    cm$A = fits[[18]][1] # mortality rate a.k.a. average hazard
+    cm$logLik = logLik(fits)
+    cm$AIC = AIC(fits)
+  } else {
+    fits = optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
+    CIs = getCIs(fit = fits)
+    fitNames = names(fits$par)
+    if (is.null(period)) 
+      period = 1
+    extra = 1
+    for (i in 1:length(fitNames)) {
+      if (grepl("peak", fitNames[i])) {
+        cm[[i]] = CIs[i, ] * period
+      } else if (grepl("rho", fitNames[i])) {
+        cm[[i]] = CIs[i, ]
+        cm[[length(fitNames) + extra]] = (Vectorize(getSeasonLength)(CIs[i, ]) * period)[c(1,3,2)]
+        names(cm)[length(fitNames) + extra] = paste0("season", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
+        extra = extra + 1
+      } else {
+        cm[[i]] = CIs[i, ]
+      }
+      names(cm)[i] = fitNames[i]
     }
-    names(cm)[i] = fitNames[i]
+    cm$hessian = fits$hessian
+    cm$logLik = fits$value
+    cm$AIC = -2 * fits$value + 2 * length(fitNames)
+    cm$counts = fits$counts
+    cm$convergence = fits$convergence
   }
   cm$period = period
-  cm$dt = dt
-  cm$hessian = fits$hessian
-  cm$logLik = fits$value
-  cm$AIC = -2 * fits$value + 2 * length(fitNames)
-  cm$counts = fits$counts
-  cm$convergence = fits$convergence
   cm$data = T
+  cm$dt = dt
   class(cm) = "cmfit"
   cm
 }

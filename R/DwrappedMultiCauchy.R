@@ -12,7 +12,7 @@
 #' @seealso DwrappedCauchy
 #' 
 #' @return the value of the p.d.f. of the mixed distribution
-#' @examples
+#' @examples 
 #' plot(seq(-pi, pi, .01), 
 #' dwrpMultiCauchy(seq(-pi, pi, .01), 
 #' A = 1, 
@@ -23,6 +23,10 @@
 #' 
 dwrpMultiCauchy <-
 function(theta, mus, rhos, weights, A=1) {
-  weights = c(weights, 1 - sum(weights))
+  if (is.na(weights) || length(weights) == 0) {
+    weights = c(1)
+  } else {
+    weights = c(weights, 1 - sum(weights))
+  }
   A * rowSums(Vectorize(dwrpCauchy, vectorize.args = c("mu", "rho"))(theta = theta, mu = mus, rho = rhos) %*% weights)
 }

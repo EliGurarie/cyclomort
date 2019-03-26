@@ -20,18 +20,21 @@ plot.cmfit = function(x) {
     rhos = sapply(fit[as.logical(grepl("rho", names(fit)) * !grepl("season", names(fit)))], head, 1)
     weights = sapply(fit[grepl("weight", names(fit))], head, 1)
     
-    period = fit$period
-    tt = t/period*2*pi - pi
-    pks = mus/period*2*pi - pi
-    dwrpMultiCauchy(tt, mus = pks, rhos = rhos, weights = weights, A = A) / fit$dt
+    if (rhos == 0) {
+      return(rep(fit$A, length(t)))
+    } else {
+      period = fit$period
+      tt = t/period*2*pi - pi
+      pks = mus/period*2*pi - pi
+      return(dwrpMultiCauchy(tt, mus = pks, rhos = rhos, weights = weights, A = A) / fit$dt)
+    }
   }
   
   t <- seq(0, max(uncensoredData), x$dt)
   
-  hazard = getHazard(t)
-  cum.prob.survival = cumprod(1-hazard*x$dt)
-  cum.mortality = 1 - cum.prob.survival
-  pdf.mortality = c(0,diff(cum.mortality)*x$dt)
+  hazard = getHazard(t, x)
+  cum.hazard = cumsum(hazard) * x$dt
+  pdf.mortality = hazard * exp(-cum.hazard)
   adj.pdf.mortality = pdf.mortality / max(pdf.mortality) * max(h$counts)
   
   lines((1:length(pdf.mortality)) * x$dt, adj.pdf.mortality)
