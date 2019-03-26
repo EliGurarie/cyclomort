@@ -6,4 +6,3 @@ T.morts1 <- simPeriodicMorts(300, period = 1,
 
 fits = getIdealPeakFit(T = T.morts1, dt = 0.01)
 print(fits)
-plot(fits)

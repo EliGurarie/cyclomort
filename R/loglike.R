@@ -14,6 +14,11 @@
 
 loglike <- function(T, A, p, r, w, dt) {
   
+  if (r == 0) {
+    require(flexsurv)
+    return(flexsurvreg(T ~ 1, dist = "exp")$loglik)
+  }
+  
   hazard <- function(t, amplitude, peaks, rhos, weights, dt){
     tt <- t * 2*pi - pi
     mus <- peaks * 2*pi - pi
