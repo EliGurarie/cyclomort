@@ -12,22 +12,34 @@
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, p0, dt) {
+fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
+  
+  weights <- p0[grepl("weight", names(p0))]
+  if(length(weights) == length(peaks) - 1){
+    warning("Filling out the weight vector.")
+    weights <- c(weights, 1 - sum(weights))
+  }
+  
+  if(sum(weights) != 1){
+    warning("Weights do not sum to 1 ... we kindly fixed that for you.")
+    weights <- weights/sum(weights)
+  }
+  p0[grepl("weight", names(p0))] = weights
+  
   cm = list()
   period = attributes(T)$period
-  if (p0["rho1"] == 0) {
+  if (n.seasons == 0) {
     ##null model
     require(flexsurv)
     fits = flexsurvreg(T ~ 1, dist = "exp")
-    cm$A = fits[[18]][1] # mortality rate a.k.a. average hazard
+    cm$meanhazard = fits[[18]][1] # mortality rate a.k.a. average hazard
     cm$logLik = logLik(fits)
     cm$AIC = AIC(fits)
   } else {
-    fits = optim(p0, loglike_optim, T = T, dt = dt, hessian = TRUE)
+    fits = optim(p0, loglike_optim, T = T, hessian = TRUE)
     CIs = getCIs(fit = fits)
     fitNames = names(fits$par)
-    if (is.null(period)) 
-      period = 1
+    if (is.null(period)) period = 1
     extra = 1
     for (i in 1:length(fitNames)) {
       if (grepl("peak", fitNames[i])) {

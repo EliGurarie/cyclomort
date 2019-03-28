@@ -4,28 +4,29 @@
 \alias{simPeriodicMorts}
 \title{Simulate periodic mortality process}
 \usage{
-simPeriodicMorts(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6),
-  weights = c(0.5), fixedCensoring = FALSE, period = 1, dt = 0.01,
-  max.periods = 10, plotme = TRUE)
+simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
+  0.75), durations = c(0.2, 0.1), weights = c(0.5, 0.5),
+  fixedCensoring = FALSE, max.periods = 10, n.times = 1000,
+  plotme = TRUE)
 }
 \arguments{
 \item{n}{number of random values}
 
-\item{A}{average hazard value}
+\item{period}{period of one mortality cycle}
 
 \item{peaks}{k-vector of peaks}
-
-\item{rhos}{k-vector of concentration parameters}
 
 \item{weights}{(k-1)-vector of weights}
 
 \item{fixedCensoring}{boolean value representing whether censoring points are fixed or random}
 
-\item{period}{period of one mortality cycle}
+\item{max.periods}{maximum number of cycles}
+
+\item{A}{average hazard value}
+
+\item{rhos}{k-vector of concentration parameters}
 
 \item{dt}{interval for plots as well as precision of random samples}
-
-\item{max.periods}{maximum number of cycles}
 }
 \value{
 a Surv object (see \code{\link{Surv}}), with times stored as number of periods
@@ -34,18 +35,38 @@ a Surv object (see \code{\link{Surv}}), with times stored as number of periods
 Simulate periodic mortality process
 }
 \examples{
-par(oma = c(2,0,2,0));
-T.morts1 <- simPeriodicMorts(300, period = 1, 
+par(oma = c(2,0,2,0))
+T.morts1 <- simPeriodicMorts(1000, period = 1, 
+                             meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
-                             rhos = c(0.8, 0.5), 
-                             weights = 0.3, dt = .01, 
-                             A = .02, plotme = TRUE);
+                             durations = c(0.2, 0.1), 
+                             weights = 0.3, 
+                             plotme = TRUE)
 
 with(attributes(T.morts1),
-     title(paste0("A: ", A, "; peaks: ",
+     title(paste0("mean hazard: ", meanhazard, "; peaks: ",
                   paste(peaks, collapse = ",")), outer = TRUE));
 
+
+
+par(oma = c(2,0,2,0))
+T.morts2 <- simPeriodicMorts(300, period = 365, 
+                             meanhazard = 0.5/365, 
+                             peaks = c(100, 250), 
+                             durations = c(20, 40), 
+                             weights = 0.4, 
+                             plotme = TRUE,
+                             max.periods = 5)
+
+with(attributes(T.morts2),
+     title(paste0("mean hazard: ", round(meanhazard, 3), "; peaks: ",
+                  paste(peaks, collapse = ",")), outer = TRUE));
+
+
+
 par(mfrow = c(1,1))
-with(as.matrix(T.morts1) \%>\% data.frame \%>\% subset(status == 1),
-    hist(time - floor(time), breaks = 20))
+h <- with(as.matrix(T.morts1) \%>\% data.frame \%>\% subset(status == 1),
+    hist(time - floor(time), breaks = 20, col = "grey", bor = "darkgrey"))
+
+with(attributes(T.morts1), curve(mwc(x, mus = peaks, rhos = findRho(durations), omegas = weights, tau = period)* mean(h$counts), add = TRUE))
 }

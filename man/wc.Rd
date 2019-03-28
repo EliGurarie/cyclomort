@@ -3,11 +3,17 @@
 \name{wc}
 \alias{wc}
 \alias{iwc}
+\alias{mwc}
+\alias{imwc}
 \title{Wrapped Cauchy and Integrated Wrapped Cauchy functions}
 \usage{
 wc(t, mu, rho, tau)
 
 iwc(t, mu, rho, tau)
+
+mwc(t, mus, rhos, omegas, tau)
+
+imwc(t, mus, rhos, omegas, tau)
 }
 \arguments{
 \item{t}{time}
@@ -19,16 +25,8 @@ iwc(t, mu, rho, tau)
 \item{tau}{period}
 }
 \description{
-Fundamental periodic hazard function and its (analytical) integral - required for efficient estimation. These are mainly internal functions. They are both parameterized in terms of peak mean  \eqn{\mu}, concentration parameter  \eqn{\rho}, and period \eqn{\tau}. They are "unweighted", i.e. \deqn{Integral_0^\tau f(t) dt = \tau}
+Fundamental periodic hazard function and its (analytical) integral - required for efficient estimation. These are mainly internal functions. They are both parameterized in terms of peak mean  \eqn{\mu}, concentration parameter  \eqn{\rho}, and period \eqn{\tau}. They are "unweighted", i.e. \deqn{\int_0^\tau f(t) dt = \tau}
 }
-\section{wrapped Cauchy function}{
-NA
-}
-
-\section{integrated wrapped Cauchy function}{
-NA
-}
-
 \examples{
 
 # distribution function

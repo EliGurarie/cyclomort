@@ -1,18 +1,23 @@
-require(fields);
+require(fields)
 
-T.morts1 <- simPeriodicMorts(300, period = 1, 
+T.morts1 <- simPeriodicMorts(1000, period = 1, 
+                             meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
-                             rhos = c(0.8, 0.5), 
-                             weights = 0.3, dt = .01, 
-                             A = .02, plotme = FALSE);
+                             durations = c(0.2, 0.1), 
+                             weights = 0.5, 
+                             plotme = TRUE)
 
-peaks = seq(0, 1, length = 30);
+peaks = seq(0, 1, length = 30)
+
 ##Is there a way to vectorize this function more easily than what I do here?
-ll.matrix = matrix(nrow = 30, ncol = 30, 0);
+ll.matrix = matrix(nrow = 30, ncol = 30, 0)
 for (i in 1:30) {
   for (j in 1:30) {
-    ll.matrix[i, j] = loglike(T.morts1, A = 0.02, p = c(peaks[i], peaks[j]), r = c(0.8, 0.5), w = c(0.3), 0.01, period = 1);
+    ll.matrix[i, j] = loglike(T.morts1, 
+                              gamma = 0.3, 
+                              mus = c(peaks[i], peaks[j]), 
+                              rhos = findRho(c(.2,.1)), 
+                              omegas = c(0.5, 0.5))
   }
 }
-
 image.plot(peaks, peaks, ll.matrix)

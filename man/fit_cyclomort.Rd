@@ -6,16 +6,16 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, p0, dt)
+fit_cyclomort(T, p0 = NULL, n.seasons = 2)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
 
 \item{p0}{set of initial guesses; a named vector with "A", "peak", "rho" and "weight" names}
 
-\item{dt}{interval for plots as well as precision of random samples}
-
 \item{period}{period of one mortality cycle}
+
+\item{dt}{interval for plots as well as precision of random samples}
 }
 \value{
 parameter estimates for weights, rhos, peaks and A
@@ -26,13 +26,18 @@ function along with a named vector of initial guesses and returns the parameter
 estimates.
 }
 \examples{
-T.morts1 <- simPeriodicMorts(300, period = 1, 
+T.morts1 <- simPeriodicMorts(1000, period = 1, 
+                             meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
-                             rhos = c(0.7, 0.7), 
-                             weights = 0.2, dt = .01, 
-                             A = .02, plotme = FALSE)
+                             durations = c(0.3, 0.1), 
+                             weights = 0.7, 
+                             plotme = TRUE)
 
-p0 = c(A = 0.05, peak1 = 0.25, peak2 = 0.75, rho1 = 0.5, rho2 = 0.5, weight1 = 0.5)
+p0 = c(meanhazard = 0.05, 
+       peak1 = 0.25, peak2 = 0.75, 
+       duration1 = 0.2, duration2 = 0.2, 
+       weight1 = 0.5, weight2 = 0.5)
+
 ##MLE for parameters based on simulated data
 fits = fit_cyclomort(T.morts1, p0, dt = .01)
 print(fits)
@@ -42,4 +47,9 @@ attributes(T.morts1)
 ##Measures of model accuracy
 AIC(fits)
 logLik(fits)
+
+
+
+T <- T.morts1 
+T <- T[T[,1] > 0]
 }

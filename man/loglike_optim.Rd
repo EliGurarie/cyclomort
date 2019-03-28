@@ -4,7 +4,7 @@
 \alias{loglike_optim}
 \title{Log-likelihood function that is useable for the optim command}
 \usage{
-loglike_optim(pars, T, dt)
+loglike_optim(pars, T)
 }
 \arguments{
 \item{pars}{named vector including "A", "peak", "weight" and "rho" names}

@@ -2,9 +2,12 @@
 % Please edit documentation in R/getRhoDelta.R
 \name{findDelta}
 \alias{findDelta}
+\alias{findRho}
 \title{Convert Rho to Tau}
 \usage{
 findDelta(rho)
+
+findRho(delta)
 }
 \description{
 Functions for converting the concentration parameter \eq{\rho} to the season duration parameter \eq{\delta} and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
@@ -20,7 +23,4 @@ rhos <- seq(0, 1, length = 1e3)
 plot(rhos, Vectorize(findDelta, vectorize.args = "rho")(rhos), ylab = "deltas", type = "l")
 deltas <- seq(0, .5, length = 1e3)
 plot(deltas, Vectorize(findRho, vectorize.args = "delta")(deltas), ylab = "rhos", type = "l")
-}
-\seealso{
-iwc
 }
