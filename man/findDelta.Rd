@@ -9,15 +9,18 @@ findDelta(rho)
 \description{
 Functions for converting the concentration parameter \eq{\rho} to the season duration parameter \eq{\delta} and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
 }
-\seealso{
-iwc
+\examples{
 findDelta(rho = 0.9); findRho(0.0167)
 findDelta(rho = 0.1); findRho(0.218)
-rhos <- seq(0, 1, length = 1e3)
+
 
 # Plot the relationship
 par(mfrow = c(1,2))
+rhos <- seq(0, 1, length = 1e3)
 plot(rhos, Vectorize(findDelta, vectorize.args = "rho")(rhos), ylab = "deltas", type = "l")
-deltas <- seq(0, .25, length = 1e3)
+deltas <- seq(0, .5, length = 1e3)
 plot(deltas, Vectorize(findRho, vectorize.args = "delta")(deltas), ylab = "rhos", type = "l")
+}
+\seealso{
+iwc
 }
