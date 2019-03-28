@@ -4,9 +4,9 @@
 \alias{simPeriodicMorts}
 \title{Simulate periodic mortality process}
 \usage{
-simPeriodicMorts(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6,
-  0.6), weights = c(0.5), fixedCensoring = FALSE, period = 1,
-  dt = 0.01, max.periods = 10, plotme = TRUE)
+simPeriodicMorts(n, A = 0.01, peaks = c(0.25, 0.75), rhos = c(0.6, 0.6),
+  weights = c(0.5), fixedCensoring = FALSE, period = 1, dt = 0.01,
+  max.periods = 10, plotme = TRUE)
 }
 \arguments{
 \item{n}{number of random values}
