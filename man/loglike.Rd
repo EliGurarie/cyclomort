@@ -4,18 +4,16 @@
 \alias{loglike}
 \title{Obtain log-likelihood value from a data set given a set of parameter values}
 \usage{
-loglike(T, gamma, mus, rhos, omegas)
+loglike(T, gammas, mus, rhos)
 }
 \arguments{
 \item{T}{times of death or censoring as Surv objects}
 
-\item{gamma}{average annual hazard}
+\item{gammas}{k-vector of average hazard values for each component}
 
 \item{mus}{k-vector of peaks}
 
 \item{rhos}{k-vector of rhos (concentration parameters)}
-
-\item{omegas}{k-vector of weights}
 }
 \value{
 the maximum likelihood value for this set of data
@@ -40,10 +38,9 @@ ll.matrix = matrix(nrow = 30, ncol = 30, 0)
 for (i in 1:30) {
   for (j in 1:30) {
     ll.matrix[i, j] = loglike(T.morts1, 
-                              gamma = 0.3, 
+                              gammas = c(0.15, 0.15), 
                               mus = c(peaks[i], peaks[j]), 
                               rhos = findRho(c(.2,.1)), 
-                              omegas = c(0.5, 0.5))
   }
 }
 image.plot(peaks, peaks, ll.matrix)

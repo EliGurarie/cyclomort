@@ -1,13 +1,13 @@
 #' Simulate periodic mortality process
 #' 
-#' @param n number of random values
-#' @param A average hazard value
+#' @param n number of simulated mortality/censoring events
+#' @param meanhazard average hazard value
 #' @param peaks k-vector of peaks
-#' @param rhos k-vector of concentration parameters
-#' @param weights (k-1)-vector of weights
+#' @param durations k-vector of season length parameters, based on concentration parameter from wrapped Cauchy distribution
+#' @param weights k-vector of weights ((k-1)-vector is also accepted)
 #' @param fixedCensoring boolean value representing whether censoring points are fixed or random
-#' @param period period of one mortality cycle
-#' @param dt interval for plots as well as precision of random samples
+#' @param period length of one mortality cycle
+#' @param n.times number of x-values for plots (a higher value results in more precision for curves)
 #' @param max.periods maximum number of cycles
 #' 
 #' @return  a Surv object (see \code{\link{Surv}}), with times stored as number of periods
@@ -35,12 +35,13 @@ simPeriodicMorts <- function(n, period = 1,
     weights <- weights/sum(weights)
   }
   
+  gammas = meanhazard * weights
 
   rhos <- findRho(durations/period)
   t <- seq(0, max.periods*period, length = n.times)
   
-  hazard = meanhazard * mwc(t, peaks, rhos, weights, period)
-  cumhazard = meanhazard * imwc(t, peaks, rhos, weights, period)
+  hazard = mwc(t, peaks, rhos, gammas, period)
+  cumhazard = imwc(t, peaks, rhos, gammas, period)
   
   cum.prob.survival <-  exp(-cumhazard)
   cum.mortality <- 1 - cum.prob.survival
@@ -55,17 +56,19 @@ simPeriodicMorts <- function(n, period = 1,
     return(sample[1:n])
   }
   
-  morts_raw = sampleFromPdf(n, cbind(t, pdf.mortality))
+  rawTimes = sampleFromPdf(n, cbind(t, pdf.mortality))
+  #times if no censoring existed
   if (fixedCensoring) {
-    morts_d = rep(norm(1, max.periods*period/2, period), length(morts_raw))
-  } else 
-    morts_d = rnorm(n, max.periods*period/2, period)
+    #default censoring time is halfway through the overall cycle (1/2 of the last possible time)
+    censorTimes = rep(norm(1, max.periods*period/2, period), length(rawTimes))
+  } else #randomly pick censor times centered around the midway point in the time series
+    censorTimes = rnorm(n, max.periods*period/2, period)
 
   
-  morts_u <- morts_raw
-  censored = (morts_u > morts_d)
-  morts_u[censored] = morts_d[censored]
-  morts = Surv(morts_u, !censored)
+  morts_t <- rawTimes
+  censored = (morts_t > censorTimes)
+  morts_t[censored] = censorTimes[censored]
+  morts = Surv(morts_t, !censored)
   
   attributes(morts)$meanhazard <- meanhazard
   attributes(morts)$peaks <- peaks
@@ -79,7 +82,7 @@ simPeriodicMorts <- function(n, period = 1,
     plot(t, cum.prob.survival, type = "l", ylim = c(0,1), main = "survival curve")
     plot(t, cum.mortality, type = "l", ylim = c(0,1.1), main = "cumulative mortality: F(t)")
     abline(h = 1, col = "grey", lty = 3, xpd = FALSE, lwd = 2)
-    hist(morts_raw, breaks = seq(0, max.periods*period, period / 6), 
+    hist(rawTimes, breaks = seq(0, max.periods*period, period / 6), 
          col = "grey", bor = "darkgrey", freq = FALSE, main = "pdf and histogram of simulated mortalities")
     lines(t, pdf.mortality, type = "l")
   }

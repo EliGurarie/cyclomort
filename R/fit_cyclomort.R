@@ -3,9 +3,8 @@
 #'estimates.
 #'
 #'@param T set of Surv objects representing time of death or censorship
-#'@param p0 set of initial guesses; a named vector with "A", "peak", "rho" and "weight" names
-#'@param period period of one mortality cycle
-#'@param dt interval for plots as well as precision of random samples
+#'@param p0 set of initial guesses; a named vector or list with values for "peak", "duration", and "weight". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
+#'@param n.seasons expected number of seasons if p0 is not entirely filled out
 #'
 #'@return parameter estimates for weights, rhos, peaks and A
 #'

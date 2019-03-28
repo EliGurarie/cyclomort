@@ -7,11 +7,9 @@
 loglike_optim(pars, T)
 }
 \arguments{
-\item{pars}{named vector including "A", "peak", "weight" and "rho" names}
+\item{pars}{named vector or list including "weight", "peak", and "duration" parameters for the appropriate number of seasons}
 
 \item{T}{times of death or censoring as Surv objects}
-
-\item{dt}{interval for plots as well as precision of random samples}
 }
 \value{
 likelihood value given named vector of parameters as well as set of observations

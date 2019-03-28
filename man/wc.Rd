@@ -11,38 +11,55 @@ wc(t, mu, rho, tau)
 
 iwc(t, mu, rho, tau)
 
-mwc(t, mus, rhos, omegas, tau)
+mwc(t, mus, rhos, gammas, tau)
 
-imwc(t, mus, rhos, omegas, tau)
+imwc(t, mus, rhos, gammas, tau)
 }
 \arguments{
 \item{t}{time}
 
 \item{mu}{mean peak}
 
-\item{rho}{concentration parameter}
+\item{rho}{concentration parameter (0 <= rho <= 1)}
+
+\item{tau}{period}
+
+\item{mus}{k-vector of mean peaks (assuming k seasons)}
+
+\item{gammas}{k-vector of average hazard values for each component}
+
+\item{t}{time}
+
+\item{rhox}{k-vector of concentration parameters}
 
 \item{tau}{period}
 }
 \description{
 Fundamental periodic hazard function and its (analytical) integral - required for efficient estimation. These are mainly internal functions. They are both parameterized in terms of peak mean  \eqn{\mu}, concentration parameter  \eqn{\rho}, and period \eqn{\tau}. They are "unweighted", i.e. \deqn{\int_0^\tau f(t) dt = \tau}
+
+Allows for the fitting of models with multiple "seasons" of high mortality by producing a multimodal version of the wrapped Cauchy function. A simple mixture model that evaluates the wrapped Cauchy function for each individual component and then combines all components according to the individual linear weights.
 }
 \examples{
 
 # distribution function
-curve(dwc(x, mu = 100, rho = .7, tau = 365), xlim = c(0,365), n = 1e4, ylab = "hazard", xlab = "time")
-curve(dwc(x, mu = 100, rho = .5, tau = 365), add = TRUE, col = 2)
-curve(dwc(x, mu = 100, rho = .3, tau = 365), add = TRUE, col = 3)
+curve(wc(x, mu = 100, rho = .7, tau = 365), xlim = c(0,365), n = 1e4, ylab = "hazard", xlab = "time")
+curve(wc(x, mu = 100, rho = .5, tau = 365), add = TRUE, col = 2)
+curve(wc(x, mu = 100, rho = .3, tau = 365), add = TRUE, col = 3)
 
 
 # compare numerical and analytical integral
 
 require(microbenchmark)
 microbenchmark(
-  I1 <- integrate(dwc, mu =  100, rho = .1, tau = 365,  lower = 0, upper = 1000)$value, 
+  I1 <- integrate(wc, mu =  100, rho = .1, tau = 365,  lower = 0, upper = 1000)$value, 
   I2 <- iwc(t = 1000, mu =  100, rho = .1, tau = 365)
 )
 
 I1
 I2
+
+#graphs of mixed wrapped Cauchy functions
+curve(mwc(x, mus = c(0.25, 0.75), rhos = c(0.7, 0.5), gammas = c(0.7, 0.3), tau = 1))
+curve(mwc(x, mus = c(0.25, 0.75), rhos = c(0.3, 0.8), gammas = c(0.6, 0.4), tau = 1), add = TRUE, col = 2)
+curve(mwc(x, mus = c(0.25, 0.5, 0.75), rhos = c(0.6, 0.5, 0.4), gammas = c(0.5, 0.2, 0.3), tau = 1), add = TRUE, col = 3)
 }

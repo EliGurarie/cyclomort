@@ -10,23 +10,23 @@ simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
   plotme = TRUE)
 }
 \arguments{
-\item{n}{number of random values}
+\item{n}{number of simulated mortality/censoring events}
 
-\item{period}{period of one mortality cycle}
+\item{period}{length of one mortality cycle}
+
+\item{meanhazard}{average hazard value}
 
 \item{peaks}{k-vector of peaks}
 
-\item{weights}{(k-1)-vector of weights}
+\item{durations}{k-vector of season length parameters, based on concentration parameter from wrapped Cauchy distribution}
+
+\item{weights}{k-vector of weights ((k-1)-vector is also accepted)}
 
 \item{fixedCensoring}{boolean value representing whether censoring points are fixed or random}
 
 \item{max.periods}{maximum number of cycles}
 
-\item{A}{average hazard value}
-
-\item{rhos}{k-vector of concentration parameters}
-
-\item{dt}{interval for plots as well as precision of random samples}
+\item{n.times}{number of x-values for plots (a higher value results in more precision for curves)}
 }
 \value{
 a Surv object (see \code{\link{Surv}}), with times stored as number of periods

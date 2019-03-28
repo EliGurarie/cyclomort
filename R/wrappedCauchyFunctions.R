@@ -4,7 +4,7 @@
 #' 
 #' @param t  time
 #' @param mu mean peak
-#' @param rho concentration parameter
+#' @param rho concentration parameter (0 <= rho <= 1)
 #' @param tau period
 #' @example examples/iwc_example.r
 #' @export 
@@ -24,16 +24,24 @@ iwc <- function(t, mu, rho, tau){
       -pi * (ceiling((t - mu)/tau - 1/2) + ifelse(mu < tau/2, 0, 1)))
 }
 
+#' Mixed Wrapped Cauchy and Integrated Mixed Wrapped Cauchy Functions
+#' 
+#' Allows for the fitting of models with multiple "seasons" of high mortality by producing a multimodal version of the wrapped Cauchy function. A simple mixture model that evaluates the wrapped Cauchy function for each individual component and then combines all components according to the individual linear weights.
+#' @param t  time
+#' @param mus k-vector of mean peaks (assuming k seasons)
+#' @param rhox k-vector of concentration parameters
+#' @param gammas k-vector of average hazard values for each component
+#' @param tau period
 #' @rdname wc
 #' @export 
-mwc <- function(t, mus, rhos, omegas, tau){
-  rowSums(Vectorize(wc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = rhos, tau = tau) %*% omegas)
+mwc <- function(t, mus, rhos, gammas, tau){
+  rowSums(Vectorize(wc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = rhos, tau = tau) %*% gammas)
 }
 
 #' @rdname wc
 #' @export 
-imwc <- function(t, mus, rhos, omegas, tau){
-  rowSums(Vectorize(iwc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = rhos, tau = tau) %*% omegas)
+imwc <- function(t, mus, rhos, gammas, tau){
+  rowSums(Vectorize(iwc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = rhos, tau = tau) %*% gammas)
 }
 
 
