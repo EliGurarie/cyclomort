@@ -25,7 +25,7 @@ loglike <- function(T, gammas, mus, rhos) {
 #'Log-likelihood function that is useable for the optim command
 #'
 #'@param T times of death or censoring as Surv objects
-#'@param pars named vector including "weight", "peak", and "duration" parameters for the appropriate number of seasons
+#'@param pars named vector including "gamma", "mu", and "rho" (because this function is entirely internal) parameters for the appropriate number of seasons
 #'
 #'@return likelihood value given named vector of parameters as well as set of observations
 #'
@@ -34,7 +34,7 @@ loglike <- function(T, gammas, mus, rhos) {
 loglike_optim<- function(pars, T) {
 
   -loglike(T = T, 
-           gammas = pars[grepl("weight", names(pars))], 
-           mus = pars[grepl("peak", names(pars))],
-           rhos = findRho(pars[grepl("duration", names(pars))]))
+           gammas = pars[grepl("gamma", names(pars))], 
+           mus = pars[grepl("mu", names(pars))],
+           rhos = pars[grepl("rho", names(pars))])
 }

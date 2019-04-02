@@ -3,7 +3,7 @@
 #'estimates.
 #'
 #'@param T set of Surv objects representing time of death or censorship
-#'@param p0 set of initial guesses; a named vector or list with values for "peak", "duration", and "weight". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
+#'@param p0 set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
 #'@param n.seasons expected number of seasons if p0 is not entirely filled out
 #'
 #'@return parameter estimates for weights, rhos, peaks and A
@@ -13,38 +13,52 @@
 
 fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
   
+  if (min(T[,1]) <= 0) {
+    T[T[,1] <= 0] = Surv(1e-6, 1)
+  }
+  null_fits = flexsurvreg(T ~ 1, dist = "exp")
+  period = attributes(T)$period
+  if (is.null(period)) period = 1
+  
   if (is.null(p0)) {
     ##fitting procedure for initial guesses
+    p0 = generateInitialParameterEstimate(T, n.seasons)
+  } else {
+    ##the user has submitted default initial guesses for parameters
+    durations = pars[grepl("duration", names(pars))]
+    peaks = pars[grepl("peak", names(pars))]
+    n.seasons = length(p0) / 2
+    gammas = null_fits[[18]][1] / n.seasons
+    mus = peaks
+    rhos = findRho(durations)
+    p0 = unlist(list(gamma = gammas, rho = rhos, mu = mus))
   }
   
   cm = list()
-  period = attributes(T)$period
   if (n.seasons == 0) {
     ##null model
-    require(flexsurv)
-    fits = flexsurvreg(T ~ 1, dist = "exp")
-    cm$meanhazard = fits[[18]][1:3] # mortality rate a.k.a. average hazard
-    cm$logLik = logLik(fits)
-    cm$AIC = AIC(fits)
+    cm$meanhazard = null_fits[[18]][1:3] # mortality rate a.k.a. average hazard
+    cm$logLik = logLik(null_fits)
+    cm$AIC = AIC(null_fits)
   } else {
     fits = optim(p0, loglike_optim, T = T, hessian = TRUE)
     CIs = getCIs(fit = fits)
     fitNames = names(fits$par)
-    if (is.null(period)) period = 1
-    extra = 1
+    meanhazardestimate = sum(fits$par[grepl("gamma", fitNames)])
     for (i in 1:length(fitNames)) {
-      if (grepl("peak", fitNames[i])) {
+      if (grepl("mu", fitNames[i])) {
         cm[[i]] = CIs[i, ] * period
+        names(cm)[i] = paste0("peak", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
       } else if (grepl("rho", fitNames[i])) {
-        cm[[i]] = CIs[i, ]
-        cm[[length(fitNames) + extra]] = (Vectorize(getSeasonLength)(CIs[i, ]) * period)[c(1,3,2)]
-        names(cm)[length(fitNames) + extra] = paste0("season", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
-        extra = extra + 1
-      } else {
-        cm[[i]] = CIs[i, ]
+        cm[[i]] = findDelta(CIs[i, ])
+        names(cm)[i] = paste0("duration", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
+      } else { #if (grepl("gamma", fitNames[i]))
+        cm[[i]] = CIs[i, ] / meanhazardvalue
+        names(cm)[i] = paste0("weights", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
       }
-      names(cm)[i] = fitNames[i]
     }
+    cm$meanhazard = meanhazardestimate
+    cm$rawpars = CIs
     cm$hessian = fits$hessian
     cm$logLik = fits$value
     cm$AIC = -2 * fits$value + 2 * length(fitNames)
@@ -69,18 +83,21 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
 #' 
 #' @export
 generateInitialParameterEstimate = function(T, n.seasons) {
-  require(flexsurv)
-  require(mixtools)
-  
   result = c() # blank vector to be filled up with parameters
   
   null_fits = flexsurvreg(T ~ 1, dist = "exp")
-  meanhazardvalue = fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
+  meanhazardvalue = null_fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
   
-  normFits = normalMixEM(x = T, k = n.seasons)
-  
-  result = c(result, normFits$lambda * meanhazardvalue)
-  ##to do later!!!
+  deaths = T[which(T[,2] == 1),1]
+  normdata = deaths - floor(deaths) # assuming period == 1 - will give times of death within the period
+  normFits = normalmixEM(x = normdata, k = n.seasons)
+  sigmas = normFits$sigma
+  deltas = qnorm(0.75, 0, sigmas) * 2
+  deltas[deltas >= 0.5] = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
+  result = c(result, normFits$lambda * meanhazardvalue, normFits$mu, findRho(deltas))
+  seasonNumbers = 1:(n.seasons)
+  names(result) = c(paste0("gamma", seasonNumbers), paste0("mu", seasonNumbers), paste0("rho", seasonNumbers))
+  result
 }
 
 #' Get 95% confidence intervals for each parameter that is estimated by the MLE

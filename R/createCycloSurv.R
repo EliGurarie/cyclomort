@@ -13,6 +13,7 @@
 #'morts = createCycloSurv(times, censored, period)
 
 createCycloSurv = function(data, censoring, period) {
+  data = data / period #normalized to period == 1 for further analysis
   result = Surv(data, censoring)
   attributes(result)$period = period
   return(result)
