@@ -11,11 +11,9 @@ fit_cyclomort(T, p0 = NULL, n.seasons = 2)
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
 
-\item{p0}{set of initial guesses; a named vector with "A", "peak", "rho" and "weight" names}
+\item{p0}{set of initial guesses; a named vector or list with values for "peak", "duration", and "weight". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 
-\item{period}{period of one mortality cycle}
-
-\item{dt}{interval for plots as well as precision of random samples}
+\item{n.seasons}{expected number of seasons if p0 is not entirely filled out}
 }
 \value{
 parameter estimates for weights, rhos, peaks and A

@@ -13,17 +13,9 @@
 
 fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
   
-  weights <- p0[grepl("weight", names(p0))]
-  if(length(weights) == length(peaks) - 1){
-    warning("Filling out the weight vector.")
-    weights <- c(weights, 1 - sum(weights))
+  if (is.null(p0)) {
+    ##fitting procedure for initial guesses
   }
-  
-  if(sum(weights) != 1){
-    warning("Weights do not sum to 1 ... we kindly fixed that for you.")
-    weights <- weights/sum(weights)
-  }
-  p0[grepl("weight", names(p0))] = weights
   
   cm = list()
   period = attributes(T)$period
@@ -31,7 +23,7 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
     ##null model
     require(flexsurv)
     fits = flexsurvreg(T ~ 1, dist = "exp")
-    cm$meanhazard = fits[[18]][1] # mortality rate a.k.a. average hazard
+    cm$meanhazard = fits[[18]][1:3] # mortality rate a.k.a. average hazard
     cm$logLik = logLik(fits)
     cm$AIC = AIC(fits)
   } else {
@@ -66,6 +58,31 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
   cm
 }
 
+#' Produce initial parameter estimates based on mortality data
+#' 
+#' Uses a basic flexsurvreg exponential mortality model to find the average hazard value, and fits a mixed normal distribution model to estimate the peaks, season durations, and weight distributions for the model. These estimates are not meant to be fully accurate but instead are meant to be good initial guesses for the fit_cyclomort function.
+#' 
+#' @param T set of Surv objects representing time of death or censorship
+#' @param n.seasons expected number of seasons within a period
+#' 
+#' @return a named vector listing intial guesses for parameter values, to be used in the fitting process
+#' 
+#' @export
+generateInitialParameterEstimate = function(T, n.seasons) {
+  require(flexsurv)
+  require(mixtools)
+  
+  result = c() # blank vector to be filled up with parameters
+  
+  null_fits = flexsurvreg(T ~ 1, dist = "exp")
+  meanhazardvalue = fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
+  
+  normFits = normalMixEM(x = T, k = n.seasons)
+  
+  result = c(result, normFits$lambda * meanhazardvalue)
+  ##to do later!!!
+}
+
 #' Get 95% confidence intervals for each parameter that is estimated by the MLE
 #' 
 #' @param fit returned value from call to "optim" containing parameter estimates and Hessian matrix
@@ -81,24 +98,4 @@ getCIs <- function(fit){
   value[is.na(value[,2]),2] = 0
   value[is.na(value[,3]),3] = 0.9999
   value
-}
-
-#' Gets the season length in periods based on the concentration parameter rho
-#' 
-#' @param rho concentration parameter for wrapped Cauchy distribution between 0 and 1
-#' 
-#' @return length of season assuming period length of 1
-#' 
-#' @examples
-#' plot(Vectorize(getSeasonLength)(seq(0.05, 0.95, 0.05)), type = "l")
-#' @export
-
-getSeasonLength = function(rho) {
-  if (rho >= 1) {
-    rho = 0.9999
-  }
-  if (rho < 0) {
-    rho = 0
-  }
-  (-2 * qwrpCauchy(0.25, 0, rho)) / (2 * pi)
 }
