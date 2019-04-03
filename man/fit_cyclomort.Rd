@@ -11,7 +11,7 @@ fit_cyclomort(T, p0 = NULL, n.seasons = 2)
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
 
-\item{p0}{set of initial guesses; a named vector or list with values for "peak", "duration", and "weight". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
+\item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 
 \item{n.seasons}{expected number of seasons if p0 is not entirely filled out}
 }
@@ -29,7 +29,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 1,
                              peaks = c(0.25, 0.75), 
                              durations = c(0.3, 0.1), 
                              weights = 0.7, 
-                             plotme = TRUE)
+                             plotme = FALSE)
 
 p0 = c(meanhazard = 0.05, 
        peak1 = 0.25, peak2 = 0.75, 
@@ -37,7 +37,7 @@ p0 = c(meanhazard = 0.05,
        weight1 = 0.5, weight2 = 0.5)
 
 ##MLE for parameters based on simulated data
-fits = fit_cyclomort(T.morts1, p0, dt = .01)
+fits = fit_cyclomort(T.morts1, n.seasons = 2)
 print(fits)
 plot(fits)
 ##Actual parameter values from simulated data

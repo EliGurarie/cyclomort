@@ -7,7 +7,7 @@
 loglike_optim(pars, T)
 }
 \arguments{
-\item{pars}{named vector including "weight", "peak", and "duration" parameters for the appropriate number of seasons}
+\item{pars}{named vector including "gamma", "mu", and "rho" (because this function is entirely internal) parameters for the appropriate number of seasons}
 
 \item{T}{times of death or censoring as Surv objects}
 }

@@ -16,13 +16,13 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
   if (min(T[,1]) <= 0) {
     T[T[,1] <= 0] = Surv(1e-6, 1)
   }
-  null_fits = flexsurvreg(T ~ 1, dist = "exp")
+  null_fits = flexsurvreg(T ~ 1, dist = "exp", inits = c(rate = 1))
   period = attributes(T)$period
   if (is.null(period)) period = 1
   
   if (is.null(p0)) {
     ##fitting procedure for initial guesses
-    p0 = generateInitialParameterEstimate(T, n.seasons)
+    p0 = generateInitialParameterEstimate(T, n.seasons, null_fits)
   } else {
     ##the user has submitted default initial guesses for parameters
     durations = pars[grepl("duration", names(pars))]
@@ -53,11 +53,11 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
         cm[[i]] = findDelta(CIs[i, ])
         names(cm)[i] = paste0("duration", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
       } else { #if (grepl("gamma", fitNames[i]))
-        cm[[i]] = CIs[i, ] / meanhazardvalue
+        cm[[i]] = CIs[i, ] / meanhazardestimate
         names(cm)[i] = paste0("weights", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
       }
     }
-    cm$meanhazard = meanhazardestimate
+    cm$meanhazard = colSums(CIs[grepl("gamma",fitNames),])
     cm$rawpars = CIs
     cm$hessian = fits$hessian
     cm$logLik = fits$value
@@ -78,14 +78,14 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
 #' 
 #' @param T set of Surv objects representing time of death or censorship
 #' @param n.seasons expected number of seasons within a period
+#' @param null_fits original estimate for mortality rate assuming constant hazard function
 #' 
 #' @return a named vector listing intial guesses for parameter values, to be used in the fitting process
 #' 
 #' @export
-generateInitialParameterEstimate = function(T, n.seasons) {
+generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
   result = c() # blank vector to be filled up with parameters
   
-  null_fits = flexsurvreg(T ~ 1, dist = "exp")
   meanhazardvalue = null_fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
   
   deaths = T[which(T[,2] == 1),1]
