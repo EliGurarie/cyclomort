@@ -9,21 +9,21 @@
 
 
 summary.cmfitlist = function(x) {
-  numModels = length(x) - 1 # last item of the list is dt
+  numModels = length(x)
   result = data.frame()
-  result = rbind(result, c(0, AIC(x$null), logLik(x$null), 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
+  result = rbind(result, c(0, AIC(x$zeroSeason), logLik(x$zeroSeason), 1, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA))
   if (numModels > 1) {
-    result = rbind(result, c(1, AIC(x$onePeak), logLik(x$onePeak), 3, x$onePeak$peak1[1], NA, NA, NA, x$onePeak$rho1[1], NA, NA, NA, NA, NA, NA, x$onePeak$A[1]))
+    result = rbind(result, c(1, AIC(x$oneSeason), logLik(x$oneSeason), 3, x$oneSeason$peak1[1], NA, NA, NA, x$oneSeason$duration1[1], NA, NA, NA, NA, NA, NA, x$oneSeason$meanhazard[1]))
     if (numModels > 2) {
-      result = rbind(result, c(1, AIC(x$twoPeak), logLik(x$twoPeak), 6, x$twoPeak$peak1[1], x$twoPeak$peak2[1], NA, NA, x$twoPeak$rho1[1], x$twoPeak$rho2[1], NA, NA, x$twoPeak$weight1[1], NA, NA, x$twoPeak$A[1]))
+      result = rbind(result, c(1, AIC(x$twoSeason), logLik(x$twoSeason), 6, x$twoSeason$peak1[1], x$twoSeason$peak2[1], NA, NA, x$twoSeason$duration1[1], x$twoSeason$duration2[1], NA, NA, x$twoSeason$weight1[1], NA, NA, x$twoSeason$meanhazard[1]))
       if (numModels > 3) {
-        result = rbind(result, c(1, AIC(x$threePeak), logLik(x$threePeak), 9, x$threePeak$peak1[1], x$threePeak$peak2[1], x$threePeak$peak3[1], NA, x$threePeak$rho1[1], x$threePeak$rho2[1], x$threePeak$rho3[1], NA, x$threePeak$weight1[1], x$threePeak$weight2[1], NA, x$threePeak$A[1]))
+        result = rbind(result, c(1, AIC(x$threeSeason), logLik(x$threeSeason), 9, x$threeSeason$peak1[1], x$threeSeason$peak2[1], x$threeSeason$peak3[1], NA, x$threeSeason$duration1[1], x$threeSeason$duration2[1], x$threeSeason$duration3[1], NA, x$threeSeason$weight1[1], x$threeSeason$weight2[1], NA, x$threeSeason$meanhazard[1]))
         if (numModels > 4) {
-          result = rbind(result, c(1, AIC(x$fourPeak), logLik(x$fourPeak), 12, x$fourPeak$peak1[1], x$fourPeak$peak2[1], x$fourPeak$peak3[1], x$fourPeak$peak4[1], x$fourPeak$rho1[1], x$fourPeak$rho2[1], x$fourPeak$rho3[1], x$fourPeak$rho4[1], x$fourPeak$weight1[1], x$fourPeak$weight2[1], x$fourPeak$weight3[1], x$fourPeak$A[1]))
+          result = rbind(result, c(1, AIC(x$fourSeason), logLik(x$fourSeason), 12, x$fourSeason$peak1[1], x$fourSeason$peak2[1], x$fourSeason$peak3[1], x$fourSeason$peak4[1], x$fourSeason$duration1[1], x$fourSeason$duration2[1], x$fourSeason$duration3[1], x$fourSeason$duration4[1], x$fourSeason$weight1[1], x$fourSeason$weight2[1], x$fourSeason$weight3[1], x$fourSeason$meanhazard[1]))
         }
       }
     }
   }
-  names(result) = c("numSeasons", "AIC", "logLik", "k", "peak1", "peak2", "peak3", "peak4", "rho1", "rho2", "rho3", "rho4", "weight1", "weight2", "weight3", "A")
+  names(result) = c("numSeasons", "AIC", "logLik", "k", "peak1", "peak2", "peak3", "peak4", "duration1", "duration2", "duration3", "duration4", "weight1", "weight2", "weight3", "meanhazard")
   result
 }

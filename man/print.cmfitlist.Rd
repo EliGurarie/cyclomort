@@ -16,12 +16,13 @@ a table comparing the different periodic mortality models, comparing them using 
 Display cmfitlist objects as text
 }
 \examples{
-T.morts1 <- simPeriodicMorts(300, period = 1, 
+T.morts1 <- simPeriodicMorts(1000, period = 1, 
+                             meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
-                             rhos = c(0.7, 0.7), 
-                             weights = 0.4, dt = .01, 
-                             A = .02, plotme = FALSE)
+                             durations = c(0.2, 0.1), 
+                             weights = 0.3, 
+                             plotme = FALSE)
 
-fits = selectNSeasons(T = T.morts1, dt = 0.01)
+fits = selectNSeasons(T = T.morts1)
 print(fits)
 }

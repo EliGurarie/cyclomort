@@ -40,6 +40,7 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
     cm$meanhazard = null_fits[[18]][1:3] # mortality rate a.k.a. average hazard
     cm$logLik = logLik(null_fits)
     cm$AIC = AIC(null_fits)
+    cm$rawpars = cm$meanhazard
   } else {
     fits = optim(p0, loglike_optim, T = T, hessian = TRUE)
     CIs = getCIs(fit = fits)
@@ -57,7 +58,11 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
         names(cm)[i] = paste0("weights", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
       }
     }
-    cm$meanhazard = colSums(CIs[grepl("gamma",fitNames),])
+    if (n.seasons != 1) {
+      cm$meanhazard = colSums(CIs[grepl("gamma",fitNames),])
+    } else {
+      cm$meanhazard = CIs[grepl("gamma", fitNames),]
+    }
     cm$rawpars = CIs
     cm$hessian = fits$hessian
     cm$logLik = fits$value
@@ -84,17 +89,28 @@ fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
 #' 
 #' @export
 generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
+  if (n.seasons == 0) {
+    return (NULL)
+  }
   result = c() # blank vector to be filled up with parameters
   
   meanhazardvalue = null_fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
   
   deaths = T[which(T[,2] == 1),1]
   normdata = deaths - floor(deaths) # assuming period == 1 - will give times of death within the period
-  normFits = normalmixEM(x = normdata, k = n.seasons)
-  sigmas = normFits$sigma
-  deltas = qnorm(0.75, 0, sigmas) * 2
-  deltas[deltas >= 0.5] = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
-  result = c(result, normFits$lambda * meanhazardvalue, normFits$mu, findRho(deltas))
+  if (n.seasons == 1) {
+    mu = mean(normdata)
+    sigma = sd(normdata) # this is the MLE for standard deviation of Gaussian distribution, right?
+    delta = qnorm(0.75, 0, sigma) * 2
+    if (delta >= 0.5) delta = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
+    result = c(result, meanhazardvalue, mu, delta)
+  } else {
+    normFits = normalmixEM(x = normdata, k = n.seasons)
+    sigmas = normFits$sigma
+    deltas = qnorm(0.75, 0, sigmas) * 2
+    deltas[deltas >= 0.5] = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
+    result = c(result, normFits$lambda * meanhazardvalue, normFits$mu, findRho(deltas))
+  }
   seasonNumbers = 1:(n.seasons)
   names(result) = c(paste0("gamma", seasonNumbers), paste0("mu", seasonNumbers), paste0("rho", seasonNumbers))
   result
