@@ -18,30 +18,20 @@ a short summary of the estimates for each parameter along with confidence interv
 Print a short summary of cmfit (parameter estimates for periodic mortality curves) objects
 }
 \examples{
-T.morts1 <- simPeriodicMorts(1000, period = 1, 
-                             meanhazard = 0.3, 
-                             peaks = c(0.25, 0.75), 
-                             durations = c(0.3, 0.1), 
+T.morts1 <- simPeriodicMorts(1000, period = 365, 
+                             meanhazard = 0.3 / 365, 
+                             peaks = c(0.25 * 365, 0.75 * 365), 
+                             durations = c(0.3 * 365, 0.1 * 365), 
                              weights = 0.7, 
                              plotme = FALSE)
-
-p0 = c(meanhazard = 0.05, 
-       peak1 = 0.25, peak2 = 0.75, 
-       duration1 = 0.2, duration2 = 0.2, 
-       weight1 = 0.5, weight2 = 0.5)
 
 ##MLE for parameters based on simulated data
 fits = fit_cyclomort(T.morts1, n.seasons = 2)
 print(fits)
-plot(fits)
+plot(fits, type = "mortality")
 ##Actual parameter values from simulated data
 attributes(T.morts1)
 ##Measures of model accuracy
 AIC(fits)
 logLik(fits)
-
-
-
-T <- T.morts1 
-T <- T[T[,1] > 0]
 }

@@ -4,7 +4,7 @@
 \alias{selectNSeasons}
 \title{Identify the ideal number of seasons for a set of mortality data}
 \usage{
-selectNSeasons(T)
+selectNSeasons(T, max.season = NULL)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
@@ -25,6 +25,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 1,
                              weights = 0.3, 
                              plotme = FALSE)
 
-fits = selectNSeasons(T = T.morts1)
+fits = selectNSeasons(T.morts1)
+
 print(fits)
 }
