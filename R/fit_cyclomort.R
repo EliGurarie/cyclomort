@@ -46,12 +46,21 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
   cm = list(n.seasons = n.seasons)
   if (n.seasons == 0) {
     ##null model
-    cm$meanhazard = null_fits$res[1,1:4] # mortality rate a.k.a. average hazard
+    meanhazard = null_fits$res[1,1:4] / period
+    names(meanhazard) <- c("estimate", "CI.low", "CI.high", "se")
+    cm$estimates = list(meanhazard = meanhazard) # mortality rate a.k.a. average hazard
     cm$logLik = logLik(null_fits)
     cm$AIC = AIC(null_fits)
-    cm$rawpars = cm$meanhazard
   } else {
-    fits = optim(p0, loglike_optim, T = T, hessian = TRUE)
+    
+    lower <- p0 * 0 + 1e-6
+    upper <- ceiling(p0)
+    upper[grepl("gamma", names(upper))] <- Inf
+    
+    fits = optim(p0, loglike_optim, 
+                 T = T, hessian = TRUE, 
+                 method = "L-BFGS-B",
+                 lower = lower, upper = upper)
     
     CIs = getCIs(fit = fits)
     
@@ -59,7 +68,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     rhos.hat <- fits$par[grepl("rho", names(fits$par))]
     mus.hat <- fits$par[grepl("mu", names(fits$par))]
     
-    ses <- sqrt(diag(solve(fit$hessian)))
+    ses <- sqrt(diag(solve(fits$hessian)))
     gammas.se <- ses[grepl("gamma", names(ses))]
     rhos.se <- ses[grepl("rho", names(ses))]
     mus.se <- ses[grepl("mu", names(ses))]
@@ -81,8 +90,12 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     
     ## Durations
     durations.hat <- findDelta(rhos.hat) * period
-    durations.low <- findDelta(rhos.hat + rhos.se*2) * period
-    durations.high <- findDelta(rhos.hat - rhos.se*2) * period
+    
+    rhos.lower <- pmax(rhos.hat - 2*rhos.se, 0)
+    rhos.upper <- pmin(rhos.hat + 2*rhos.se, 1)
+    
+    durations.low <- findDelta(rhos.upper) * period
+    durations.high <- findDelta(rhos.lower) * period
     durations.CI <- cbind(durations.low, durations.high)
     
     pointestimates <- data.frame(estimate = c(weights.hat, peaks.hat, durations.hat), 
@@ -108,8 +121,8 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
                                                  CI.high = meanhazard.CI[2])) %>% append(seasonalfits)
     
     cm$optim = fits
-    cm$logLik = fits$value
-    cm$AIC = -2 * fits$value + 2 * n.seasons*3
+    cm$logLik = -fits$value
+    cm$AIC = 2 * fits$value + 2 * n.seasons*3
     cm$k = 3*n.seasons
   }
   cm$period = period

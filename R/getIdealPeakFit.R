@@ -12,11 +12,12 @@
 #' 
 #' @export
 
-selectNSeasons = function(T) {
+selectNSeasons = function(T, max.season = NULL) {
   listOfFits = list()
   
   nullFit = fit_cyclomort(T, n.seasons = 0)
   listOfFits$zeroSeason = nullFit
+  
   oneFit = fit_cyclomort(T, n.seasons = 1)
   if (AIC(nullFit) >= AIC(oneFit)) {
     listOfFits$oneSeason = oneFit
@@ -33,6 +34,11 @@ selectNSeasons = function(T) {
       }
     }
   }
+  
+  # ldply(listOfFits, function(l) rbind(ldply(l$estimates)))
+  print(ldply(listOfFits, AIC) %>% rename(c(V1 = "AIC")))
+  a <- ldply(listOfFits, AIC) %>% rename(c(V1 = "AIC")) %>% mutate(seasons = 0:(length(AIC)-1))
+  plot(a$season, a$AIC, type = "o")
   
   class(listOfFits) = "cmfitlist"
   listOfFits
