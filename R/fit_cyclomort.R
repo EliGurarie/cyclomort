@@ -11,68 +11,109 @@
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, p0 = NULL, n.seasons = 2) {
+fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
   
-  if (min(T[,1]) <= 0) {
-    T[T[,1] <= 0] = Surv(1e-6, 1)
-  }
+  # normalize to period 1
+  
+    period = attributes(T)$period
+    if (is.null(period)) period = 1
+    # times
+    T[,1] <- T[,1]/period
+    
+    # durations & peaks
+    if(!is.null(inits)) inits <- inits/period
+  
+  if (min(T[,1]) <= 0) T[T[,1] <= 0] = Surv(1e-6, 1)
+  
   null_fits = flexsurvreg(T ~ 1, dist = "exp", inits = c(rate = 1))
-  period = attributes(T)$period
-  if (is.null(period)) period = 1
   
-  if (is.null(p0)) {
+  if (is.null(inits)) {
     ##fitting procedure for initial guesses
     p0 = generateInitialParameterEstimate(T, n.seasons, null_fits)
   } else {
     ##the user has submitted default initial guesses for parameters
-    durations = pars[grepl("duration", names(pars))]
-    peaks = pars[grepl("peak", names(pars))]
-    n.seasons = length(p0) / 2
-    gammas = null_fits[[18]][1] / n.seasons
+    durations = inits[grepl("duration", names(inits))]
+    peaks = inits[grepl("peak", names(inits))]
+    n.seasons = length(inits) / 2
+    gammas = rep(null_fits$res[1,'est'] / n.seasons, n.seasons)
     mus = peaks
+    names(mus) <- NULL
     rhos = findRho(durations)
+    names(rhos) <- NULL
     p0 = unlist(list(gamma = gammas, rho = rhos, mu = mus))
   }
   
-  cm = list()
+  cm = list(n.seasons = n.seasons)
   if (n.seasons == 0) {
     ##null model
-    cm$meanhazard = null_fits[[18]][1:3] # mortality rate a.k.a. average hazard
+    cm$meanhazard = null_fits$res[1,1:4] # mortality rate a.k.a. average hazard
     cm$logLik = logLik(null_fits)
     cm$AIC = AIC(null_fits)
     cm$rawpars = cm$meanhazard
   } else {
     fits = optim(p0, loglike_optim, T = T, hessian = TRUE)
+    
     CIs = getCIs(fit = fits)
-    fitNames = names(fits$par)
-    meanhazardestimate = sum(fits$par[grepl("gamma", fitNames)])
-    for (i in 1:length(fitNames)) {
-      if (grepl("mu", fitNames[i])) {
-        cm[[i]] = CIs[i, ] * period
-        names(cm)[i] = paste0("peak", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
-      } else if (grepl("rho", fitNames[i])) {
-        cm[[i]] = findDelta(CIs[i, ])
-        names(cm)[i] = paste0("duration", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
-      } else { #if (grepl("gamma", fitNames[i]))
-        cm[[i]] = CIs[i, ] / meanhazardestimate
-        names(cm)[i] = paste0("weights", substr(fitNames[i], nchar(fitNames[i]), nchar(fitNames[i])))
-      }
-    }
-    if (n.seasons != 1) {
-      cm$meanhazard = colSums(CIs[grepl("gamma",fitNames),])
-    } else {
-      cm$meanhazard = CIs[grepl("gamma", fitNames),]
-    }
-    cm$rawpars = CIs
-    cm$hessian = fits$hessian
+    
+    gammas.hat <- fits$par[grepl("gamma", names(fits$par))]
+    rhos.hat <- fits$par[grepl("rho", names(fits$par))]
+    mus.hat <- fits$par[grepl("mu", names(fits$par))]
+    
+    ses <- sqrt(diag(solve(fit$hessian)))
+    gammas.se <- ses[grepl("gamma", names(ses))]
+    rhos.se <- ses[grepl("rho", names(ses))]
+    mus.se <- ses[grepl("mu", names(ses))]
+    
+    ## Mean Hazard
+    meanhazard.hat <- sum(gammas.hat) / period
+    meanhazard.se <- (1/n.seasons) * sqrt(sum(gammas.se^2)) / period
+    meanhazard.CI <- meanhazard.hat + c(-2,2)*meanhazard.se
+    
+    ## Weights
+    weights.hat <- gammas.hat / (meanhazard.hat * period)
+    weights.se <- gammas.se / (meanhazard.hat * period)
+    weights.CI <- weights.hat + (weights.se) %*% t(c(-2,2))
+    
+    ## Peaks 
+    peaks.hat <- mus.hat * period
+    peaks.se <- mus.se * period
+    peaks.CI <- peaks.hat + peaks.se %*% t(c(-2,2))
+    
+    ## Durations
+    durations.hat <- findDelta(rhos.hat) * period
+    durations.low <- findDelta(rhos.hat + rhos.se*2) * period
+    durations.high <- findDelta(rhos.hat - rhos.se*2) * period
+    durations.CI <- cbind(durations.low, durations.high)
+    
+    pointestimates <- data.frame(estimate = c(weights.hat, peaks.hat, durations.hat), 
+                                 CI = rbind(weights.CI, peaks.CI, durations.CI))
+    names(pointestimates)[2:3] <- c("CI.low", "CI.high")
+    rn <- row.names(pointestimates)
+    pointestimates$season <- substr(rn, nchar(rn), nchar(rn)) %>% as.numeric
+    parnames <- substr(rn, 1, nchar(rn)-1) 
+    parnames[parnames == "gamma"] = "weight"
+    parnames[parnames == "rho"] = "duration"
+    parnames[parnames == "mu"] = "peak"
+    pointestimates$parameter <- parnames
+    
+    pointestimates <- pointestimates[,c("parameter","season","estimate", "CI.low","CI.high")]
+    ordered.seasons <- (subset(pointestimates, parameter == "peak") %>% arrange(estimate))$season
+    pointestimates$season <- ordered.seasons[pointestimates$season]
+    
+    seasonalfits <- dlply(pointestimates, "season")
+    names(seasonalfits) <- paste("season", 1:n.seasons)
+    
+    cm$estimates <- list(meanhazard = data.frame(estimate = meanhazard.hat, 
+                                                 CI.low = meanhazard.CI[1],
+                                                 CI.high = meanhazard.CI[2])) %>% append(seasonalfits)
+    
+    cm$optim = fits
     cm$logLik = fits$value
-    cm$AIC = -2 * fits$value + 2 * length(fitNames)
-    cm$counts = fits$counts
-    cm$convergence = fits$convergence
+    cm$AIC = -2 * fits$value + 2 * n.seasons*3
+    cm$k = 3*n.seasons
   }
   cm$period = period
   cm$data = T
-  cm$dt = dt
   class(cm) = "cmfit"
   cm
 }
@@ -105,7 +146,7 @@ generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
     if (delta >= 0.5) delta = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
     result = c(result, meanhazardvalue, mu, delta)
   } else {
-    normFits = normalmixEM(x = normdata, k = n.seasons)
+    normFits = suppressMessages(normalmixEM(x = normdata, k = n.seasons))
     sigmas = normFits$sigma
     deltas = qnorm(0.75, 0, sigmas) * 2
     deltas[deltas >= 0.5] = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
@@ -126,9 +167,6 @@ generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
 
 getCIs <- function(fit){
   p <- fit$par
-  CIs <- sqrt(diag(solve(fit$hessian)))
-  value = cbind(estimate = p, CI.low = p - 2*CIs, CI.high = p + 2*CIs)
-  value[is.na(value[,2]),2] = 0
-  value[is.na(value[,3]),3] = 0.9999
-  value
+  se <- sqrt(diag(solve(fit$hessian)))
+  cbind(estimate = p, CI.low = p - 2*se, CI.high = p + 2*se, se = se)
 }

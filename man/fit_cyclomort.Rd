@@ -6,14 +6,14 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, p0 = NULL, n.seasons = 2)
+fit_cyclomort(T, inits = NULL, n.seasons = 2)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
 
-\item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
-
 \item{n.seasons}{expected number of seasons if p0 is not entirely filled out}
+
+\item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 }
 \value{
 parameter estimates for weights, rhos, peaks and A

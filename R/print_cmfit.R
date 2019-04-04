@@ -9,14 +9,7 @@
 #' @export
 
 print.cmfit = function(x, maxDigits = 4) {
-  result = c()
-  index = 1
-  while (names(x)[index] != "period") {##while x[[index]] is a parameter estimate
-    if (names(x)[index] == "meanhazard" || grepl("peak", names(x)[index]) || grepl("duration", names(x)[index]) || grepl("weight", names(x)[index])) {
-      estimate = paste0("Estimate for parameter ", names(x)[index], ": ", round(x[[index]][1], digits = maxDigits))
-      confidence = paste0("Confidence interval for estimate: [", round(x[[index]][2], digits = maxDigits), ", ", round(x[[index]][3], digits = maxDigits), "]")
-      result = c(result, cat(c(estimate, confidence), sep = "\n"))
-    }
-    index = index + 1
-  }
+  cat(paste0("Multi-seasonal hazard function fit with ", n.seasons, " seasons with periodicity ", period, ".\n\n"))
+  print(x$estimates)
+  cat(paste0("Log-likelihood: ", round(x$logLik, maxDigits), "; AIC: ", round(x$AIC, maxDigits), "\n"))
 }
