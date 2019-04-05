@@ -54,7 +54,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
   } else {
     
     lower <- p0 * 0 + 1e-6
-    upper <- ceiling(p0)
+    upper <- ceiling(p0) - 1e-6
     upper[grepl("gamma", names(upper))] <- Inf
     
     fits = optim(p0, loglike_optim, 

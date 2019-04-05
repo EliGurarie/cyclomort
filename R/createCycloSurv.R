@@ -11,6 +11,7 @@
 #'censored = c(1, 1, 0, 1, 1, 0, 1, 0, 0)
 #'period = 365
 #'morts = createCycloSurv(times, censored, period)
+#'@export
 
 createCycloSurv = function(data, censoring, period) {
   data = data / period #normalized to period == 1 for further analysis

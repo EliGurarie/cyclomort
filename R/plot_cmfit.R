@@ -16,17 +16,15 @@ plot.cmfit = function(x, n.times = 1e3, type = c("hazard", "mortality"),  ...) {
   if("hazard" %in% type){
     timeOfYearData = uncensoredData - floor(uncensoredData)
     h = hist(timeOfYearData, xlab = "Time within a period", ylab = "Relative risk of mortality",
-             main = "Comparing hazard function estimate with actual mortality data", 
-             col = "grey", bor = "darkgrey", freq = FALSE, ... )
+             main = "", col = "grey", bor = "darkgrey", freq = FALSE, ... )
     
-    plotHazard(x, add = TRUE)
+    plotHazard(x, hist = h, add = TRUE)
   }
   
   if("mortality" %in% type){
   
     h = hist(uncensoredData, xlab = "Number of periods", ylab = "Number of mortalities",
-         main = "Comparing parameter estimates with actual mortality data", 
-          col = "grey", bor = "darkgrey", ...)
+             main = "", col = "grey", bor = "darkgrey", ...)
     
     period = x$period
     t <- seq(0, max(uncensoredData), length = n.times)
@@ -46,6 +44,9 @@ plot.cmfit = function(x, n.times = 1e3, type = c("hazard", "mortality"),  ...) {
     
     lines(t, adj.pdf.mortality)
   }
+  
+  mtext("Comparing parameter estimates with actual mortality data", font = 2, side = 3, line = -2.5, outer = TRUE)
+  
 }
 
 #' Plots the hazard curve for one period given either a cmfit object or a set of parameters
@@ -54,7 +55,7 @@ plot.cmfit = function(x, n.times = 1e3, type = c("hazard", "mortality"),  ...) {
 #' 
 #' @export
 
-plotHazard = function(cmfit = NULL, pars, period, ... ) {
+plotHazard = function(cmfit = NULL, hist, pars, period, ... ) {
   if (!is.null(cmfit)) {
     pars = fits$optim$par
     period = cmfit$period
@@ -73,5 +74,11 @@ plotHazard = function(cmfit = NULL, pars, period, ... ) {
     mwc(t = x, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
   }
   
-  curve(thisHazard, xlim = c(0, 1), ... )
+  maxValue = max(thisHazard(seq(0, 1, 0.01))) #is there a better way to do this?
+  
+  modifiedHazard = function(x) {
+    thisHazard(x) / maxValue * max(hist$density)
+  }
+  
+  curve(modifiedHazard, xlim = c(0, 1), ... )
 }

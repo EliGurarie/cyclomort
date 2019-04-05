@@ -8,14 +8,14 @@ selectNSeasons(T, max.season = NULL)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
+
+\item{max.season}{maximum number of seasons to survey}
 }
 \value{
 a cmfitlist object comparing the various fits
 }
 \description{
-Obtain AIC values for the MLEs for a five different mortality models, each one having a different number of seasons.
-Decide which model should be used based on the lowest AIC; this will estimate how many
-seasons in mortality occur during a periodic cycle for the given species.
+Obtain AIC values for parameter estimates for a number of different models, based on the number of predicted seasons for a set of survival objects. This method will identify the most likely number of "mortality seasons" in one period for a species.
 }
 \examples{
 T.morts1 <- simPeriodicMorts(1000, period = 1, 
