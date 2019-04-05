@@ -11,7 +11,7 @@
 #' 
 #' @export
 
-selectNSeasons = function(T, max.season = NULL) {
+selectNSeasons = function(T, max.season = 4) {
   
   listOfFits = list()
   n.seasons = 0

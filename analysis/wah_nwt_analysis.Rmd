@@ -11,6 +11,7 @@ The Western Arctic Herd of caribou is expected to have a mortality cycle with tw
 
 ```{r}
 data(wah_morts)
+wah_morts = wah_morts[wah_morts$end < "2017-01-01",]#taking out weird years of 2017 and 2018
 wah_surv = createCycloSurv(data = wah_morts$interval, censoring = wah_morts$Fate == "DEAD", period = 365)
 listOfFits = selectNSeasons(T = wah_surv, max.season = 4)
 for (i in 1:5) {
