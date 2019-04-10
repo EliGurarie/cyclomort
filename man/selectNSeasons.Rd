@@ -4,12 +4,14 @@
 \alias{selectNSeasons}
 \title{Identify the ideal number of seasons for a set of mortality data}
 \usage{
-selectNSeasons(T, max.season = NULL)
+selectNSeasons(T, max.season = 4, method = "AIC")
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
 
 \item{max.season}{maximum number of seasons to survey}
+
+\item{method}{method used to evaluate model accuracy - either AIC or BIC}
 }
 \value{
 a cmfitlist object comparing the various fits

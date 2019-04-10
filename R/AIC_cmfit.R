@@ -11,3 +11,17 @@
 AIC.cmfit = function(x) {
   x$AIC
 }
+
+#' Determine BIC for a cmfit object
+#' 
+#' @param x a cmfit object
+#' 
+#' @return BIC (a measure of model accuracy) for the cmfit object
+#' 
+#' @example examples/cyclomortFit_example.R
+#' 
+#' @export
+
+BIC.cmfit = function(x) {
+  x$BIC
+}

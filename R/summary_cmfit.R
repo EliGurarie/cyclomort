@@ -9,6 +9,15 @@
 
 
 summary.cmfitlist = function(x) {
-  ldply(listOfFits, function(l) rbind(ldply(l$estimates)))
-  print(ldply(listOfFits, AIC) %>% rename(c(V1 = "AIC")))
+  estimates = ldply(x, function(l) cbind(l$n.seasons, rbind(ldply(l$estimates))))
+  names(estimates)[1] = "n.seasons"
+  estimates$parameter[is.na(estimates$parameter)] = "meanhazard"
+  method = attributes(x)$method
+  if (method == "AIC") {
+    values = ldply(x, AIC) %>% rename(c(V1 = "AIC"))
+  } else {
+    # if (method == "BIC")
+    values = ldply(x, BIC) %>% rename(c(V1 = "BIC"))
+  }
+  list(estimates = estimates, model.accuracy = values)
 }

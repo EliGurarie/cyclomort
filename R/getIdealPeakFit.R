@@ -4,6 +4,7 @@
 #' 
 #' @param T set of Surv objects representing time of death or censorship
 #' @param max.season maximum number of seasons to survey
+#' @param method method used to evaluate model accuracy - either AIC or BIC
 #' 
 #' @return a cmfitlist object comparing the various fits
 #' 
@@ -11,7 +12,7 @@
 #' 
 #' @export
 
-selectNSeasons = function(T, max.season = 4) {
+selectNSeasons = function(T, max.season = 4, method = "AIC") {
   
   listOfFits = list()
   n.seasons = 0
@@ -22,5 +23,6 @@ selectNSeasons = function(T, max.season = 4) {
   }
   
   class(listOfFits) = "cmfitlist"
+  attributes(listOfFits)$method = method
   listOfFits
 }

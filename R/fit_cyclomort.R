@@ -51,6 +51,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     cm$estimates = list(meanhazard = meanhazard) # mortality rate a.k.a. average hazard
     cm$logLik = logLik(null_fits)
     cm$AIC = AIC(null_fits)
+    cm$BIC = BIC(null_fits)
   } else {
     
     lower <- p0 * 0 + 1e-6
@@ -97,9 +98,11 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     durations.low <- findDelta(rhos.upper) * period
     durations.high <- findDelta(rhos.lower) * period
     durations.CI <- cbind(durations.low, durations.high)
+    durations.se <- 1/4 * (durations.high - durations.low)
     
     pointestimates <- data.frame(estimate = c(weights.hat, peaks.hat, durations.hat), 
-                                 CI = rbind(weights.CI, peaks.CI, durations.CI))
+                                 CI = rbind(weights.CI, peaks.CI, durations.CI), 
+                                 se = c(weights.se, peaks.se, durations.se))
     names(pointestimates)[2:3] <- c("CI.low", "CI.high")
     rn <- row.names(pointestimates)
     pointestimates$season <- substr(rn, nchar(rn), nchar(rn)) %>% as.numeric
@@ -109,7 +112,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     parnames[parnames == "mu"] = "peak"
     pointestimates$parameter <- parnames
     
-    pointestimates <- pointestimates[,c("parameter","season","estimate", "CI.low","CI.high")]
+    pointestimates <- pointestimates[,c("parameter","season","estimate", "CI.low","CI.high","se")]
     ordered.seasons <- (subset(pointestimates, parameter == "peak") %>% arrange(estimate))$season
     pointestimates$season <- ordered.seasons[pointestimates$season]
     
@@ -118,11 +121,13 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     
     cm$estimates <- list(meanhazard = data.frame(estimate = meanhazard.hat, 
                                                  CI.low = meanhazard.CI[1],
-                                                 CI.high = meanhazard.CI[2])) %>% append(seasonalfits)
+                                                 CI.high = meanhazard.CI[2],
+                                                 se = meanhazard.se)) %>% append(seasonalfits)
     
     cm$optim = fits
     cm$logLik = -fits$value
     cm$AIC = 2 * fits$value + 2 * n.seasons*3
+    cm$BIC = 2 * fits$value + log(length(T)) * n.seasons * 3
     cm$k = 3*n.seasons
   }
   cm$period = period
