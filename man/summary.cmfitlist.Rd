@@ -4,10 +4,12 @@
 \alias{summary.cmfitlist}
 \title{Provides a short summary of the cmfitlist object, displaying the effectiveness of each model}
 \usage{
-\method{summary}{cmfitlist}(x)
+\method{summary}{cmfitlist}(x, plotme = FALSE)
 }
 \arguments{
 \item{x}{a cmfitlist object}
+
+\item{plotme}{plots AIC/BIC values from each cmfit object in the list to identify the best model choice}
 }
 \value{
 a data frame describing the AIC, log-likelihood, number of parameters and parameter estimates for each model
