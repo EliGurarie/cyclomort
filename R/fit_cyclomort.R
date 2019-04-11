@@ -11,7 +11,7 @@
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
+fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", hessian = TRUE) {
   
   # normalize to period 1
   
@@ -58,10 +58,16 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2) {
     upper <- ceiling(p0) - 1e-6
     upper[grepl("gamma", names(upper))] <- Inf
     
-    fits = optim(p0, loglike_optim, 
-                 T = T, hessian = TRUE, 
-                 method = "L-BFGS-B",
-                 lower = lower, upper = upper)
+    if(method %in% c("L-BFGS-B", "Brent")){
+      fits = optim(p0, loglike_optim, 
+                   T = T, hessian = hessian, 
+                   method = method,
+                   lower = lower, upper = upper)
+    } else {
+      fits = optim(p0, loglike_optim, 
+                   T = T, hessian = hessian, 
+                   method = method)
+    }
     
     CIs = getCIs(fit = fits)
     

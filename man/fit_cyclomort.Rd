@@ -6,7 +6,8 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, inits = NULL, n.seasons = 2)
+fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
+  hessian = TRUE)
 }
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
