@@ -29,7 +29,7 @@ simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
 \item{n.times}{number of x-values for plots (a higher value results in more precision for curves)}
 }
 \value{
-a Surv object (see \code{\link{Surv}}), with times stored as number of periods
+a cycloSurv object (a type of Surv object; see \code{\link{Surv}})
 }
 \description{
 Simulate periodic mortality process

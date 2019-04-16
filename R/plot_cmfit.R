@@ -9,13 +9,13 @@
 #' @export
 
 plot.cmfit = function(x, n.times = 1e3, type = c("hazard", "mortality"),  ...) {
-  uncensoredData = as.numeric(x$data[x$data[,2] == 1,1]) ##uncensored data
+  uncensoredData = as.numeric(x$data[x$data[,3] == 1,2]) ##uncensored data
   
   if(length(type) == 2) par(mfrow = c(1,2))
   
   if("hazard" %in% type){
     timeOfYearData = uncensoredData - floor(uncensoredData)
-    h = hist(timeOfYearData, xlab = "Time within a period", ylab = "Relative risk of mortality",
+    h = hist(timeOfYearData, xlab = "Time within a period (starting at given phase value)", ylab = "Relative risk of mortality",
              main = "", col = "grey", bor = "darkgrey", freq = FALSE, ... )
     
     plotHazard(x, hist = h, add = TRUE)

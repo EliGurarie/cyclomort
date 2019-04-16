@@ -4,16 +4,18 @@
 \alias{createCycloSurv}
 \title{Create an object that can be fitted with a given period from survival (time of death or censoring) data}
 \usage{
-createCycloSurv(start, end, censoring, period)
+createCycloSurv(start, end, censoring, phase, period)
 }
 \arguments{
-\item{start}{a vector measuring time of birth}
+\item{start}{a vector measuring time of birth (as a Date)}
 
-\item{end}{a vector measuring time of death or censoring}
+\item{end}{a vector measuring time of death or censoring (as a Date)}
 
-\item{censoring}{a vector of booleans (0 = alive, 1 = dead) detailing}
+\item{censoring}{a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation}
 
-\item{period}{length of one period in "data"}
+\item{phase}{a parameter (as a Date) indicating the start of a period. Should be less than any of the values in start}
+
+\item{period}{length of one period in the input data}
 }
 \value{
 a Surv object with an attribute "period" that reads the period.

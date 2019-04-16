@@ -10,7 +10,7 @@
 #' @param n.times number of x-values for plots (a higher value results in more precision for curves)
 #' @param max.periods maximum number of cycles
 #' 
-#' @return  a Surv object (see \code{\link{Surv}}), with times stored as number of periods
+#' @return  a cycloSurv object (a type of Surv object; see \code{\link{Surv}})
 #' 
 #' @example examples/simPeriodicMort_example.R
 #' @export
@@ -67,14 +67,16 @@ simPeriodicMorts <- function(n, period = 1,
   
   morts_t <- rawTimes
   censored = (morts_t > censorTimes)
+  morts_t[morts_t <= 0] = 1e-6
   morts_t[censored] = censorTimes[censored]
-  morts = Surv(morts_t, !censored)
+  morts = Surv(time = rep(0, length(morts_t)), time2 = morts_t, event = !censored)
   
   attributes(morts)$meanhazard <- meanhazard
   attributes(morts)$peaks <- peaks
   attributes(morts)$durations <- durations
   attributes(morts)$weights <- weights
   attributes(morts)$period <- period
+  attributes(morts)$phase <- 0
   
   if(plotme){
     par(mfrow = c(2,2), bty = "l", mar = c(2,4,4,2), tck = 0.02, mgp = c(1.5,.25,0), xpd = NA)
@@ -86,6 +88,8 @@ simPeriodicMorts <- function(n, period = 1,
          col = "grey", bor = "darkgrey", freq = FALSE, main = "pdf and histogram of simulated mortalities")
     lines(t, pdf.mortality, type = "l")
   }
+  
+  #class(morts) = "cycloSurv"
   
   return(morts)
 }

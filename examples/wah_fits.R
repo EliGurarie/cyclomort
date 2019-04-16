@@ -1,20 +1,9 @@
 ##Turn WAH mortality data into a Surv object for fitting purposes
 
 data(wah_morts)
-wah_morts <- subset(wah_morts, end < ymd("2017 9 1"))
 
-PERIOD_LENGTH = 365
-
-wah = wah_morts[,c(4,5)]
-wah[,1] = numeric(length(wah[,1]))
-wah[(as.character(wah_morts[,4]) != "DEAD"),1] = 0
-wah[(as.character(wah_morts[,4]) == "DEAD"),1] = 1
-
-wah[,2] = wah[,2] / PERIOD_LENGTH
-
-attributes(wah)$period = 1 #measuring it in years, why not?
-
-wah = Surv(wah[,2], wah[,1])
+wah = createCycloSurv(start = wah_morts$start, end = wah_morts$end, censoring = wah_morts$Fate == "DEAD", period = 365, phase = "2010-09-01")
+wah = censor.cycloSurv(wah, censor.times = "2017-01-01")
 
 p0 = c(A = 0.05, peak1 = 0.25, peak2 = 0.75, rho1 = 0.5, rho2 = 0.5, weight1 = 0.5)
 

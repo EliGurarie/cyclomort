@@ -10,9 +10,13 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
   hessian = TRUE)
 }
 \arguments{
-\item{T}{set of Surv objects representing time of death or censorship}
+\item{T}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
 
 \item{n.seasons}{expected number of seasons if p0 is not entirely filled out}
+
+\item{method}{method for optim call}
+
+\item{hessian}{parameter for optim call}
 
 \item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 }

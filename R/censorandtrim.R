@@ -7,7 +7,7 @@
 #' @return Censored / trimmed Surv object
 #' @export
 
-censor.Surv <- function(x, censor.times){
+censor.cycloSurv <- function(x, censor.times){
   x2 <- x
   cts <- rep(censor.times, length(x)/length(censor.times))
   x2[,2][x2[,2]>cts] <- cts[x2[,2]>cts]
@@ -16,7 +16,7 @@ censor.Surv <- function(x, censor.times){
 }
 
 #' @export
-trim.Surv <- function(x, trim.times){
+trim.cycloSurv <- function(x, trim.times){
   tts <- rep(trim.times, length(x)/length(trim.times))
   x[x[,1]>tts,]
 }

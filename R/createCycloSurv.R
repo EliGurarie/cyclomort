@@ -18,11 +18,12 @@
 #'@export
 
 createCycloSurv = function(start, end, censoring, phase, period) {
+  ##let me know if this is OK - for now we implement the phase
   startPhased = as.numeric(difftime(start, phase))
   endPhased = as.numeric(difftime(end, phase))
   result = Surv(time = startPhased, time2 = endPhased, event = censoring)
   attributes(result)$period = period
   attributes(result)$phase = phase
-  class(result) = "cycloSurv"
+  #class(result) = "cycloSurv"
   result
 }

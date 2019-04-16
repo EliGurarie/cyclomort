@@ -7,7 +7,7 @@
 loglike(T, gammas, mus, rhos)
 }
 \arguments{
-\item{T}{times of death or censoring as Surv objects}
+\item{T}{a cycloSurv object}
 
 \item{gammas}{k-vector of average hazard values for each component}
 

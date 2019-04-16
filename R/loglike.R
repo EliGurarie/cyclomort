@@ -12,9 +12,9 @@
 
 loglike <- function(T, gammas, mus, rhos) {
   T_censoring = T[,3]
-  T_diff = as.numeric(difftime(T[,2],T[,1]))
   T_end = T[,2]
   T_start = T[,1]
+  T_diff = T_end - T_start
   hazard = mwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
   cumhazard = imwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1) - imwc(T_start, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
   cum.prob.survival <-  exp(-cumhazard)

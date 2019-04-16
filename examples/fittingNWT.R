@@ -1,10 +1,7 @@
 data(nwt_morts)
 
 # create a CycloSurv object
-
-NWT <- Surv(nwt_morts$interval, nwt_morts$status == "Mort")
-NWT[,1] = NWT[,1]/365
-attributes(NWT)$period = 365
+NWT = createCycloSurv(start = nwt_morts$start, end = nwt_morts$end, censoring = nwt_morts$status == "Mort", period = 365, phase = "2003-01-01")
 
 hist(yday(nwt_morts[nwt_morts$status == "Mort",]$end), breaks = 20)
 

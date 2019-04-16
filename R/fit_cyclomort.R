@@ -164,7 +164,7 @@ generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
   
   meanhazardvalue = null_fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
   
-  deaths = T[which(T[,3] == 1),1]
+  deaths = T[which(T[,3] == 1),2]
   normdata = deaths - floor(deaths) # assuming period == 1 - will give times of death within the period
   if (n.seasons == 1) {
     mu = mean(normdata)
