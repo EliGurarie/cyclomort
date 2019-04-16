@@ -2,9 +2,11 @@
 #'function along with a named vector of initial guesses and returns the parameter
 #'estimates.
 #'
-#'@param T set of Surv objects representing time of death or censorship
+#'@param T a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period
 #'@param p0 set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
 #'@param n.seasons expected number of seasons if p0 is not entirely filled out
+#'@param method method for optim call
+#'@param hessian parameter for optim call
 #'
 #'@return parameter estimates for weights, rhos, peaks and A
 #'
@@ -18,12 +20,13 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", he
     period = attributes(T)$period
     if (is.null(period)) period = 1
     # times
-    T[,1] <- T[,1]/period
+    T[,1:2] <- T[,1:2]/period
     
     # durations & peaks
     if(!is.null(inits)) inits <- inits/period
   
-  if (min(T[,1]) <= 0) T[T[,1] <= 0] = Surv(1e-6, 1)
+  T[T[,2] <= T[,1], 2] = T[T[,2] <= T[,1], 1] + 1e-6
+  #sometimes simPeriodicMorts puts out slightly odd numbers that can easily be corrected
   
   null_fits = flexsurvreg(T ~ 1, dist = "exp", inits = c(rate = 1))
   
@@ -161,7 +164,7 @@ generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
   
   meanhazardvalue = null_fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
   
-  deaths = T[which(T[,2] == 1),1]
+  deaths = T[which(T[,3] == 1),1]
   normdata = deaths - floor(deaths) # assuming period == 1 - will give times of death within the period
   if (n.seasons == 1) {
     mu = mean(normdata)

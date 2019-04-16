@@ -1,7 +1,6 @@
 ##Turn WAH mortality data into a Surv object for fitting purposes
 
 data(wah_morts)
-require(lubridate)
 wah_morts <- subset(wah_morts, end < ymd("2017 9 1"))
 
 PERIOD_LENGTH = 365

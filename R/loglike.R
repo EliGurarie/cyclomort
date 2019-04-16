@@ -1,6 +1,6 @@
 #'Obtain log-likelihood value from a data set given a set of parameter values
 #'
-#'@param T times of death or censoring as Surv objects
+#'@param T a cycloSurv object
 #'@param gammas k-vector of average hazard values for each component
 #'@param mus k-vector of peaks
 #'@param rhos k-vector of rhos (concentration parameters)
@@ -11,15 +11,16 @@
 #'@export
 
 loglike <- function(T, gammas, mus, rhos) {
-  TT = as.matrix(T)
-  D = TT[,2]
-  TT = TT[,1]
-  hazard = mwc(TT, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
-  cumhazard = imwc(TT, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
+  T_censoring = T[,3]
+  T_diff = as.numeric(difftime(T[,2],T[,1]))
+  T_end = T[,2]
+  T_start = T[,1]
+  hazard = mwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
+  cumhazard = imwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1) - imwc(T_start, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
   cum.prob.survival <-  exp(-cumhazard)
   F <- 1 - cum.prob.survival
   f <- hazard * cum.prob.survival
-  sum(D * log(f) + (1-D) * log(1-F))
+  sum(T_censoring * log(f) + (1-T_censoring) * log(1-F))
 }
 
 #'Log-likelihood function that is useable for the optim command

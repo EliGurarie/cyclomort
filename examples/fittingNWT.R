@@ -1,7 +1,5 @@
 data(nwt_morts)
 
-require(lubridate)
-
 # create a CycloSurv object
 
 NWT <- Surv(nwt_morts$interval, nwt_morts$status == "Mort")
