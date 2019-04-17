@@ -24,6 +24,6 @@ createCycloSurv = function(start, end, censoring, phase, period) {
   result = Surv(time = startPhased, time2 = endPhased, event = censoring)
   attributes(result)$period = period
   attributes(result)$phase = phase
-  #class(result) = "cycloSurv"
+  class(result) = c("cycloSurv", "Surv")
   result
 }

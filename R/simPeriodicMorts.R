@@ -89,7 +89,7 @@ simPeriodicMorts <- function(n, period = 1,
     lines(t, pdf.mortality, type = "l")
   }
   
-  #class(morts) = "cycloSurv"
+  class(morts) = c("cycloSurv", "Surv")
   
   return(morts)
 }
