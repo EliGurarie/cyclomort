@@ -6,8 +6,7 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
-  hessian = TRUE)
+fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B")
 }
 \arguments{
 \item{T}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
@@ -16,9 +15,9 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
 
 \item{method}{method for optim call}
 
-\item{hessian}{parameter for optim call}
-
 \item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
+
+\item{hessian}{parameter for optim call}
 }
 \value{
 parameter estimates for weights, rhos, peaks and A

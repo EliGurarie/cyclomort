@@ -13,43 +13,40 @@
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", hessian = TRUE) {
+fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
   
   # normalize to period 1
   
-    period = attributes(T)$period
-    if (is.null(period)) period = 1
-    # times
-    T[,1:2] <- T[,1:2]/period
-    
-    # durations & peaks
-    if(!is.null(inits)) inits <- inits/period
+  period = attributes(T)$period
+  if (is.null(period)) period = 1
   
+  # times
+  T[,1:2] <- T[,1:2]/period
   T[T[,2] <= T[,1], 2] = T[T[,2] <= T[,1], 1] + 1e-6
+  
   #sometimes simPeriodicMorts puts out slightly odd numbers that can easily be corrected
   
   null_fits = flexsurvreg(T ~ 1, dist = "exp", inits = c(rate = 1))
+  meanhazard = null_fits$res[1,1]
   
-  if (is.null(inits)) {
-    ##fitting procedure for initial guesses
-    p0 = generateInitialParameterEstimate(T, n.seasons, null_fits)
-  } else {
-    ##the user has submitted default initial guesses for parameters
-    durations = inits[grepl("duration", names(inits))]
-    peaks = inits[grepl("peak", names(inits))]
-    n.seasons = length(inits) / 2
-    gammas = rep(null_fits$res[1,'est'] / n.seasons, n.seasons)
-    mus = peaks
-    names(mus) <- NULL
-    rhos = findRho(durations)
-    names(rhos) <- NULL
-    p0 = unlist(list(gamma = gammas, rho = rhos, mu = mus))
+  p0 = generateInitialParameterEstimate(T, n.seasons, null_fits)
+  
+  inits.vector <- unlist(inits)
+  
+  if(any(grepl("duration", names(inits.vector)))){
+    durations = inits.vector[grepl("duration", names(inits.vector))] / period
+    p0[grepl("lrho", names(p0))] <- logit(findRho(durations))
+  }
+  
+  if(any(grepl("peak", names(inits.vector)))){
+    mus = inits.vector[grepl("peak", names(inits.vector))]/period
+    p0[grepl("mu", names(p0))] <- mus
   }
   
   cm = list(n.seasons = n.seasons)
   if (n.seasons == 0) {
     ##null model
-    meanhazard = null_fits$res[1,1:4] / period
+    meanhazard = null_fits$res[1,1:4]/period
     names(meanhazard) <- c("estimate", "CI.low", "CI.high", "se")
     cm$estimates = list(meanhazard = meanhazard) # mortality rate a.k.a. average hazard
     cm$logLik = logLik(null_fits)
@@ -58,29 +55,32 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", he
   } else {
     
     lower <- p0 * 0 + 1e-6
+    lower[grepl("lrho", names(lower))] <- -Inf
+    lower[grepl("gamma", names(lower))] <- meanhazard[1]/10
+    
     upper <- ceiling(p0) - 1e-6
     upper[grepl("gamma", names(upper))] <- Inf
+    upper[grepl("lrho", names(upper))] <- Inf
     
-    if(method %in% c("L-BFGS-B", "Brent")){
-      fits = optim(p0, loglike_optim, 
-                   T = T, hessian = hessian, 
+    if(method %in% "L-BFGS-B"){
+      fits = optim(p0, loglike_optim,  
+                   T = T, 
+                   hessian = TRUE,
                    method = method,
                    lower = lower, upper = upper)
     } else {
       fits = optim(p0, loglike_optim, 
-                   T = T, hessian = hessian, 
+                   T = T, hessian = TRUE, 
                    method = method)
     }
     
-    CIs = getCIs(fit = fits)
-    
     gammas.hat <- fits$par[grepl("gamma", names(fits$par))]
-    rhos.hat <- fits$par[grepl("rho", names(fits$par))]
+    lrhos.hat <- fits$par[grepl("lrho", names(fits$par))]
     mus.hat <- fits$par[grepl("mu", names(fits$par))]
     
     ses <- sqrt(diag(solve(fits$hessian)))
     gammas.se <- ses[grepl("gamma", names(ses))]
-    rhos.se <- ses[grepl("rho", names(ses))]
+    lrhos.se <- ses[grepl("lrho", names(ses))]
     mus.se <- ses[grepl("mu", names(ses))]
     
     ## Mean Hazard
@@ -99,10 +99,10 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", he
     peaks.CI <- peaks.hat + peaks.se %*% t(c(-2,2))
     
     ## Durations
-    durations.hat <- findDelta(rhos.hat) * period
+    durations.hat <- findDelta(expit(lrhos.hat)) * period
     
-    rhos.lower <- pmax(rhos.hat - 2*rhos.se, 0)
-    rhos.upper <- pmin(rhos.hat + 2*rhos.se, 1)
+    rhos.lower <- expit(lrhos.hat - 2*lrhos.se)
+    rhos.upper <- expit(lrhos.hat + 2*lrhos.se)
     
     durations.low <- findDelta(rhos.upper) * period
     durations.high <- findDelta(rhos.lower) * period
@@ -117,7 +117,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", he
     pointestimates$season <- substr(rn, nchar(rn), nchar(rn)) %>% as.numeric
     parnames <- substr(rn, 1, nchar(rn)-1) 
     parnames[parnames == "gamma"] = "weight"
-    parnames[parnames == "rho"] = "duration"
+    parnames[parnames == "lrho"] = "duration"
     parnames[parnames == "mu"] = "peak"
     pointestimates$parameter <- parnames
     
@@ -156,44 +156,17 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", he
 #' @return a named vector listing intial guesses for parameter values, to be used in the fitting process
 #' 
 #' @export
-generateInitialParameterEstimate = function(T, n.seasons, null_fits) {
-  if (n.seasons == 0) {
-    return (NULL)
-  }
+generateInitialParameterEstimate = function(T, n, null_fits) {
+  if (n == 0) return (NULL)
   result = c() # blank vector to be filled up with parameters
   
   meanhazardvalue = null_fits[[18]][1] # mortality rate a.k.a. average hazard for entire distribution
+  result = c(rep(meanhazardvalue/n, n), 
+             seq(1/n/2, 1 - 1/n/2, length = n), 
+             rep(0, n))
   
-  deaths = T[which(T[,3] == 1),2]
-  normdata = deaths - floor(deaths) # assuming period == 1 - will give times of death within the period
-  if (n.seasons == 1) {
-    mu = mean(normdata)
-    sigma = sd(normdata) # this is the MLE for standard deviation of Gaussian distribution, right?
-    delta = qnorm(0.75, 0, sigma) * 2
-    if (delta >= 0.5) delta = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
-    result = c(result, meanhazardvalue, mu, delta)
-  } else {
-    normFits = suppressMessages(normalmixEM(x = normdata, k = n.seasons))
-    sigmas = normFits$sigma
-    deltas = qnorm(0.75, 0, sigmas) * 2
-    deltas[deltas >= 0.5] = 0.5 - 1e-6 #hopefully this doesn't happen - it shouldn't too much based on my tests!
-    result = c(result, normFits$lambda * meanhazardvalue, normFits$mu, findRho(deltas))
-  }
-  seasonNumbers = 1:(n.seasons)
-  names(result) = c(paste0("gamma", seasonNumbers), paste0("mu", seasonNumbers), paste0("rho", seasonNumbers))
+  names(result) = c(paste0("gamma", 1:n), 
+                    paste0("mu", 1:n),
+                    paste0("lrho", 1:n))
   result
-}
-
-#' Get 95% confidence intervals for each parameter that is estimated by the MLE
-#' 
-#' @param fit returned value from call to "optim" containing parameter estimates and Hessian matrix
-#' 
-#' @return confidence intervals for each parameter in the estimate
-#' 
-#' @export
-
-getCIs <- function(fit){
-  p <- fit$par
-  se <- sqrt(diag(solve(fit$hessian)))
-  cbind(estimate = p, CI.low = p - 2*se, CI.high = p + 2*se, se = se)
 }

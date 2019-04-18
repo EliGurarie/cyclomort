@@ -4,7 +4,7 @@
 \alias{plotHazard}
 \title{Plots the hazard curve for one period given either a cmfit object or a set of parameters}
 \usage{
-plotHazard(cmfit = NULL, hist, pars, period, ...)
+plotHazard(cmfit = NULL, pars, period)
 }
 \description{
 to do!!

@@ -33,9 +33,13 @@ loglike <- function(T, gammas, mus, rhos) {
 #'@export
 
 loglike_optim<- function(pars, T) {
-
+  rhos <- expit(pars[grepl("lrho", names(pars))])
   -loglike(T = T, 
            gammas = pars[grepl("gamma", names(pars))], 
            mus = pars[grepl("mu", names(pars))],
-           rhos = pars[grepl("rho", names(pars))])
+           rhos = rhos)
 }
+
+logit <- function(p){ log(p/(1-p)) }
+
+expit <- function(p){ exp(p)/(1+exp(p)) }
