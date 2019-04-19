@@ -10,5 +10,5 @@ RoxygenNote: 6.1.1
 Depends: magrittr, survival, plyr, flexsurv, mixtools, lubridate
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown 
 VignetteBuilder: knitr

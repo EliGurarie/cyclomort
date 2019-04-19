@@ -107,11 +107,10 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
     durations.low <- findDelta(rhos.upper) * period
     durations.high <- findDelta(rhos.lower) * period
     durations.CI <- cbind(durations.low, durations.high)
-    durations.se <- 1/4 * (durations.high - durations.low)
     
-    pointestimates <- data.frame(estimate = c(weights.hat, peaks.hat, durations.hat), 
-                                 CI = rbind(weights.CI, peaks.CI, durations.CI), 
-                                 se = c(weights.se, peaks.se, durations.se))
+    pointestimates <- data.frame(estimate = c(peaks.hat, durations.hat, weights.hat), 
+                                 CI = rbind(peaks.CI, durations.CI, weights.CI))
+    
     names(pointestimates)[2:3] <- c("CI.low", "CI.high")
     rn <- row.names(pointestimates)
     pointestimates$season <- substr(rn, nchar(rn), nchar(rn)) %>% as.numeric
@@ -121,7 +120,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
     parnames[parnames == "mu"] = "peak"
     pointestimates$parameter <- parnames
     
-    pointestimates <- pointestimates[,c("parameter","season","estimate", "CI.low","CI.high","se")]
+    pointestimates <- pointestimates[,c("parameter","season","estimate", "CI.low","CI.high")]
     ordered.seasons <- (subset(pointestimates, parameter == "peak") %>% arrange(estimate))$season
     pointestimates$season <- ordered.seasons[pointestimates$season]
     

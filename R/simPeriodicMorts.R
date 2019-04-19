@@ -10,7 +10,7 @@
 #' @param n.times number of x-values for plots (a higher value results in more precision for curves)
 #' @param max.periods maximum number of cycles
 #' 
-#' @return  a cycloSurv object (a type of Surv object; see \code{\link{Surv}})
+#' @return  a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
 #' 
 #' @example examples/simPeriodicMort_example.R
 #' @export

@@ -30,9 +30,7 @@ plot.cmfit = function(x, n.times = 1e3,  ...) {
 
 plotHazard = function(cmfit = NULL, pars, period) {
   
-  if(cmfit$n.seasons == 0)
-    abline(h = )
-  
+  if(cmfit$n.seasons == 0) abline(h = cmfit$estimates$meanhazard[1,1]) else
   {
     if (!is.null(cmfit)) {
       pars = cmfit$optim$par
@@ -44,16 +42,16 @@ plotHazard = function(cmfit = NULL, pars, period) {
     gammas = pars[grepl("gamma", names(pars))]
     
     t <- seq(0, 1, length = 1e4)
-    hazard <-   mwc(t = t, mus = mus, rhos = expit(lrhos), gammas = gammas, tau = 1)
-    max(hazard) 
-   
+    hazard <- mwc(t = t, mus = mus, rhos = expit(lrhos), gammas = gammas, tau = 1)
+    
     K <- par("usr")[4]  # find the dimension of the plotting window
 
     hazard.labs <- pretty(hazard)
     axis(4, at = hazard.labs * K / max(hazard), hazard.labs, las = 2)
     
-    lines(t, hazard*K)
+    lines(t, hazard*K/max(hazard), lwd = 2)
+    mtext(side = 4, line = 2.5, "Estimated hazard function")
   }
 }
 
-
+  

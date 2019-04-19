@@ -40,6 +40,8 @@ loglike_optim<- function(pars, T) {
            rhos = rhos)
 }
 
+#' @export
 logit <- function(p){ log(p/(1-p)) }
 
+#' @export
 expit <- function(p){ exp(p)/(1+exp(p)) }
