@@ -10,7 +10,7 @@
 
 plot.cmfit = function(x, n.times = 1e3,  ...) {
   
-  par(mar = c(4,4,4,4))
+  #par(mar = c(4,4,4,4))
   uncensoredData = as.numeric(x$data[x$data[,3] == 1,2]) ##uncensored data
  
   timeOfYearData = uncensoredData - floor(uncensoredData)
@@ -18,7 +18,7 @@ plot.cmfit = function(x, n.times = 1e3,  ...) {
              main = "", col = "grey", bor = "darkgrey", freq = TRUE, ... )
     plotHazard(x)
   
-  mtext("Comparing parameter estimates with actual mortality data", font = 2, side = 3, line = -2.5, outer = TRUE)
+ # mtext("Comparing parameter estimates with actual mortality data", font = 2, side = 3, line = -2.5, outer = TRUE)
   
 }
 
