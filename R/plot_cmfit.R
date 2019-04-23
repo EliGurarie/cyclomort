@@ -8,50 +8,31 @@
 #' @example examples/cyclomortFit_example.R
 #' @export
 
-plot.cmfit = function(x, n.times = 1e3,  ...) {
+plot.cmfit = function(x, CI = TRUE, nreps = 1e4,  ...) {
   
-  #par(mar = c(4,4,4,4))
+  # tweak margins to fit right legend
+  mars <- par()$mar
+  mars[4] <- max(par()$mar[4], 4.1)
+  par(mar = mars, bty = "u")
+    
   uncensoredData = as.numeric(x$data[x$data[,3] == 1,2]) ##uncensored data
- 
   timeOfYearData = uncensoredData - floor(uncensoredData)
-    h = hist(timeOfYearData, xlab = "Time within a period", ylab = "Number of mortalities",
-             main = "", col = "grey", bor = "darkgrey", freq = TRUE, ... )
-    plotHazard(x)
+  h = hist(timeOfYearData, xlab = "Time within a period", ylab = "Number of mortalities",
+           main = "", col = "grey", bor = "darkgrey", freq = TRUE, ... )
+
+  predict.hazard <- predict.cmfit(x, CI = CI, nreps = nreps)
   
- # mtext("Comparing parameter estimates with actual mortality data", font = 2, side = 3, line = -2.5, outer = TRUE)
+  K <- par("usr")[4]/max(predict.hazard$CI)  # find the dimension of the plotting window
   
+  hazard.labs <- pretty(predict.hazard$fit)
+  axis(4, at = hazard.labs * K , hazard.labs, las = 2)
+  mtext(side = 4, line = 2.5, "Estimated hazard function")
+  
+  with(predict.hazard, {
+      lines(t, fit * K, lwd = 2)
+      lines(t, CI[1,] * K, lty = 3)
+      lines(t, CI[2,] * K, lty = 3)
+  })
+  mtext(side = 4, line = 2.5, "Estimated hazard function")
 }
 
-#' Plots the hazard curve for one period given either a cmfit object or a set of parameters
-#' 
-#' to do!!
-#' 
-#' @export
-
-plotHazard = function(cmfit = NULL, pars, period) {
-  
-  if(cmfit$n.seasons == 0) abline(h = cmfit$estimates$meanhazard[1,1]) else
-  {
-    if (!is.null(cmfit)) {
-      pars = cmfit$optim$par
-      period = cmfit$period
-    }
-    
-    lrhos = pars[grepl("lrho", names(pars))]
-    mus = pars[grepl("mu", names(pars))]
-    gammas = pars[grepl("gamma", names(pars))]
-    
-    t <- seq(0, 1, length = 1e4)
-    hazard <- mwc(t = t, mus = mus, rhos = expit(lrhos), gammas = gammas, tau = 1)
-    
-    K <- par("usr")[4]  # find the dimension of the plotting window
-
-    hazard.labs <- pretty(hazard)
-    axis(4, at = hazard.labs * K / max(hazard), hazard.labs, las = 2)
-    
-    lines(t, hazard*K/max(hazard), lwd = 2)
-    mtext(side = 4, line = 2.5, "Estimated hazard function")
-  }
-}
-
-  

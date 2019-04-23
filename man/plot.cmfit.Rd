@@ -4,7 +4,7 @@
 \alias{plot.cmfit}
 \title{Plot cmfit objects}
 \usage{
-\method{plot}{cmfit}(x, n.times = 1000, ...)
+\method{plot}{cmfit}(x, CI = TRUE, nreps = 10000, ...)
 }
 \arguments{
 \item{x}{a cmfit object}
