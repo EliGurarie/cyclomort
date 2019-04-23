@@ -12,10 +12,20 @@
 
 \item{t}{times for prediction}
 
-\item{CI}{whether or not to compute 95% confidence intervals}
+\item{CI}{whether or not to compute 95\% confidence intervals}
 
 \item{nreps}{number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast}
 }
 \description{
 Obtain predictions and - optionally - confidence intervals for the hazard function from a fitted periodic hazard functon.
+}
+\examples{
+T <- simPeriodicMorts(300, period = 1, peaks = c(0.3, 0.8), 
+                      durations = c(0.15, 0.20), weights = c(3, 2)/5, 
+                     meanhazard = 1, plotme = TRUE, max.periods = 6)
+T.fit <- fit_cyclomort(T, n.seasons = 2)
+predict.cmfit(T.fit, t = c(0.5, 0.5), CI = TRUE)
+
+# The plotting method uses this function.
+plot(T.fit, CI = TRUE, nreps = 1e3, breaks = 40)
 }

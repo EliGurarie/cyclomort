@@ -4,10 +4,10 @@
 #' 
 #' @param x a cmfit object
 #' @param t times for prediction
-#' @param CI whether or not to compute 95% confidence intervals
+#' @param CI whether or not to compute 95\% confidence intervals
 #' @param nreps number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast
 #' 
-#' @example
+#' @examples
 #' T <- simPeriodicMorts(300, period = 1, peaks = c(0.3, 0.8), 
 #'                       durations = c(0.15, 0.20), weights = c(3, 2)/5, 
 #'                      meanhazard = 1, plotme = TRUE, max.periods = 6)
