@@ -12,7 +12,7 @@
 #'                       durations = c(0.15, 0.20), weights = c(3, 2)/5, 
 #'                      meanhazard = 1, plotme = TRUE, max.periods = 6)
 #' T.fit <- fit_cyclomort(T, n.seasons = 2)
-#' predict.cmfit(T.fit, t = c(0.5, 0.5), CI = TRUE)
+#' predict(T.fit, t = c(0.5, 0.5), CI = TRUE)
 #' 
 #' # The plotting method uses this function.
 #' plot(T.fit, CI = TRUE, nreps = 1e3, breaks = 40)
