@@ -52,6 +52,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
     cm$logLik = logLik(null_fits)
     cm$AIC = AIC(null_fits)
     cm$BIC = BIC(null_fits)
+    cm$k = 1
   } else {
     
     lower <- p0 * 0 + 1e-6
@@ -108,8 +109,13 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
     durations.high <- findDelta(rhos.lower) * period
     durations.CI <- cbind(durations.low, durations.high)
     
-    pointestimates <- data.frame(estimate = c(peaks.hat, durations.hat, weights.hat), 
-                                 CI = rbind(peaks.CI, durations.CI, weights.CI))
+    if (n.seasons > 1) {
+      pointestimates <- data.frame(estimate = c(peaks.hat, durations.hat, weights.hat), 
+                                   CI = rbind(peaks.CI, durations.CI, weights.CI))
+    } else {
+      pointestimates <- data.frame(estimate = c(peaks.hat, durations.hat), 
+                                   CI = rbind(peaks.CI, durations.CI))
+    }
     
     names(pointestimates)[2:3] <- c("CI.low", "CI.high")
     rn <- row.names(pointestimates)
