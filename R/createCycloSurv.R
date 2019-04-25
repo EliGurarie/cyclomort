@@ -2,7 +2,7 @@
 #'
 #'@param start a vector measuring time of birth (as a Date)
 #'@param end a vector measuring time of death or censoring (as a Date)
-#'@param censoring a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
+#'@param event a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
 #'@param t0 start time for all times (start and end).  Note, the selection of t0 is related to the phase shift of the periodic analysis and should be set to the period of lowest hazard as determined, e.g., from a visual analysis.
 #'@param period length of one period in the input data
 #'
@@ -17,7 +17,7 @@
 #'morts = createCycloSurv(startTimes, endTimes, censored, phase, period)
 #'@export
 
-createCycloSurv = function(start, end, censoring, t0 = NULL, period, timeunits = "days") {
+createCycloSurv = function(start, end, event, t0 = NULL, period, timeunits = "days") {
   
   if(is.POSIXct(start)) start <- as.Date(start)
   if(is.POSIXct(end)) end <- as.Date(end)
@@ -32,7 +32,7 @@ createCycloSurv = function(start, end, censoring, t0 = NULL, period, timeunits =
   } else 
     stop("Invalid data type: 'start' and 'end' must both be time (POSIX), date (Date), or numeric objects.\n")
     
-  result = Surv(time = startPhased, time2 = endPhased, event = censoring)
+  result = Surv(time = startPhased, time2 = endPhased, event = event)
   attributes(result)$period = period
   attributes(result)$t0 = t0
   class(result) = c("cycloSurv", "Surv")

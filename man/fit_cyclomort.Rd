@@ -11,7 +11,7 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B")
 \arguments{
 \item{T}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
 
-\item{n.seasons}{expected number of seasons if p0 is not entirely filled out}
+\item{n.seasons}{number of seasons to fit model to}
 
 \item{method}{method for optim call}
 
