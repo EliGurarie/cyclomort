@@ -32,17 +32,17 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
       cumsurvfun = function(t) {
         exp(-(imwc(t, mus, rhos, gammas, tau) - imwc(time, mus, rhos, gammas, tau))) - 0.5
       }
-      uniroot(cumsurvfun, interval = c(time, time + 5/x$estimates$meanhazard[1])) - time
+      uniroot(cumsurvfun, interval = unlist(c(time, time + 5/x$estimates$meanhazard[1])))$root - time
     }
     if (x$k > 1) {
       Mu <- x$optim$par
       Sigma <- solve(x$optim$hessian)
       
       lrhos = Mu[grepl("lrho", names(Mu))]
-      mus = Mu[grepl("mu", names(Mu))]
-      gammas = Mu[grepl("gamma", names(Mu))]
+      mus = Mu[grepl("mu", names(Mu))] * x$period
+      gammas = Mu[grepl("gamma", names(Mu))] / x$period
       
-      timetodeath.hat <- timetodeathfun(t) / period
+      timetodeath.hat <- Vectorize(timetodeathfun, vectorize.args = c("time"))(t, mus, expit(lrhos), gammas, x$period) / x$period
     } else { 
       timetodeath.hat <- rep(log(2) / x$estimates$meanhazard[1], 1e2)
     }
@@ -52,9 +52,10 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
         pars.sample <- mvtnorm::rmvnorm(nreps, Mu, Sigma)
         parnames <- colnames(pars.sample)
         sample.fits <- aaply(pars.sample, 1, function(p){
-          timetodeathfun(t, mus = p[grep("mu", parnames)], 
+          Vectorize(timetodeathfun, vectorize.args = c("time"))(t,
+              mus = p[grep("mu", parnames)] * x$period, 
               rhos = expit(p[grep("rho", parnames)]),
-              gammas = p[grep("gamma", parnames)],
+              gammas = p[grep("gamma", parnames)] / x$period,
               tau = 1) / x$period
         })
         CIs <- apply(sample.fits, 2, quantile, c(0.025, 0.975))
