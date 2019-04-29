@@ -10,7 +10,7 @@ model_cyclomort(formula, data, n.seasons = 2)
 \arguments{
 \item{formula}{formula object used for identifying different classes}
 
-\item{data}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
+\item{data}{a data frame containing a cycloSurv object detailing mortalities for a set of observations and a factor identifying the value of a categorical variable for each observation}
 
 \item{n.seasons}{number of seasons to fit model to}
 }

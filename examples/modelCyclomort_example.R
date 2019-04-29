@@ -1,4 +1,4 @@
-n = 30
+n = 100
 
 T.male = simPeriodicMorts(n, period = 365, 
                              meanhazard = 0.3 / 365, 

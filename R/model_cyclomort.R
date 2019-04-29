@@ -2,7 +2,7 @@
 #' the parameter estimates produced by fit_cyclomort.
 #' 
 #' @param formula formula object used for identifying different classes
-#' @param data a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period
+#' @param data a data frame containing a cycloSurv object detailing mortalities for a set of observations and a factor identifying the value of a categorical variable for each observation
 #' @param n.seasons number of seasons to fit model to
 #' 
 #' @return table comparing outputs from null (factor has no effect on mortality and they are all
