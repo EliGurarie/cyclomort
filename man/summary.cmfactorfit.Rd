@@ -15,3 +15,13 @@ a table comparing log-likelihood and AIC between null and multi-factor model, as
 \description{
 Produce a table explaining the results of a cmfactorfit model
 }
+\examples{
+# fit factorial model
+data(seasonalsex)
+x <- factorfit_cyclomort(T ~ sex, data = seasonalsex, n.seasons = 1)
+
+# summary
+summary(x)
+plot(x)
+
+}

@@ -51,3 +51,19 @@
 #' @keywords data
 #' @references 
 "nwt_morts"
+
+#' Simulated data of seasonal mortality data for two sex groups
+#' 
+#' See examples below for the process of simulating and visualizing these data using \code{\link{simPeriodicMorts}}, and an example of analyzing these data with \code{\link{factorfit_cyclomort}}.
+#'
+#' @usage data(seasonalsex)
+#' 
+#' @format Simulated data of single-season mortalities for two sex groups:
+#' \describe{
+#'   \item{sex}{female (F) or male (M)}
+#'   \item{T}{\code{\link{CycloSurv}} object of (censored) survival data}
+#' }
+#' @example examples/seasonalsex_example.R
+#' @keywords data
+#' @references 
+"seasonalsex"

@@ -4,14 +4,22 @@
 #' 
 #' @return a table comparing log-likelihood and AIC between null and multi-factor model, as well as a p-value from likelihood ratio test
 #' 
-#' @example examples/cyclomortModel_example.R
+#' @example examples/factorfit_cyclomort_example.R
 #' @export
 
 summary.cmfactorfit = function(x) {
-  ll = c(x$ll_null, x$ll_alt)
-  aic = c(x$aic_null, x$aic_alt)
-  p_lrt = c(x$p)
-  data = cbind(logLik = ll, AIC = aic, LRT_p = p_lrt)
-  rownames(data) = c("null model", "multi-factor model")
-  data
+  f <- paste(as.character(x$formula)[c(2,1,3)],collapse = " ")
+  cat(paste0("Summary table comparing factorial seasonal survival model with ", x$n.seasons, " seasons.\n\nFormula: ", f, "\n"))
+  df <- data.frame(logLike = x$ll %>% unlist,
+                   k = x$k %>% unlist %>% signif(5),
+                   AIC = x$aic %>% unlist %>% signif(5),
+                   LRT = c(round(x$lrt,2), ""),
+                   p.value = c(round(x$p.value,3), ""))
+  
+  row.names(df)[2] <- as.character(x$formula)[3]
+  df
 }
+
+
+
+
