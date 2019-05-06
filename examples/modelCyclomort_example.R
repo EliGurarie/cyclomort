@@ -17,7 +17,10 @@ raw_morts = rbind(T.male, T.female)
 T.morts1 = createCycloSurv(start = raw_morts[,1], end = raw_morts[,2], 
                            event = raw_morts[,3], period = 365)
 
-genders = as.factor(c(rep("M", n), c(rep("F", n))))
+sex = as.factor(c(rep("M", n), c(rep("F", n))))
+data = data.frame(surv = T.morts1, factor = sex)
 
-model = model_cyclomort(formula = T.morts1 ~ genders, data = data.frame(surv = T.morts1, factor = genders), n.seasons = 1)
+model = model_cyclomort(formula = T.morts1 ~ sex, 
+                        data = data, 
+                        n.seasons = 1)
 summary(model)

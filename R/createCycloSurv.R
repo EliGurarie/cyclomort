@@ -3,7 +3,7 @@
 #'@param start a vector measuring time of birth (as a Date)
 #'@param end a vector measuring time of death or censoring (as a Date)
 #'@param event a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
-#'@param t0 start time for all times (start and end).  Note, the selection of t0 is related to the phase shift of the periodic analysis and should be set to the period of lowest hazard as determined, e.g., from a visual analysis.
+#'@param t0 reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIX).
 #'@param period length of one period in the input data
 #'
 #'@return a Surv object with an attribute "period" that reads the period.
@@ -23,8 +23,13 @@ createCycloSurv = function(start, end, event, t0 = NULL, period, timeunits = "da
   if(is.POSIXct(end)) end <- as.Date(end)
   if(is.Date(start) & is.Date(end)){
     if(is.null(t0)) t0 <- min(start) - ddays(yday(min(start)))
-    startPhased = as.numeric(difftime(start, t0, units = timeunits))
-    endPhased = as.numeric(difftime(end, t0, units = timeunits))
+    if(timeunits == "years"){
+      startPhased = as.numeric(difftime(start, t0, units = "days")) / 365.242
+      endPhased = as.numeric(difftime(end, t0, units = "days")) / 365.242
+    } else {
+      startPhased = as.numeric(difftime(start, t0, units = timeunits))
+      endPhased = as.numeric(difftime(end, t0, units = timeunits)) 
+    }
   } else if(is.numeric(start) & is.numeric(end)){
     if(is.null(t0)) t0 = 0
     startPhased = start - t0

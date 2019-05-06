@@ -14,7 +14,7 @@ createCycloSurv(start, end, event, t0 = NULL, period,
 
 \item{event}{a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation}
 
-\item{t0}{start time for all times (start and end).  Note, the selection of t0 is related to the phase shift of the periodic analysis and should be set to the period of lowest hazard as determined, e.g., from a visual analysis.}
+\item{t0}{reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIX).}
 
 \item{period}{length of one period in the input data}
 }
