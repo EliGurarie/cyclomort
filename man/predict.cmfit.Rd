@@ -5,12 +5,14 @@
 \title{Prediction method for cyclomort fits}
 \usage{
 \method{predict}{cmfit}(x, t = seq(0, x$period, length = 100),
-  CI = FALSE, nreps = 10000)
+  type = "hazard", CI = FALSE, nreps = 10000)
 }
 \arguments{
 \item{x}{a cmfit object}
 
 \item{t}{times for prediction}
+
+\item{type}{either "hazard" or "timetoevent" - dictates what function is called}
 
 \item{CI}{whether or not to compute 95\% confidence intervals}
 

@@ -4,7 +4,7 @@
 #'
 #'@param T a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period
 #'@param p0 set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
-#'@param n.seasons expected number of seasons if p0 is not entirely filled out
+#'@param n.seasons number of seasons to fit model to
 #'@param method method for optim call
 #'@param hessian parameter for optim call
 #'

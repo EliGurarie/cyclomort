@@ -20,12 +20,12 @@ plot.cmfit = function(x, CI = TRUE, nreps = 1e4,  ...) {
   h = hist(timeOfYearData, xlab = "Time within a period", ylab = "Number of mortalities",
            main = "", col = "grey", bor = "darkgrey", freq = TRUE, ... )
 
-  predict.hazard <- predict(x, CI = CI, nreps = nreps)
+  predict.hazard <- predict(x, CI = CI, nreps = nreps, type = "hazard")
   predict.hazard$t <- predict.hazard$t / x$period
   
   K <- par("usr")[4]/max(predict.hazard$CI[2,])  # find the dimension of the plotting window
   
-  hazard.labs <- pretty(predict.hazard$fit)
+  hazard.labs <- pretty(predict.hazard$CI)
   axis(4, at = hazard.labs * K , hazard.labs, las = 2)
   mtext(side = 4, line = 2.5, "Estimated hazard function")
   
