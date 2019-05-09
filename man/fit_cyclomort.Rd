@@ -6,7 +6,8 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B")
+fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
+  period = NULL)
 }
 \arguments{
 \item{T}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}

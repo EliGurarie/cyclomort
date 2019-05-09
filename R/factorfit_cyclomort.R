@@ -12,7 +12,7 @@
 #' @example examples/factorfit_cyclomort_example.R
 #' @export
 
-factorfit_cyclomort = function(f, data = NULL, n.seasons = 2) {
+factorfit_cyclomort = function(f, data = NULL, n.seasons = 2, ... ) {
   
   if(!is.null(data)){
     t <- data[,as.character(f)[2]]
@@ -22,7 +22,7 @@ factorfit_cyclomort = function(f, data = NULL, n.seasons = 2) {
     x <-  get(as.character(f)[3])
   }
   
-  fit_null = fit_cyclomort(t, n.seasons = n.seasons)
+  fit_null = fit_cyclomort(t, n.seasons = n.seasons, ... )
   #L = list(null = nullModelFits)
   
   ll_null = logLik(fit_null)
@@ -37,7 +37,7 @@ factorfit_cyclomort = function(f, data = NULL, n.seasons = 2) {
   for (i in 1:length(x.levels)) {
     t.subset = t[x == x.levels[i]]
     attributes(t.subset)[c("period","t0")] <- attributes(t)[c("period","t0")]
-    fits_alt[[i]] = fit_cyclomort(t.subset, n.seasons = n.seasons)
+    fits_alt[[i]] = fit_cyclomort(t.subset, n.seasons = n.seasons, ... )
   }
 
   ll_alt <- sapply(fits_alt, logLik) %>% sum
