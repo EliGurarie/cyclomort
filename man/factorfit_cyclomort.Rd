@@ -4,7 +4,7 @@
 \alias{factorfit_cyclomort}
 \title{Factorial analysis of seasonal survival models}
 \usage{
-factorfit_cyclomort(f, data = NULL, n.seasons = 2)
+factorfit_cyclomort(f, data = NULL, n.seasons = 2, ...)
 }
 \arguments{
 \item{f}{formula object used for identifying different classes}

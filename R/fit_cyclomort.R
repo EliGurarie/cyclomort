@@ -7,18 +7,18 @@
 #'@param n.seasons number of seasons to fit model to
 #'@param method method for optim call
 #'@param hessian parameter for optim call
+#'@param period expected periodicity of survival data. Can be passed in with cycloSurv input parameter.
 #'
 #'@return parameter estimates for weights, rhos, peaks and A
 #'
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
+fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", period = NULL) {
   
   # normalize to period 1
-  
-  period = attributes(T)$period
-  if (is.null(period)) period = 1
+  if (is.null(period))  period = attributes(T)$period
+  if (is.null(period))  stop("Data does not contain a period attribute. Must be entered manually.\n")
   
   # times
   T[,1:2] <- T[,1:2]/period
@@ -26,7 +26,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
   
   #sometimes simPeriodicMorts puts out slightly odd numbers that can easily be corrected
   
-  null_fits = flexsurvreg(T ~ 1, dist = "exp", inits = c(rate = 1))
+  null_fits = flexsurvreg(T ~ 1, dist = "exp")
   meanhazard = null_fits$res[1,1]
   
   p0 = generateInitialParameterEstimate(T, n.seasons, null_fits)
@@ -88,16 +88,19 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
     meanhazard.hat <- sum(gammas.hat) / period
     meanhazard.se <- (1/n.seasons) * sqrt(sum(gammas.se^2)) / period
     meanhazard.CI <- meanhazard.hat + c(-2,2)*meanhazard.se
+    if (any(is.na(meanhazard.CI))) warning("Could not produce confidence intervals for mean hazard parameter. Interpret results with skepticism.\n")
     
     ## Weights
     weights.hat <- gammas.hat / (meanhazard.hat * period)
     weights.se <- gammas.se / (meanhazard.hat * period)
     weights.CI <- weights.hat + (weights.se) %*% t(c(-2,2))
+    if (any(is.na(meanhazard.CI)) | (weights.CI[1] < 1e-6 & weights.CI[1] > (1 - 1e-6))) warning("Could not produce accurate confidence intervals for weight parameter. Interpret results with skepticism.\n")
     
     ## Peaks 
     peaks.hat <- mus.hat * period
     peaks.se <- mus.se * period
     peaks.CI <- peaks.hat + peaks.se %*% t(c(-2,2))
+    if (any(is.na(meanhazard.CI))) warning("Could not produce confidence intervals for peak parameter. Interpret results with skepticism.\n")
     
     ## Durations
     durations.hat <- findDelta(expit(lrhos.hat)) * period
@@ -108,6 +111,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B") {
     durations.low <- findDelta(rhos.upper) * period
     durations.high <- findDelta(rhos.lower) * period
     durations.CI <- cbind(durations.low, durations.high)
+    if (any(is.na(meanhazard.CI)) | (durations.CI[1] < 1e-6 & durations.CI[1] > period * (1 - 1e-6))) warning("Could not produce confidence intervals for duration parameter. Interpret results with skepticism.\n")
     
     if (n.seasons > 1) {
       pointestimates <- data.frame(estimate = c(peaks.hat, durations.hat, weights.hat), 
