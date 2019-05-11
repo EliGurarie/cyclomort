@@ -4,7 +4,7 @@
 \alias{createCycloSurv}
 \title{Create an object that can be fitted with a given period from survival (time of death or censoring) data}
 \usage{
-createCycloSurv(start, end, event, t0 = NULL, period,
+createCycloSurv(start, end, event, data = NULL, t0 = NULL, period,
   timeunits = "days")
 }
 \arguments{
@@ -14,9 +14,13 @@ createCycloSurv(start, end, event, t0 = NULL, period,
 
 \item{event}{a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation}
 
+\item{data}{data.frame object containing start, end and event data}
+
 \item{t0}{reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIX).}
 
 \item{period}{length of one period in the input data}
+
+\item{timeunits}{units that dates are inputted in if dates are being used}
 }
 \value{
 a Surv object with an attribute "period" that reads the period.

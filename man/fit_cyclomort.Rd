@@ -16,6 +16,8 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
 
 \item{method}{method for optim call}
 
+\item{period}{expected periodicity of survival data. Can be passed in with cycloSurv input parameter.}
+
 \item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 
 \item{hessian}{parameter for optim call}

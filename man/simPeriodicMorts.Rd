@@ -6,8 +6,8 @@
 \usage{
 simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
   0.75), durations = c(0.2, 0.1), weights = c(0.5, 0.5),
-  fixedCensoring = FALSE, max.periods = 10, n.times = 1000,
-  plotme = TRUE)
+  censoring = "fixed", censor.times = max.periods * period/2,
+  max.periods = 10, n.times = 1000, plotme = TRUE)
 }
 \arguments{
 \item{n}{number of simulated mortality/censoring events}
@@ -22,7 +22,9 @@ simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
 
 \item{weights}{k-vector of weights ((k-1)-vector is also accepted)}
 
-\item{fixedCensoring}{boolean value representing whether censoring points are fixed or random}
+\item{censoring}{the type of censoring in the simulated data. Either "none" (all data is uncensored), "fixed" (all data is censored at a specified time), or "random" (data is randomly censored throughout).}
+
+\item{censor.times}{numeric or vector listing times for censoring (only applicable if censoring == "fixed").}
 
 \item{max.periods}{maximum number of cycles}
 
@@ -41,7 +43,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 1,
                              peaks = c(0.25, 0.75), 
                              durations = c(0.2, 0.1), 
                              weights = 0.3, 
-                             plotme = TRUE)
+                             plotme = FALSE)
 
 with(attributes(T.morts1),
      title(paste0("mean hazard: ", meanhazard, "; peaks: ",
