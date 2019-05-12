@@ -28,7 +28,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 365,
 ##MLE for parameters based on simulated data
 fits = fit_cyclomort(T.morts1, n.seasons = 2)
 print(fits)
-plot(fits, type = "mortality")
+plot(fits)
 ##Actual parameter values from simulated data
 attributes(T.morts1)
 ##Measures of model accuracy

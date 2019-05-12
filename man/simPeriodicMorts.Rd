@@ -6,7 +6,7 @@
 \usage{
 simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
   0.75), durations = c(0.2, 0.1), weights = c(0.5, 0.5),
-  censoring = "fixed", censor.times = max.periods * period/2,
+  censoring = "random", censor.times = max.periods * period/2,
   max.periods = 10, n.times = 1000, plotme = TRUE)
 }
 \arguments{
