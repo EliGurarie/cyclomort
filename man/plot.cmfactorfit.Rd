@@ -4,12 +4,19 @@
 \alias{plot.cmfactorfit}
 \title{Plot cmfactorfit objects}
 \usage{
-\method{plot}{cmfactorfit}(x, fit = "both")
+\method{plot}{cmfactorfit}(x, fit = "both", colors = NULL,
+  legend = TRUE, ...)
 }
 \arguments{
 \item{x}{a cmfactorfit object}
 
 \item{fit}{a character (either "null", "alt", or "both") that dictates what fits will be plotted}
+
+\item{colors}{vector of colors}
+
+\item{legend}{whether to automatically make a legend}
+
+\item{...}{additional parameters to pass to the \code{\link{plot.cmfit}} function. Perhaps most usefully: lowering the default nreps (e.g. to 1000) makes plotting much faster.}
 }
 \value{
 a plot comparing the estimates from the null model with the individual estimates from each factor level
