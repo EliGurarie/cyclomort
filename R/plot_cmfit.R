@@ -14,7 +14,7 @@
 #' @export
 
 plot.cmfit = function(x, CI = TRUE, histogram = TRUE, add = FALSE, 
-                      nreps = 1e4, hazcolor = "black",  ...) {
+                      nreps = 1e4, hazcolor = "black", alpha = 0.5,  ...) {
   
   if(histogram) {
     # tweak margins to fit right legend
@@ -57,6 +57,9 @@ plot.cmfit = function(x, CI = TRUE, histogram = TRUE, add = FALSE,
       lines(t, fit * K, col = hazcolor, lwd = 2)
       lines(t, CI[1,] * K, col = hazcolor, lty = 3)
       lines(t, CI[2,] * K, col = hazcolor, lty = 3)
+      t.poly <- c(t, t[length(t):1])
+      CI.poly <- c(CI[1,], CI[2,length(t):1])
+      polygon(t.poly, CI.poly, col = alpha(hazcolor, alpha), bor = NA)
   })
   } else {
     with(predict.hazard, {

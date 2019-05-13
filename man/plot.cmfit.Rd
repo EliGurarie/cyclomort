@@ -5,7 +5,7 @@
 \title{Plot cmfit objects}
 \usage{
 \method{plot}{cmfit}(x, CI = TRUE, histogram = TRUE, add = FALSE,
-  nreps = 10000, hazcolor = "black", ...)
+  nreps = 10000, hazcolor = "black", alpha = 0.5, ...)
 }
 \arguments{
 \item{x}{a cmfit object}
