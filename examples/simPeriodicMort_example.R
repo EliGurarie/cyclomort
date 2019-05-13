@@ -4,7 +4,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 1,
                              peaks = c(0.25, 0.75), 
                              durations = c(0.2, 0.1), 
                              weights = 0.3, 
-                             plotme = TRUE)
+                             plotme = FALSE)
 
 with(attributes(T.morts1),
      title(paste0("mean hazard: ", meanhazard, "; peaks: ",

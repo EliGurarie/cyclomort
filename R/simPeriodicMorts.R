@@ -5,7 +5,8 @@
 #' @param peaks k-vector of peaks
 #' @param durations k-vector of season length parameters, based on concentration parameter from wrapped Cauchy distribution
 #' @param weights k-vector of weights ((k-1)-vector is also accepted)
-#' @param fixedCensoring boolean value representing whether censoring points are fixed or random
+#' @param censoring the type of censoring in the simulated data. Either "none" (all data is uncensored), "fixed" (all data is censored at a specified time), or "random" (data is randomly censored throughout).
+#' @param censor.times numeric or vector listing times for censoring (only applicable if censoring == "fixed").
 #' @param period length of one mortality cycle
 #' @param n.times number of x-values for plots (a higher value results in more precision for curves)
 #' @param max.periods maximum number of cycles
@@ -20,10 +21,15 @@ simPeriodicMorts <- function(n, period = 1,
          peaks = c(0.25, 0.75), 
          durations = c(0.2, 0.1), 
          weights = c(0.5, 0.5), 
-         fixedCensoring = FALSE, 
+         censoring = "random",
+         censor.times = max.periods * period / 2,
          max.periods = 10, 
          n.times = 1e3, 
          plotme = TRUE) {
+  
+  if (!censoring %in% c("none", "fixed", "random")) stop("Invalid censoring format.")
+  
+  censor.times = rep(censor.times, n)
   
   if(length(weights) == length(peaks) - 1){
     warning("Filling out the weight vector.")
@@ -58,17 +64,13 @@ simPeriodicMorts <- function(n, period = 1,
   
   rawTimes = sampleFromPdf(n, cbind(t, pdf.mortality))
   #times if no censoring existed
-  if (fixedCensoring) {
-    #default censoring time is halfway through the overall cycle (1/2 of the last possible time)
-    censorTimes = rep(norm(1, max.periods*period/2, period), length(rawTimes))
-  } else #randomly pick censor times centered around the midway point in the time series
-    censorTimes = rnorm(n, max.periods*period/2, period)
-
+  if (censoring == "random") censor.times = runif(n, min = 0, max = max.periods * period)
+  if (censoring == "none") censor.times = rep(max.periods * period + 1, n)
   
   morts_t <- rawTimes
-  censored = (morts_t > censorTimes)
+  censored = (morts_t > censor.times)
   morts_t[morts_t <= 0] = 1e-6
-  morts_t[censored] = censorTimes[censored]
+  morts_t[censored] = censor.times[censored]
   morts = Surv(time = rep(0, length(morts_t)), time2 = morts_t, event = !censored)
   
   attributes(morts)$meanhazard <- meanhazard

@@ -3,8 +3,10 @@
 #'@param start a vector measuring time of birth (as a Date)
 #'@param end a vector measuring time of death or censoring (as a Date)
 #'@param event a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
+#'@param data data.frame object containing start, end and event data
 #'@param t0 reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIX).
 #'@param period length of one period in the input data
+#'@param timeunits units that dates are inputted in if dates are being used
 #'
 #'@return a Surv object with an attribute "period" that reads the period.
 #'
@@ -17,7 +19,11 @@
 #'morts = createCycloSurv(startTimes, endTimes, censored, phase, period)
 #'@export
 
-createCycloSurv = function(start, end, event, t0 = NULL, period, timeunits = "days") {
+createCycloSurv = function(start, end, event, data = NULL, t0 = NULL, period, timeunits = "days") {
+  
+  if(!is.null(data)){
+    attach(data) # is this OK? I can't get the string name of the start, end, and event variables right?
+  }
   
   if(is.POSIXct(start)) start <- as.Date(start)
   if(is.POSIXct(end)) end <- as.Date(end)

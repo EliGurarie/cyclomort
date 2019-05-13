@@ -8,15 +8,7 @@
 #' @param CI whether or not to compute 95\% confidence intervals
 #' @param nreps number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast
 #' 
-#' @examples
-#' T <- simPeriodicMorts(300, period = 1, peaks = c(0.3, 0.8), 
-#'                       durations = c(0.15, 0.20), weights = c(3, 2)/5, 
-#'                      meanhazard = 1, plotme = TRUE, max.periods = 6)
-#' T.fit <- fit_cyclomort(T, n.seasons = 2)
-#' predict(T.fit, t = c(0.5, 0.5), CI = TRUE)
-#' 
-#' # The plotting method uses this function.
-#' plot(T.fit, CI = TRUE, nreps = 1e3, breaks = 40)
+#' @example examples/predict_cmfit_example.R
 #' @export
 
 
@@ -28,12 +20,6 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
   needToFixVectorFlag = (length(t) == 1)
   if (needToFixVectorFlag) t = c(t, t)
   if (type == "timetodeath") {
-    timetodeathfun = function(time, mus, rhos, gammas, tau) {
-      cumsurvfun = function(t) {
-        exp(-(imwc(t, mus, rhos, gammas, tau) - imwc(time, mus, rhos, gammas, tau))) - 0.5
-      }
-      uniroot(cumsurvfun, interval = unlist(c(time, time + 5/x$estimates$meanhazard[1])))$root - time
-    }
     if (x$k > 1) {
       Mu <- x$optim$par
       Sigma <- solve(x$optim$hessian)
@@ -42,8 +28,15 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
       mus = Mu[grepl("mu", names(Mu))] * x$period
       gammas = Mu[grepl("gamma", names(Mu))] / x$period
       
+      cumsurvfun = function(t1, t0, mus, rhos, gammas, tau) {
+        exp(-(imwc(t1, mus, rhos, gammas, tau) - imwc(t0, mus, rhos, gammas, tau))) - 0.5
+      }
+      timetodeathfun = function(time, mus, rhos, gammas, tau) {
+        uniroot(cumsurvfun, t0 = time, mus = mus, rhos = rhos, gammas = gammas, tau = tau, interval = unlist(c(time, time + 5/x$estimates$meanhazard[1])))$root - time
+      }
+      
       timetodeath.hat <- Vectorize(timetodeathfun, vectorize.args = c("time"))(t, mus, expit(lrhos), gammas, x$period) / x$period
-    } else { 
+    } else {
       timetodeath.hat <- rep(log(2) / x$estimates$meanhazard[1], 1e2)
     }
     

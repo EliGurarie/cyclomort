@@ -16,6 +16,8 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
 
 \item{method}{method for optim call}
 
+\item{period}{expected periodicity of survival data. Can be passed in with cycloSurv input parameter.}
+
 \item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 
 \item{hessian}{parameter for optim call}
@@ -39,7 +41,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 365,
 ##MLE for parameters based on simulated data
 fits = fit_cyclomort(T.morts1, n.seasons = 2)
 print(fits)
-plot(fits, type = "mortality")
+plot(fits)
 ##Actual parameter values from simulated data
 attributes(T.morts1)
 ##Measures of model accuracy

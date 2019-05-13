@@ -4,10 +4,21 @@
 \alias{plot.cmfit}
 \title{Plot cmfit objects}
 \usage{
-\method{plot}{cmfit}(x, CI = TRUE, nreps = 10000, ...)
+\method{plot}{cmfit}(x, CI = TRUE, histogram = TRUE, add = FALSE,
+  nreps = 10000, hazcolor = "black", ...)
 }
 \arguments{
 \item{x}{a cmfit object}
+
+\item{CI}{boolean variable determining whether confidence intervals are included in the hazard function estimate}
+
+\item{histogram}{boolean variable determining whether a histogram will be included with the hazard}
+
+\item{add}{boolean variable determining whether the plot will be added to an existing plot}
+
+\item{nreps}{number of repetitions of random parameter sampling; used to develop confidence intervals}
+
+\item{hazcolor}{color of lines for hazard function and confidence intervals}
 }
 \value{
 a plot comparing the estimated mortality curve (based on parameter estimates)
@@ -27,7 +38,7 @@ T.morts1 <- simPeriodicMorts(1000, period = 365,
 ##MLE for parameters based on simulated data
 fits = fit_cyclomort(T.morts1, n.seasons = 2)
 print(fits)
-plot(fits, type = "mortality")
+plot(fits)
 ##Actual parameter values from simulated data
 attributes(T.morts1)
 ##Measures of model accuracy
