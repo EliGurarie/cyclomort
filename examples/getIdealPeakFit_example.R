@@ -5,6 +5,6 @@ T.morts1 <- simPeriodicMorts(1000, period = 1,
                              weights = 0.3, 
                              plotme = FALSE)
 
-fits = selectNSeasons(T.morts1, max.season = 4)
+model_selection = select_seasons(T.morts1, max.season = 4)
 
-print(fits)
+model_selection$summary

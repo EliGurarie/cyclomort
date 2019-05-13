@@ -38,6 +38,7 @@ factorfit_cyclomort = function(f, data = NULL, n.seasons = 2, ... ) {
     t.subset = t[x == x.levels[i]]
     attributes(t.subset)[c("period","t0")] <- attributes(t)[c("period","t0")]
     fits_alt[[i]] = fit_cyclomort(t.subset, n.seasons = n.seasons, ... )
+    names(fits_alt)[i] = x.levels[i]
   }
 
   ll_alt <- sapply(fits_alt, logLik) %>% sum

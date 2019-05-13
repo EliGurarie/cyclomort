@@ -19,7 +19,7 @@ select_seasons = function(x, max.season = 4, lrt = FALSE, print = TRUE) {
   while (n.seasons <= max.season) {
     cat(paste("Fitting model with", n.seasons, "seasons...\n"))
     listOfFits[[n.seasons+1]] = fit_cyclomort(x, n.seasons = n.seasons)
-    names(listOfFits)[n.seasons + 1] = paste0(n.seasons)
+    names(listOfFits)[n.seasons + 1] = paste0("fit",n.seasons)
     n.seasons = n.seasons + 1
   }
   

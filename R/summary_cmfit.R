@@ -1,28 +1,15 @@
-#'Provides a short summary of the cmfitlist object, displaying the effectiveness of each model
-#'
-#'@param x a cmfitlist object
-#'@param plotme plots AIC/BIC values from each cmfit object in the list to identify the best model choice
-#'
-#'@return a data frame describing the AIC, log-likelihood, number of parameters and parameter estimates for each model
-#'
-#'@example examples/getIdealPeakFit_example.R
-#'@export
+#' Provide a short summary of cmfit (parameter estimates for periodic mortality curves) objects
+#' 
+#' @param x a cmfit object
+#' 
+#' @return a list containing a short summary of the estimates for each parameter along with confidence intervals and AIC
+#' 
+#' @example examples/cyclomortFit_example.R
+#' @export
 
-
-summary.cmfitlist = function(x, plotme = FALSE) {
-  estimates = ldply(x, function(l) cbind(l$n.seasons, rbind(ldply(l$estimates))))
-  names(estimates)[1] = "n.seasons"
-  estimates$parameter[is.na(estimates$parameter)] = "meanhazard"
-  method = attributes(x)$method
-  if (method == "AIC") {
-    values = ldply(x, AIC) %>% rename(c(V1 = "AIC"))
-    if (plotme) {
-      plot(0:(length(x) - 1), values[,2], xlab = "Number of seasons", ylab = "Akaike Information Criterion (AIC)")
-    }
-  } else {
-    # if (method == "BIC")
-    values = ldply(x, BIC) %>% rename(c(V1 = "BIC"))
-    plot(0:(length(x) - 1), values[,2], xlab = "Number of seasons", ylab = "Bayesian Information Criterion (BIC)")
-  }
-  list(estimates = estimates, model.accuracy = values)
+summary.cmfit = function(x) {
+  result = list(model = paste0("Multi-seasonal hazard function fit with ", x$n.seasons, " seasons with periodicity ", x$period, ".\n\n"))
+  result$estimates = x$estimates
+  result$analysis = paste0("Log-likelihood: ", round(x$logLik, maxDigits), "; AIC: ", round(x$AIC, maxDigits), "\n")
+  result
 }

@@ -1,13 +1,14 @@
 #' Produce a table explaining the results of a cmfactorfit model
 #' 
 #' @param x a cmfactorfit object
+#' @param coefs a boolean variable determining whether the individual summaries of each model component will be displayed along with the LRT resul
 #' 
-#' @return a table comparing log-likelihood and AIC between null and multi-factor model, as well as a p-value from likelihood ratio test
+#' @return a table comparing log-likelihood and AIC between null and multi-factor model, as well as a p-value from likelihood ratio test, or a list of such a table combined with the individual model summaries if coefs is listed as TRUE
 #' 
 #' @example examples/factorfit_cyclomort_example.R
 #' @export
 
-summary.cmfactorfit = function(x) {
+summary.cmfactorfit = function(x, coefs = FALSE) {
   f <- paste(as.character(x$formula)[c(2,1,3)],collapse = " ")
   cat(paste0("Summary table comparing factorial seasonal survival model with ", x$n.seasons, " seasons.\n\nFormula: ", f, "\n"))
   df <- data.frame(logLike = x$ll %>% unlist,
@@ -17,7 +18,12 @@ summary.cmfactorfit = function(x) {
                    p.value = c(round(x$p.value,3), ""))
   
   row.names(df)[2] <- as.character(x$formula)[3]
-  df
+  if (!coefs) return(df)
+  
+  result = list(test = df)
+  result$null = summary(x$fits$null)
+  result = list(result, lapply(x$fits$alt, summary))
+  result
 }
 
 
