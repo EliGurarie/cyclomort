@@ -5,7 +5,8 @@
 \title{Plot cmfit objects}
 \usage{
 \method{plot}{cmfit}(x, CI = TRUE, histogram = TRUE, add = FALSE,
-  nreps = 10000, hazcolor = "black", alpha = 0.5, ...)
+  nreps = 10000, hazcolor = "black", alpha = 0.3, ymax = NULL,
+  prediction = NULL, yaxt = par()$yaxt, ...)
 }
 \arguments{
 \item{x}{a cmfit object}
@@ -19,6 +20,12 @@
 \item{nreps}{number of repetitions of random parameter sampling; used to develop confidence intervals}
 
 \item{hazcolor}{color of lines for hazard function and confidence intervals}
+
+\item{alpha}{transparency of confidence interval polygon}
+
+\item{ymax}{maximum value for the y-axis - can be useful for scaling purposes}
+
+\item{prediction}{an optional \code{\link{prediction.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow.}
 }
 \value{
 a plot comparing the estimated mortality curve (based on parameter estimates)

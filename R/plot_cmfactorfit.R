@@ -14,11 +14,11 @@
 plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, ...) {
   
   if (!fit %in% c("null", "alt", "both")) stop("Invalid \"fit\" parameter.")
-  
+
   if (fit == "null" | fit == "both") {
     numPlots = 1
     nullFit = x$fits$null
-    plot(nullFit, hist = FALSE, ...)
+    plot(nullFit, histogram = FALSE, yaxt = "n", ...)
   }
   
   if (fit == "alt" | fit == "both") {
@@ -31,6 +31,8 @@ plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, ...) 
       #slight issue with axes (they only reflect the first model plotted).. any idea how to fix?
     }
   }
+  
+  axis(2)
   
   #is there a better place for me to put this?
   if(legend){
