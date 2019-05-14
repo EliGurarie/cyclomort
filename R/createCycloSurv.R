@@ -23,7 +23,14 @@
 createCycloSurv = function(start, end, event, data = NULL, t0 = NULL, period, timeunits = "days") {
   
   if(!is.null(data)){
-    attach(data) # is this OK? I can't get the string name of the start, end, and event variables right?
+    cl = match.call()
+    parnames = names(cl)
+    start_index = match("start", parnames)
+    end_index = match("end", parnames)
+    event_index = match("event", parnames)
+    start = data[as.character(cl[start_index])][,1]
+    end = data[as.character(cl[end_index])][,1]
+    event = data[as.character(cl[event_index])][,1]
   }
   
   if(is.POSIXct(start)) start <- as.Date(start)
