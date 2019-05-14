@@ -37,16 +37,15 @@ plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, ...) 
   #is there a better place for me to put this?
   if(legend){
     par(xpd = TRUE)
-    yVal = par("usr")[4] * 1.25
     if (fit == "null") {
-      legend(x = 0, y = yVal, col = "black", legend = "Null model", 
+      legend("top", col = "black", legend = "Null model", 
              lty = 1, cex = .75, ncol = 1)
     } else if (fit == "alt") {
-      legend(x = 0, y = yVal, col = colors, 
+      legend("top", col = colors, 
              legend = paste("Alt", names(altFits), sep = ""), 
              lty = 1, cex = .75, ncol = numPlots)
     } else { # if fit == "both"
-      legend(x = 0, y = yVal, col = c("black", colors), 
+      legend("top", col = c("black", colors), 
              legend = c("Null", names(altFits)), 
              lty = 1, cex = .75, ncol = numPlots + 1)
     }
