@@ -18,6 +18,7 @@
 #'period = 365
 #'morts = createCycloSurv(startTimes, endTimes, censored, phase, period)
 #'@export
+#'
 
 createCycloSurv = function(start, end, event, data = NULL, t0 = NULL, period, timeunits = "days") {
   
