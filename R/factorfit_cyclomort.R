@@ -29,7 +29,7 @@ factorfit_cyclomort = function(f, data = NULL, n.seasons = 2, ... ) {
   AIC_null = AIC(fit_null)
   k_null <- max(1, 3*n.seasons)
   
-  x.levels = levels(x)
+  x.levels = levels(droplevels(x))
   n.factors <- length(x.levels)
   
   fits_alt <- list() 

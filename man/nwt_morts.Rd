@@ -3,21 +3,16 @@
 \docType{data}
 \name{nwt_morts}
 \alias{nwt_morts}
-\title{Mortality data for Northwest territory boreal woodland caribou}
-\format{Data frame containing movements of roe deer with the following columns:
-\describe{
-  \item{id}{ID of animal}
-  \item{region}{Subpopulation marker - for comparisons}
-  \item{start}{Date of beginning of collaring}
-  \item{end}{Date of death or censoring}
-  \item{Fate}{One of "Accident", "Harvest", "Non-predation", "Pradation", "Unknown",  only for mortality events.}
-  \item{Status}{"Mort" or "Cens" (right-censoring of data)}
-  \item{interval}{days}}}
+\title{Mortality data for Northwest territory boreal woodland caribou.}
+\format{An object of class \code{data.frame} with 370 rows and 5 columns.}
+\source{
+Government of Northwest Territories, Canada
+}
 \usage{
 data(nwt_morts)
 }
 \description{
-Describing the data.
+Mortality data for Northwest territory boreal woodland caribou.
 }
 \examples{
 data(nwt_morts)

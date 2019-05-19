@@ -4,13 +4,10 @@
 \name{wah_morts}
 \alias{wah_morts}
 \title{Mortality data for Western Arctic Herd Caribou}
-\format{Data frame containing movements of roe deer with the following columns:
-\describe{
-  \item{id}{ID of animal}
-  \item{start}{Date of beginning of collaring}
-  \item{end}{Date of death or censoring}
-  \item{Fate}{One of "DEAD", of (censored): "DROPOFF", "CollarFail", "LIVE ANIMAL"}
-  \item{interval}{In days}}}
+\format{An object of class \code{data.frame} with 171 rows and 4 columns.}
+\source{
+U.S. National Park Service, Alaska
+}
 \usage{
 data(wah_morts)
 }
