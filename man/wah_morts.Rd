@@ -4,7 +4,7 @@
 \name{wah_morts}
 \alias{wah_morts}
 \title{Mortality data for Western Arctic Herd Caribou}
-\format{An object of class \code{data.frame} with 171 rows and 4 columns.}
+\format{An object of class \code{data.frame} with 90 rows and 4 columns.}
 \source{
 U.S. National Park Service, Alaska
 }
