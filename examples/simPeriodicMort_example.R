@@ -29,6 +29,6 @@ with(attributes(T.morts2),
 
 par(mfrow = c(1,1))
 h <- with(as.matrix(T.morts1) %>% data.frame %>% subset(status == 1),
-    hist(time - floor(time), breaks = 20, col = "grey", bor = "darkgrey"))
+    hist(stop - floor(stop), breaks = 20, col = "grey", bor = "darkgrey"))
 
 with(attributes(T.morts1), curve(mwc(x, mus = peaks, rhos = findRho(durations), omegas = weights, tau = period)* mean(h$counts), add = TRUE))

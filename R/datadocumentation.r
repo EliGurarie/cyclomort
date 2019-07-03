@@ -24,31 +24,31 @@
 #' @references 
 "wah_morts"
 
-#' Mortality data for Northwest territory boreal woodland caribou.
-#'
-#' 
-#' @usage 
-#' data(nwt_morts)
-#' 
-#' @format Data frame with 370 rows and the following columns:
-#' \describe{
-#'   \item{id}{ID of animal}
-#'   \item{region}{Subpopulation marker - for comparisons}
-#'   \item{start}{Date of beginning of collaring}
-#'   \item{end}{Date of death or censoring}
-#'   \item{status}{"Mort" or "Cens" (dead or censored)}
-#' 
-#' @examples 
-#' data(nwt_morts)
-#' require(ggplot2)
-#' ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
-#' aes(x = start, y = id, col = status)) + 
-#'   geom_errorbarh(aes(xmin = start, xmax = end))
-#' 
-#' @source Government of Northwest Territories, Canada
-#' @keywords data
-#' @references 
-"nwt_morts"
+#' #' Mortality data for Northwest territory boreal woodland caribou.
+#' #'
+#' #' 
+#' #' @usage 
+#' #' data(nwt_morts)
+#' #' 
+#' #' @format Data frame with 370 rows and the following columns:
+#' #' \describe{
+#' #'   \item{id}{ID of animal}
+#' #'   \item{region}{Subpopulation marker - for comparisons}
+#' #'   \item{start}{Date of beginning of collaring}
+#' #'   \item{end}{Date of death or censoring}
+#' #'   \item{status}{"Mort" or "Cens" (dead or censored)}
+#' #' 
+#' #' @examples 
+#' #' data(nwt_morts)
+#' #' require(ggplot2)
+#' #' ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
+#' #' aes(x = start, y = id, col = status)) + 
+#' #'   geom_errorbarh(aes(xmin = start, xmax = end))
+#' #' 
+#' #' @source Government of Northwest Territories, Canada
+#' #' @keywords data
+#' #' @references 
+#' "nwt_morts"
 
 #' Simulated data of seasonal mortality data for two sex groups
 #' 
