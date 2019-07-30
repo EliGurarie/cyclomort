@@ -8,7 +8,7 @@
 #' @param tau period
 #' @example examples/iwc_example.r
 #' @export 
-#' @alias iwc
+#' @aliases iwc
 
 wc <- function(t, mu, rho, tau)
   (1 - rho^2) / (1 + rho^2 - 2*rho*cos((t - mu) * 2 * pi/tau))

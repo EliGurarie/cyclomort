@@ -20,11 +20,7 @@ With the functions included in this package one can fit mortality data (stored a
 
 Maintainer: \packageMaintainer{cyclomort}
 }
-\references{
-~~ Literature or other references for background information ~~
-}
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
-~~ the R documentation directory ~~
+\references{}
 \keyword{ package }
 \seealso{
 ~~ Optional links to other man pages, e.g. ~~

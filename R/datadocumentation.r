@@ -1,4 +1,4 @@
-#' Mortality data for Western Arctic Herd Caribou
+#' @title Mortality data for Western Arctic Herd Caribou
 #'
 #' Describing the data.
 #'
@@ -11,6 +11,7 @@
 #'   \item{start}{Date of beginning of collaring}
 #'   \item{end}{Date of death or censoring}
 #'   \item{Fate}{One of "DEAD", of (censored): "DROPOFF", "CollarFail", "LIVE ANIMAL"}
+#' }
 #' 
 #' @examples 
 #' data(wah_morts)
@@ -21,7 +22,6 @@
 #'
 #' @source U.S. National Park Service, Alaska
 #' @keywords data
-#' @references 
 "wah_morts"
 
 #' #' Mortality data for Northwest territory boreal woodland caribou.
@@ -63,5 +63,4 @@
 #' }
 #' @example examples/seasonalsex_example.R
 #' @keywords data
-#' @references 
 "seasonalsex"

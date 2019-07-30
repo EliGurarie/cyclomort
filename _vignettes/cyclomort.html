@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Elie Gurarie, Peter Thompson" />
+
+<meta name="date" content="2019-02-22" />
+
+<title>Cyclomort</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Cyclomort</h1>
+<h4 class="author"><em>Elie Gurarie, Peter Thompson</em></h4>
+<h4 class="date"><em>2019-02-22</em></h4>
+
+
+
+<div id="cyclomort-an-r-package-to-fit-periodic-survival-curves-to-right-censored-mortality-data" class="section level2">
+<h2>Cyclomort: an R package to fit periodic survival curves to right-censored mortality data</h2>
+<p>Survival modelling is one of the most important subfields of ecology. Understanding the mortality rates of a specific population of animals, and how those mortality rates may change over time, can be incredibly important to preserving the survival of these species. In many cases, the risk of mortality at any given time for an individual (the hazard function) varies markedly over the course of a year. For example, migratory species are usually much more susceptible to death during the period when they are migrating. Humans are also more likely to be infected with a variety of bacterial and viral pathogens during the colder months. Being able to model these trends and identify peaks and periodicities in mortality using known mortality data will allow scientists to better solve ecological and medical problems facing the world today.</p>
+<p>This package is the first R package that uses maximum likelihood theory to produce parametric estimates for a hazard function with any number of periodicities in a single year (or any larger period, for that matter). We include functions that return parametric fits given a set of mortality data (times of death or censoring); to confirm that our fitting procedure is accurate, we also include the option to simulate periodic mortality data with a given mortality function and analyze the MLEs for each parameter in the mortality function. The functions from this package can be used in conjunction with the widely used “survival” package, and the fit_cyclomort function takes these “Surv” objects as input parameters. While small, this package provides a useful framework for estimating the parameters of a periodic mortality function, and has a wide variety of applications in survival modelling.</p>
+</div>
+<div id="representing-mortality-in-a-population-as-a-statistical-distribution-the-wrapped-cauchy-function" class="section level2">
+<h2>Representing mortality in a population as a statistical distribution: the wrapped Cauchy function</h2>
+<p>To generate a function with multiple, differently shaped peaks in one “period” (allowing for the highest level of customizability for users), we adapted a simple version of the wrapped Cauchy distribution that allows for multiple peaks. This “mixture model” incorporates any number of individual Cauchy distributions, each with an individual mean parameter (referred to here as mu; the location of the peak of the distribution) as well as a concentration parameter (referred to here as rho; ranging from 0 to 1, with a higher rho implying that more data is concentrated around the mean). Just like any mixture model, there must be some form of weighting involved; we do this by assigning an average hazard value (referred to here as gamma; representing the likelihood at any given time that a mortality event will occur) to each component of the mixture.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAEgCAMAAABcujGyAAAAV1BMVEUAAAAAADoAAGYAOjoAOpAAZrYAzQA6AAA6ADo6AGY6kNtmAABmADpmtrZmtv+QOgCQ2/+2ZgC2///bkDrbtmbb/7bb////AAD/tmb/25D//7b//9v////jC3I0AAAACXBIWXMAAA7DAAAOwwHHb6hkAAAK70lEQVR4nO3di3baxhqGYbW14xa3dgitwTb3f53VGUmMTsMcPmneZ63dNjsY/YQ3A5JlkV0BYVnsAYApBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppBAppjgPNgEViBer27rBXBAppBAppBGq24s0PfCJQkyJPEpVAoAZ1mhQqgEDvtWFSaHwEeqeTJYVGR6BDvSgpNDYCHcomfoXgCHRgsGayhEZGoAPDwWQHTQSB9t2tmCyhcRFo3/1cqpMmgkB7DGOxhEZFoD2msURHTUTgQNefhxqUcSrRWRPBCtplnkpz1kQQaMfIUCyhERFox9hQksMmgkBvRldKltB4CPRmfCbFaRNBoK2JdZIlNBoCbU2NJDhuIgi0MblKsoTGQqCN6Yn05k0EgTYIVBKB1mZexHmNj4RAa3MDyQ2cCAKtzK6QLKFxEGhlfh61iRNBoKUF6yNLaBQrA/16vZ3R+fuvua/5fHl7eLthLBlHbOREWKygl+xQ/PO3n6O3XZCx2LNNoKrWB/r9/lz++/T0MXrjquHtrKCLXr55jY9hfaBfr1V1l6mX+K/XIt/7QEV/5GPZNFozJ8JmBS1Xx+txYgUtfjt/C7CVFXThXxexv1VpsHoPWmR3mngPWjplh80E6vh2cMfmMFO5DzS9fhY+X/7YRqCLV0aW0PB8Hgf9fs+2EaiHW8IR+/eggbYbAIEKs9+LD7Rd/1aMwmt8cDY7SfPf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" style="display: block; margin: auto;" /></p>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<p>Here the effects of the parameters on the graph become quite clear. Note how the components of the mixture with higher rho values have distributions with more data closer to the peak.</p>
+</div>
+<div id="the-simperiodicmorts-function-verificiation-of-fit-accuracy" class="section level2">
+<h2>The simPeriodicMorts function: verificiation of fit accuracy</h2>
+<p>Using the simPeriodicMorts function, we can verify that the fit_cyclomort function provides accurate estimates for each parameter. This function allows us to produce a set of random “Surv” objects that follow the distribution described by the set of input parameters. By producing a set of random mortalities we can observe what a mortality function with the specified distribution might actually look like.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">T.morts1 &lt;-<span class="st"> </span><span class="kw">simPeriodicMorts</span>(<span class="dv">300</span>, <span class="dt">period =</span> <span class="dv">365</span>, 
+                             <span class="dt">meanhazard =</span> <span class="fl">0.5</span><span class="op">/</span><span class="dv">365</span>, 
+                             <span class="dt">peaks =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">250</span>), 
+                             <span class="dt">durations =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">40</span>), 
+                             <span class="dt">weights =</span> <span class="fl">0.4</span>, 
+                             <span class="dt">plotme =</span> <span class="ot">TRUE</span>,
+                             <span class="dt">max.periods =</span> <span class="dv">5</span>)
+<span class="co">#&gt; Warning in simPeriodicMorts(300, period = 365, meanhazard = 0.5/365, peaks</span>
+<span class="co">#&gt; = c(100, : Filling out the weight vector.</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+</div>
+<div id="the-fit_cyclomort-function-parametric-estimates-for-periodic-mortality-functions" class="section level2">
+<h2>The fit_cyclomort function: parametric estimates for periodic mortality functions</h2>
+<p>Given a set of mortality data (formatted as a list of times of death/censoring with information about the current state (dead/censored) of each observation), the fit_cyclomort function estimates the parameters of the aforementioned Cauchy distribution using maximum likelihood estimation. The fit_cyclomort function returns a cmfit object; we have included print, summary, predict and plot functions for this class of objects to make these fits easier to interpret.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">T.morts1 &lt;-<span class="st"> </span><span class="kw">simPeriodicMorts</span>(<span class="dv">300</span>, <span class="dt">period =</span> <span class="dv">365</span>, 
+                             <span class="dt">meanhazard =</span> <span class="fl">0.5</span><span class="op">/</span><span class="dv">365</span>, 
+                             <span class="dt">peaks =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">250</span>), 
+                             <span class="dt">durations =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">40</span>), 
+                             <span class="dt">weights =</span> <span class="fl">0.4</span>, 
+                             <span class="dt">plotme =</span> <span class="ot">FALSE</span>,
+                             <span class="dt">max.periods =</span> <span class="dv">5</span>)
+<span class="co">#&gt; Warning in simPeriodicMorts(300, period = 365, meanhazard = 0.5/365, peaks</span>
+<span class="co">#&gt; = c(100, : Filling out the weight vector.</span>
+
+##MLE for parameters based on simulated data
+fits =<span class="st"> </span><span class="kw">fit_cyclomort</span>(T.morts1)
+<span class="kw">print</span>(fits)
+<span class="co">#&gt; Multi-seasonal hazard function fit with 2 seasons with periodicity 365.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $meanhazard</span>
+<span class="co">#&gt;     estimate      CI.low     CI.high           se</span>
+<span class="co">#&gt; 1 0.00145088 0.001329927 0.001571833 6.047661e-05</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`season 1`</span>
+<span class="co">#&gt;   parameter season    estimate     CI.low     CI.high</span>
+<span class="co">#&gt; 1      peak      1 101.6737711 98.6766816 104.6708606</span>
+<span class="co">#&gt; 2  duration      1  19.1177167 12.9704715  27.7860001</span>
+<span class="co">#&gt; 3    weight      1   0.3764855  0.2818702   0.4711009</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $`season 2`</span>
+<span class="co">#&gt;   parameter season    estimate      CI.low     CI.high</span>
+<span class="co">#&gt; 1      peak      2 253.7925030 247.2830446 260.3019614</span>
+<span class="co">#&gt; 2  duration      2  41.6834226  30.2730593  55.9406692</span>
+<span class="co">#&gt; 3    weight      2   0.6235145   0.4862297   0.7607992</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Log-likelihood: -227.8855; AIC: 467.771</span>
+<span class="kw">plot</span>(fits)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##Actual parameter values from simulated data
+<span class="kw">attributes</span>(T.morts1)
+<span class="co">#&gt; $dim</span>
+<span class="co">#&gt; [1] 300   3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $dimnames</span>
+<span class="co">#&gt; $dimnames[[1]]</span>
+<span class="co">#&gt; NULL</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $dimnames[[2]]</span>
+<span class="co">#&gt; [1] &quot;start&quot;  &quot;stop&quot;   &quot;status&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $type</span>
+<span class="co">#&gt; [1] &quot;counting&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $class</span>
+<span class="co">#&gt; [1] &quot;cycloSurv&quot; &quot;Surv&quot;     </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $meanhazard</span>
+<span class="co">#&gt; [1] 0.001369863</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $peaks</span>
+<span class="co">#&gt; [1] 100 250</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $durations</span>
+<span class="co">#&gt; [1] 20 40</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $weights</span>
+<span class="co">#&gt; [1] 0.4 0.6</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $period</span>
+<span class="co">#&gt; [1] 365</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $phase</span>
+<span class="co">#&gt; [1] 0</span></code></pre></div>
+<p>Here we observe that the estimates for the peaks and weights are quite accurate, implying that the fit_cyclomort function can effectively estimate the peaks and windows of mortality over the course of a year.</p>
+<p>When we plot our fit objects, notice that we include confidence intervals on our estiamtes to display the true accuracy of our fitting process. We do this with the predict.cmfit function, which can be applied to cmfit objects and returns a set of predictions (equipped with confidence intervals) for a given fit at a time or set of times. Users can also call predict.cmfit to estimate the average time to death for any observation at a given time.</p>
+</div>
+<div id="identifying-the-number-of-mortality-seasons-within-a-system-using-select_seasons" class="section level2">
+<h2>Identifying the number of mortality seasons within a system using select_Seasons</h2>
+<p>An important aspect of this model fitting is being able to definitively characterize specific aspects of a data set. Identifying the probable number of mortality seasons in a system is a powerful and useful claim that we attempt to help make here with the select_seasons function. This function performs fit_cyclomort for a number of different seasons (ranging from the null model of 0 seasons to max.season), identifying the best model using the Akaike Information Criterion (AIC).</p>
+<p>The select_seasons function returns a cmfitlist object which is equipped with unique print and summary functions. cmfitlist objects are simply lists of cmfit objects (each element of the list being the cmfit object representing a different seasonal assumption), but the summary.cmfitlist function allows for easier comparison of the different fits.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">T.morts1 &lt;-<span class="st"> </span><span class="kw">simPeriodicMorts</span>(<span class="dv">300</span>, <span class="dt">period =</span> <span class="dv">365</span>, 
+                             <span class="dt">meanhazard =</span> <span class="fl">0.5</span><span class="op">/</span><span class="dv">365</span>, 
+                             <span class="dt">peaks =</span> <span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">250</span>), 
+                             <span class="dt">durations =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">40</span>), 
+                             <span class="dt">weights =</span> <span class="fl">0.4</span>, 
+                             <span class="dt">plotme =</span> <span class="ot">FALSE</span>,
+                             <span class="dt">max.periods =</span> <span class="dv">5</span>)
+<span class="co">#&gt; Warning in simPeriodicMorts(300, period = 365, meanhazard = 0.5/365, peaks</span>
+<span class="co">#&gt; = c(100, : Filling out the weight vector.</span>
+<span class="co">#a two-season simulated dataset</span>
+
+fits =<span class="st"> </span><span class="kw">select_seasons</span>(T.morts1, <span class="dt">max.season =</span> <span class="dv">4</span>)
+<span class="co">#&gt; Fitting model with 0 seasons...</span>
+<span class="co">#&gt; Fitting model with 1 seasons...</span>
+<span class="co">#&gt; Fitting model with 2 seasons...</span>
+<span class="co">#&gt; Fitting model with 3 seasons...</span>
+<span class="co">#&gt; Fitting model with 4 seasons...</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Delta AIC table of fitted models:</span>
+<span class="co">#&gt;  n.seasons    logLik d.f.      AIC       dAIC</span>
+<span class="co">#&gt;       fit0 -303.3268    1 608.6535 231.830555</span>
+<span class="co">#&gt;       fit1 -295.5480    3 597.0961 220.273080</span>
+<span class="co">#&gt;       fit2 -182.4115    6 376.8230   0.000000</span>
+<span class="co">#&gt;       fit3 -181.6856    9 381.3712   4.548183</span>
+<span class="co">#&gt;       fit4 -180.7089   12 385.4177   8.594774</span></code></pre></div>
+<p>Here, as one would expect for data simulated to resemble a two-season system, the select_seasons function identifies that the set of observations in T.morts1 likely has two seasons of high mortality.</p>
+</div>
+<div id="comparing-models-using-factorfit_cyclomort" class="section level2">
+<h2>Comparing models using factorfit_cyclomort</h2>
+<p>We extend our cyclomort fitting process to model comparison here with the factorfit_cyclomort function. This function allows users to test whether or not a categorical variable has an impact on seasonal mortality patterns. The factorfit_cyclomort function takes a formula as a parameter; it is recommended to pass in a data.frame object with the categorical variable and the Surv object as columns. The function uses Akaike Information Criterion (AIC) to compare a null model (assuming that the categorical variable has no effect on mortality patterns) that fits the data as one versus the alternate model that fits each subset of the data individually, assuming that depending on the categorical variable, the observation may have a different mortality schedule.</p>
+<p>We use a likelihood ratio test to measure the significance of the difference in AIC between the null and alternate model. This test hinges on the fact that the individual portions of the alternate model (there is one cmfit object for each value of the categorical value) are all mutually exclusive subsets of the null data set, so it is statistically sensible to compare the sum of the AIC from the alternate models to the AIC with the null model.</p>
+<p>The factorfit_cyclomort function returns a cmfactorfit object (which has also been equipped with unique plot, summary and print functions) that stores a list of the individual fits along with likelihood information for both models.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(seasonalsex)
+x &lt;-<span class="st"> </span><span class="kw">factorfit_cyclomort</span>(T <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data =</span> seasonalsex, <span class="dt">n.seasons =</span> <span class="dv">1</span>)
+
+<span class="kw">summary</span>(x, <span class="dt">coefs =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; Summary table comparing factorial seasonal survival model with 1 seasons.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Formula: T ~ sex</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [[1]]$test</span>
+<span class="co">#&gt;        logLike k    AIC   LRT p.value</span>
+<span class="co">#&gt; null -339.2927 3 684.59 44.15       0</span>
+<span class="co">#&gt; sex  -317.2170 6 646.43              </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$null</span>
+<span class="co">#&gt; [[1]]$null$model</span>
+<span class="co">#&gt; [1] &quot;Multi-seasonal hazard function fit with 1 seasons with periodicity 1.\n\n&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$null$estimates</span>
+<span class="co">#&gt; [[1]]$null$estimates$meanhazard</span>
+<span class="co">#&gt;    estimate    CI.low   CI.high         se</span>
+<span class="co">#&gt; 1 0.3707926 0.3137581 0.4278272 0.02851729</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$null$estimates$`season 1`</span>
+<span class="co">#&gt;   parameter season  estimate    CI.low   CI.high</span>
+<span class="co">#&gt; 1      peak      1 0.4081466 0.1141846 0.7021085</span>
+<span class="co">#&gt; 2  duration      1 0.4611921 0.3202799 0.4934854</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$null$analysis</span>
+<span class="co">#&gt; [1] &quot;Log-likelihood: -339.2927; AIC: 684.5853\n&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [[2]]$F</span>
+<span class="co">#&gt; [[2]]$F$model</span>
+<span class="co">#&gt; [1] &quot;Multi-seasonal hazard function fit with 1 seasons with periodicity 1.\n\n&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$F$estimates</span>
+<span class="co">#&gt; [[2]]$F$estimates$meanhazard</span>
+<span class="co">#&gt;    estimate    CI.low   CI.high         se</span>
+<span class="co">#&gt; 1 0.3417706 0.2659444 0.4175968 0.03791311</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$F$estimates$`season 1`</span>
+<span class="co">#&gt;   parameter season  estimate    CI.low   CI.high</span>
+<span class="co">#&gt; 1      peak      1 0.7146125 0.6454960 0.7837290</span>
+<span class="co">#&gt; 2  duration      1 0.2996433 0.2168735 0.3720552</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$F$analysis</span>
+<span class="co">#&gt; [1] &quot;Log-likelihood: -164.0848; AIC: 334.1697\n&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$M</span>
+<span class="co">#&gt; [[2]]$M$model</span>
+<span class="co">#&gt; [1] &quot;Multi-seasonal hazard function fit with 1 seasons with periodicity 1.\n\n&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$M$estimates</span>
+<span class="co">#&gt; [[2]]$M$estimates$meanhazard</span>
+<span class="co">#&gt;    estimate    CI.low   CI.high         se</span>
+<span class="co">#&gt; 1 0.4032207 0.3172433 0.4891981 0.04298869</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$M$estimates$`season 1`</span>
+<span class="co">#&gt;   parameter season  estimate    CI.low   CI.high</span>
+<span class="co">#&gt; 1      peak      1 0.2439821 0.1895784 0.2983858</span>
+<span class="co">#&gt; 2  duration      1 0.2750682 0.1985378 0.3469115</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$M$analysis</span>
+<span class="co">#&gt; [1] &quot;Log-likelihood: -153.1322; AIC: 312.2644\n&quot;</span>
+<span class="kw">plot</span>(x)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Here, we see that with some simulated data where we forced the different sexes to have different mortality patterns, we see a strongly significant difference between the null and alternate models, indicating that sex does have an effect on the mortality schedule of the individuals in the data set. The summary.cmfactorfit function prints out a small table that summarizes the results of the likelihood ratio test.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

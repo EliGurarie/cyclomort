@@ -28,3 +28,11 @@ a Surv object with an attribute "period" that reads the period.
 \description{
 Create an object that can be fitted with a given period from survival (time of death or censoring) data
 }
+\examples{
+startTimes = as.Date(origin = "2010-01-01", c(0, 0, 0, 50, 0, 50, 100, 150, 0, 100)) #in days
+endTimes = as.Date(origin = "2010-01-01", c(50, 50, 100, 150, 150, 200, 200, 250, 350)) #in days
+censored = c(1, 1, 0, 1, 1, 0, 1, 0, 0)
+phase = "2009-09-01"
+period = 365
+morts = createCycloSurv(startTimes, endTimes, censored, phase, period)
+}

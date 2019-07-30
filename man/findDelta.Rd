@@ -10,7 +10,7 @@ findDelta(rho)
 findRho(delta)
 }
 \description{
-Functions for converting the concentration parameter \eq{\rho} to the season duration parameter \eq{\delta} and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
+Functions for converting the concentration parameter rho to the season duration parameter delta and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
 }
 \examples{
 findDelta(rho = 0.9); findRho(0.0167)
