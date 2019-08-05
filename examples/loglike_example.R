@@ -1,5 +1,3 @@
-require(fields)
-
 T.morts1 <- simPeriodicMorts(1000, period = 1, 
                              meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 

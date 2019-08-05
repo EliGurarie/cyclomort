@@ -10,6 +10,6 @@
 summary.cmfit = function(x) {
   result = list(model = paste0("Multi-seasonal hazard function fit with ", x$n.seasons, " seasons with periodicity ", x$period, ".\n\n"))
   result$estimates = x$estimates
-  result$analysis = paste0("Log-likelihood: ", round(x$logLik, 4), "; AIC: ", round(x$AIC, 4), "\n")
+  result$analysis = paste0("Log-likelihood: ", round(x$logLik, 4), "; AIC: ", round(x$AIC, 4))
   result
 }

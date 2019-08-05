@@ -1,5 +1,5 @@
 #' Cyclomort: a package for parameteric periodic survival modeling
 #' 
-#' Lots of words
+#' We have developed a set of functions that allows for the user-friendly fitting of seasonal mortality models.
 #' 
 "_PACKAGE"

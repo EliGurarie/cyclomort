@@ -11,9 +11,9 @@
 #' # Plot the relationship
 #' par(mfrow = c(1,2))
 #' rhos <- seq(0, 1, length = 1e3)
-#' plot(rhos, Vectorize(findDelta, vectorize.args = "rho")(rhos), ylab = "deltas", type = "l")
+#' plot(rhos, findDelta(rhos), ylab = "deltas", type = "l")
 #' deltas <- seq(0, .5, length = 1e3)
-#' plot(deltas, Vectorize(findRho, vectorize.args = "delta")(deltas), ylab = "rhos", type = "l")
+#' plot(deltas, findRho(deltas), ylab = "rhos", type = "l")
 
 #' @export
 findDelta <- Vectorize(function(rho){

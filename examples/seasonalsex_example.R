@@ -15,7 +15,6 @@ eval <- FALSE; if(eval){
 
 data("seasonalsex")
 
-require(ggplot)
 seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$T) %>% as.data.frame) %>%
   arrange(sex,stop) %>% mutate(id = 1:length(start) %>% factor, 
                                status = c("Dead", "Censored")[2-status])

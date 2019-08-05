@@ -4,5 +4,4 @@ T <- simPeriodicMorts(300, period = 1, peaks = c(0.3, 0.8),
 T.fit <- fit_cyclomort(T, n.seasons = 2)
 predictions = predict(T.fit, t = 0.5, CI = TRUE, type = "hazard")
 
-plot(predictions, fit = "null")
-plot(predictions, fit = "alt")
+plot(T.fit)

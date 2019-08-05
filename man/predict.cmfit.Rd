@@ -5,7 +5,7 @@
 \title{Prediction method for cyclomort fits}
 \usage{
 \method{predict}{cmfit}(x, t = seq(0, x$period, length = 100),
-  type = "hazard", CI = FALSE, nreps = 10000)
+  type = "hazard", CI = FALSE, CI.level = 0.05, nreps = 10000)
 }
 \arguments{
 \item{x}{a cmfit object}
@@ -19,7 +19,7 @@
 \item{nreps}{number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast}
 }
 \description{
-Obtain predictions and - optionally - confidence intervals for the hazard function from a fitted periodic hazard functon.
+Obtain predictions and - optionally - confidence intervals for the hazard function from a fitted periodic hazard functon. Confidence intervals are produced by assuming that the parameters follow a multivariate normal distribution
 }
 \examples{
 T <- simPeriodicMorts(300, period = 1, peaks = c(0.3, 0.8), 
@@ -28,6 +28,5 @@ T <- simPeriodicMorts(300, period = 1, peaks = c(0.3, 0.8),
 T.fit <- fit_cyclomort(T, n.seasons = 2)
 predictions = predict(T.fit, t = 0.5, CI = TRUE, type = "hazard")
 
-plot(predictions, fit = "null")
-plot(predictions, fit = "alt")
+plot(T.fit)
 }
