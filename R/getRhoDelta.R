@@ -15,6 +15,8 @@
 #' deltas <- seq(0, .5, length = 1e3)
 #' plot(deltas, findRho(deltas), ylab = "rhos", type = "l")
 
+#' @param rho concentration parameter on interval [0, 1]
+#' @return duration parameter delta
 #' @export
 findDelta <- Vectorize(function(rho){
   ifelse(rho == 0, 0.5, 
@@ -23,6 +25,8 @@ findDelta <- Vectorize(function(rho){
 })
 
 #' @rdname findDelta
+#' @param delta duration parameter
+#' @return concentration parameter rho on interval [0, 1]
 #' @export
 findRho <- Vectorize(function(delta){
   RhoToDelta <- function(rho, delta) DeltaToRho(delta, rho)
@@ -31,9 +35,7 @@ findRho <- Vectorize(function(delta){
                 uniroot(RhoToDelta, delta = delta, interval = c(1e-6, 1-1e-6))$root))
 })
 
-#' @rdname DeltaToRho
-#' @param delta seasonal duration parameter
-#' @param rho concentration parameter ([0, 1])
+#' @rdname findDelta
 #' @export
 DeltaToRho <- function(delta, rho){
   iwc(t = .5 + delta/2, mu = .5, rho = rho, tau = 1) - 

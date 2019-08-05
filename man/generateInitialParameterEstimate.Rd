@@ -9,9 +9,9 @@ generateInitialParameterEstimate(T, n, null_fits)
 \arguments{
 \item{T}{set of Surv objects representing time of death or censorship}
 
-\item{null_fits}{original estimate for mortality rate assuming constant hazard function}
+\item{n}{expected number of seasons within a period}
 
-\item{n.seasons}{expected number of seasons within a period}
+\item{null_fits}{original estimate for mortality rate assuming constant hazard function}
 }
 \value{
 a named vector listing intial guesses for parameter values, to be used in the fitting process

@@ -12,6 +12,8 @@ factorfit_cyclomort(f, data = NULL, n.seasons = 2, ...)
 \item{data}{a data frame containing a cycloSurv object detailing mortalities for a set of observations and a factor identifying the value of a categorical variable for each observation}
 
 \item{n.seasons}{number of seasons to fit model to}
+
+\item{...}{additional arguments to fit_cyclomort call}
 }
 \value{
 table comparing outputs from null (factor has no effect on mortality and they are all

@@ -7,11 +7,13 @@
 select_seasons(x, max.season = 4, lrt = FALSE, print = TRUE)
 }
 \arguments{
-\item{x}{\code{\link{cycloSurv}} object}
+\item{x}{\code{\link{createCycloSurv}} object}
 
 \item{max.season}{maximum number of seasons to fit}
 
 \item{lrt}{whether or not to perform and return the complete results of nested likelihood ratio tests.}
+
+\item{print}{boolean parameter; if TRUE the function prints the table out as a side effect of creating the object}
 }
 \value{
 a list containing (1) a list of all the fitted objects, and (2) an AIC (and, optionally, LRT) summary table.  Also prints both tables by default.

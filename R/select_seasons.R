@@ -2,9 +2,10 @@
 #' 
 #' Compute a delta AIC table (and, optionally, likelihood ratio tests) for a sequence of models with a different number of seasons
 #' #' 
-#' @param x \code{\link{cycloSurv}} object
+#' @param x \code{\link{createCycloSurv}} object
 #' @param max.season maximum number of seasons to fit
 #' @param lrt whether or not to perform and return the complete results of nested likelihood ratio tests. 
+#' @param print boolean parameter; if TRUE the function prints the table out as a side effect of creating the object
 #' 
 #' @return a list containing (1) a list of all the fitted objects, and (2) an AIC (and, optionally, LRT) summary table.  Also prints both tables by default.  
 #' 

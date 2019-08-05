@@ -3,11 +3,24 @@
 \name{findDelta}
 \alias{findDelta}
 \alias{findRho}
+\alias{DeltaToRho}
 \title{Convert Rho to Tau}
 \usage{
 findDelta(rho)
 
 findRho(delta)
+
+DeltaToRho(delta, rho)
+}
+\arguments{
+\item{rho}{concentration parameter on interval [0, 1]}
+
+\item{delta}{duration parameter}
+}
+\value{
+duration parameter delta
+
+concentration parameter rho on interval [0, 1]
 }
 \description{
 Functions for converting the concentration parameter rho to the season duration parameter delta and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
@@ -20,7 +33,7 @@ findDelta(rho = 0.1); findRho(0.218)
 # Plot the relationship
 par(mfrow = c(1,2))
 rhos <- seq(0, 1, length = 1e3)
-plot(rhos, Vectorize(findDelta, vectorize.args = "rho")(rhos), ylab = "deltas", type = "l")
+plot(rhos, findDelta(rhos), ylab = "deltas", type = "l")
 deltas <- seq(0, .5, length = 1e3)
-plot(deltas, Vectorize(findRho, vectorize.args = "delta")(deltas), ylab = "rhos", type = "l")
+plot(deltas, findRho(deltas), ylab = "rhos", type = "l")
 }

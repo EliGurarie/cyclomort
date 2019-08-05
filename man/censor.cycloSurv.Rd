@@ -2,17 +2,26 @@
 % Please edit documentation in R/censorandtrim.R
 \name{censor.cycloSurv}
 \alias{censor.cycloSurv}
+\alias{trim.cycloSurv}
 \title{Censor and Trim}
 \usage{
 censor.cycloSurv(x, censor.times)
+
+trim.cycloSurv(x, trim.times)
 }
 \arguments{
 \item{x}{cycloSurv object}
 
 \item{censor.times}{time of  (right) censoring, or vector of times of censoring}
+
+\item{trim.times}{time of (left) trimming, or vector of times of trimming}
+
+\item{x}{cycloSurv object}
 }
 \value{
-Censored / trimmed Surv object
+Censored Surv object
+
+trimmed Surv object
 }
 \description{
 Internal functions for right-censoring and left-trimming survival data.

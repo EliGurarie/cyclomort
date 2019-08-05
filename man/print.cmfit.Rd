@@ -33,5 +33,6 @@ plot(fits)
 attributes(T.morts1)
 ##Measures of model accuracy
 AIC(fits)
+BIC(fits)
 logLik(fits)
 }

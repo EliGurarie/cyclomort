@@ -1,4 +1,4 @@
-#' @title Mortality data for Western Arctic Herd Caribou
+#' Mortality data for Western Arctic Herd Caribou
 #'
 #' Describing the data.
 #'
@@ -37,6 +37,7 @@
 #' #'   \item{start}{Date of beginning of collaring}
 #' #'   \item{end}{Date of death or censoring}
 #' #'   \item{status}{"Mort" or "Cens" (dead or censored)}
+#' #'   }
 #' #' 
 #' #' @examples 
 #' #' data(nwt_morts)
@@ -47,7 +48,6 @@
 #' #' 
 #' #' @source Government of Northwest Territories, Canada
 #' #' @keywords data
-#' #' @references 
 #' "nwt_morts"
 
 #' Simulated data of seasonal mortality data for two sex groups
@@ -59,7 +59,7 @@
 #' @format Simulated data of single-season mortalities for two sex groups:
 #' \describe{
 #'   \item{sex}{female (F) or male (M)}
-#'   \item{T}{\code{\link{CycloSurv}} object of (censored) survival data}
+#'   \item{T}{\code{\link{cycloSurv}} object of (censored) survival data}
 #' }
 #' @example examples/seasonalsex_example.R
 #' @keywords data

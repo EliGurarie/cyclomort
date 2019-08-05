@@ -12,15 +12,13 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
 \arguments{
 \item{T}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
 
+\item{inits}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
+
 \item{n.seasons}{number of seasons to fit model to}
 
 \item{method}{method for optim call}
 
 \item{period}{expected periodicity of survival data. Can be passed in with cycloSurv input parameter.}
-
-\item{p0}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
-
-\item{hessian}{parameter for optim call}
 }
 \value{
 parameter estimates for weights, rhos, peaks and A
@@ -46,5 +44,6 @@ plot(fits)
 attributes(T.morts1)
 ##Measures of model accuracy
 AIC(fits)
+BIC(fits)
 logLik(fits)
 }

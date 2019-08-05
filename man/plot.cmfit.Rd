@@ -25,7 +25,11 @@
 
 \item{ymax}{maximum value for the y-axis - can be useful for scaling purposes}
 
-\item{prediction}{an optional \code{\link{prediction.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow.}
+\item{prediction}{an optional \code{\link{predict.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow.}
+
+\item{yaxt}{location for y-axis label}
+
+\item{...}{additional parameters to histogram call (i.e., breaks, etc...)}
 }
 \value{
 a plot comparing the estimated mortality curve (based on parameter estimates)
@@ -50,5 +54,6 @@ plot(fits)
 attributes(T.morts1)
 ##Measures of model accuracy
 AIC(fits)
+BIC(fits)
 logLik(fits)
 }

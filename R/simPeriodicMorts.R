@@ -10,6 +10,7 @@
 #' @param period length of one mortality cycle
 #' @param n.times number of x-values for plots (a higher value results in more precision for curves)
 #' @param max.periods maximum number of cycles
+#' @param plotme if TRUE, produces a set of plots for the simulation to display its accuracy
 #' 
 #' @return  a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
 #' 

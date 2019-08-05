@@ -3,9 +3,7 @@
 \docType{data}
 \name{wah_morts}
 \alias{wah_morts}
-\title{Mortality data for Western Arctic Herd Caribou
-
-Describing the data.}
+\title{Mortality data for Western Arctic Herd Caribou}
 \format{Data frame with 171 rows and the following columns:
 \describe{
   \item{id}{ID of animal}
@@ -20,8 +18,6 @@ U.S. National Park Service, Alaska
 data(wah_morts)
 }
 \description{
-Mortality data for Western Arctic Herd Caribou
-
 Describing the data.
 }
 \examples{

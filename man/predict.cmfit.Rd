@@ -16,6 +16,8 @@
 
 \item{CI}{whether or not to compute 95\% confidence intervals}
 
+\item{CI.level}{confidence level (must be on (0, 0.5) interval) for CIs if CI is TRUE}
+
 \item{nreps}{number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast}
 }
 \description{

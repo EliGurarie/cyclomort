@@ -19,8 +19,10 @@ seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$T) %>% as.data.frame) %
   arrange(sex,stop) %>% mutate(id = 1:length(start) %>% factor, 
                                status = c("Dead", "Censored")[2-status])
 ggplot(seasonsex.df, aes(x = start, y = id, col = sex)) + 
-  geom_errorbarh(aes(xmin = start, xmax = stop, lty = status)) + ggtitle("Simualted sex-specific mortality data")
+  geom_errorbarh(aes(xmin = start, xmax = stop, lty = status)) + 
+    ggtitle("Simualted sex-specific mortality data")
 
 ss.dead <- seasonsex.df %>% subset(status == "Dead") %>% mutate(time = (stop - floor(stop))) 
 ggplot(ss.dead, aes(time, y=..density.., fill = sex)) + geom_density(alpha = 0.1) + 
-  geom_histogram(alpha=0.5, position="identity")  + ggtitle("Male vs. Female (simulated) mortalities")
+  geom_histogram(alpha=0.5, position="identity")  + 
+    ggtitle("Male vs. Female (simulated) mortalities")

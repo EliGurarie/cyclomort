@@ -6,6 +6,7 @@
 #' @param t times for prediction
 #' @param type either "hazard" or "timetoevent" - dictates what function is called
 #' @param CI whether or not to compute 95\% confidence intervals
+#' @param CI.level confidence level (must be on (0, 0.5) interval) for CIs if CI is TRUE
 #' @param nreps number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast
 #' 
 #' @example examples/predict_cmfit_example.R
@@ -58,8 +59,6 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
       }
     } else CIs <- NULL
     
-    if (CI) CI[1, CI[1,] < 0] = 0
-    
     if (needToFixVectorFlag) return(list(t = t[1], fit = timetodeath.hat[1], CI = CIs[,1]))
     return(list(t = t, fit = timetodeath.hat, CI = CIs, type = type))
   }
@@ -91,14 +90,6 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
       CIs <- rbind(rep(x$estimates$meanhazard[2], 1e2), rep(x$estimates$meanhazard[3], 1e2))
     }
   } else CIs <- NULL
-  
-  if (CI) {
-    if(needToFixVectorFlag & CI[1] < 0) {
-      CI[1] = 0
-    } else if (!needToFixVectorFlag) {
-      CI[1, CI[1,] < 0] = 0
-    }
-  }
   
   if (needToFixVectorFlag) return(list(t = t[1], fit = hazard.hat[1], CI = CIs[,1]))
   return(list(t = t, fit = hazard.hat, CI = CIs, type = type))

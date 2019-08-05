@@ -3,10 +3,9 @@
 #'estimates.
 #'
 #'@param T a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period
-#'@param p0 set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
+#'@param inits set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
 #'@param n.seasons number of seasons to fit model to
 #'@param method method for optim call
-#'@param hessian parameter for optim call
 #'@param period expected periodicity of survival data. Can be passed in with cycloSurv input parameter.
 #'
 #'@return parameter estimates for weights, rhos, peaks and A
@@ -159,7 +158,7 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", pe
 #' Uses a basic flexsurvreg exponential mortality model to find the average hazard value, and fits a mixed normal distribution model to estimate the peaks, season durations, and weight distributions for the model. These estimates are not meant to be fully accurate but instead are meant to be good initial guesses for the fit_cyclomort function.
 #' 
 #' @param T set of Surv objects representing time of death or censorship
-#' @param n.seasons expected number of seasons within a period
+#' @param n expected number of seasons within a period
 #' @param null_fits original estimate for mortality rate assuming constant hazard function
 #' 
 #' @return a named vector listing intial guesses for parameter values, to be used in the fitting process

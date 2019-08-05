@@ -29,6 +29,8 @@ simPeriodicMorts(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
 \item{max.periods}{maximum number of cycles}
 
 \item{n.times}{number of x-values for plots (a higher value results in more precision for curves)}
+
+\item{plotme}{if TRUE, produces a set of plots for the simulation to display its accuracy}
 }
 \value{
 a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
@@ -70,5 +72,7 @@ par(mfrow = c(1,1))
 h <- with(as.matrix(T.morts1) \%>\% data.frame \%>\% subset(status == 1),
     hist(stop - floor(stop), breaks = 20, col = "grey", bor = "darkgrey"))
 
-with(attributes(T.morts1), curve(mwc(x, mus = peaks, rhos = findRho(durations), gammas = weights, tau = period)* mean(h$counts), add = TRUE))
+with(attributes(T.morts1), curve(mwc(x, mus = peaks, 
+                                     rhos = findRho(durations), gammas = weights, 
+                                     tau = period)* mean(h$counts), add = TRUE))
 }

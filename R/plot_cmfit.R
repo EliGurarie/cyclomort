@@ -8,7 +8,9 @@
 #' @param hazcolor color of lines for hazard function and confidence intervals
 #' @param alpha transparency of confidence interval polygon
 #' @param ymax maximum value for the y-axis - can be useful for scaling purposes
-#' @param prediction an optional \code{\link{prediction.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow. 
+#' @param prediction an optional \code{\link{predict.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow. 
+#' @param yaxt location for y-axis label
+#' @param ... additional parameters to histogram call (i.e., breaks, etc...)
 #' 
 #' @return a plot comparing the estimated mortality curve (based on parameter estimates)
 #' and the actual results (as a histogram).
