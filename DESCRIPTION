@@ -1,15 +1,16 @@
 Package: cyclomort
 Type: Package
-Title: R package for survival modeling with periodic mortality function
-Version: 1.0
+Title: R package for survival modeling with a periodic hazards
+Version: 1.0.1
 Date: 2019-02-07
 Authors@R: c(person("Eliezer", "Gurarie", role = c("aut", "cre"), email = "egurarie@umd.edu"), person("Thompson", "Peter", role = "ctb"))
-Description: This package can be used to fit survival curves to mortality data when the mortality rates may vary periodically over the course of a year. Migratory animals and even humans (more susceptible to many disesases during the winter) may exhibit a periodic mortality curve. Here we use a modified version of the Cauchy distribution to produce fits for mortality data when this periodicity may exist.
-License: What license is it under?
+Description: This package provides tools for estimating periodic hazard functions from right-censored time-to-event (e.g. mortality) data, as well as functions for simulation of periodic mortality processes, visualization of fits, and a priori hypothesis testing tools.  The package was inspired by the need to detect annual seasonal patterns in mortality of wildlife, thus, the central assumption is that the period itself is known (e.g. 1 year, 24 hours, etc.), but the number, intensity and duration of the peaks of increased hazard are unknown. 
+License: GPL (>= 3)
 RoxygenNote: 6.1.1
-Depends: magrittr, survival, plyr, flexsurv, stats, mixtools, lubridate, mvtnorm, scales, microbenchmark, fields, ggplot2
+Depends: magrittr, survival, plyr, flexsurv, stats, mixtools, lubridate, mvtnorm, scales, fields, ggplot2
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    microbenchmark
 VignetteBuilder: knitr
 Encoding: UTF-8

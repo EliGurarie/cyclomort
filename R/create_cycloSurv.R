@@ -17,23 +17,12 @@
 #'                   c(50, 50, 100, 150, 150, 200, 200, 250, 350, 500)) #in days
 #'censored = c(1, 1, 0, 1, 1, 0, 1, 0, 0, 0)
 #'period = 365
-#'morts = createCycloSurv(start = startTimes, end = endTimes, 
+#'morts = create_cycloSurv(start = startTimes, end = endTimes, 
 #'                        event = censored, period = period)
 #'@export
 #'
 
-createCycloSurv = function(start, end, event, data = NULL, t0 = NULL, period, timeunits = "days") {
-  
-  if(!is.null(data)){
-    cl = match.call()
-    parnames = names(cl)
-    start_index = match("start", parnames)
-    end_index = match("end", parnames)
-    event_index = match("event", parnames)
-    start = data[as.character(cl[start_index])][,1]
-    end = data[as.character(cl[end_index])][,1]
-    event = data[as.character(cl[event_index])][,1]
-  }
+create_cycloSurv = function(start, end, event, t0 = NULL, period, timeunits = "days") {
   
   if(is.POSIXct(start)) start <- as.Date(start)
   if(is.POSIXct(end)) end <- as.Date(end)

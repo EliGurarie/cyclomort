@@ -15,7 +15,7 @@ eval <- FALSE; if(eval){
 
 data("seasonalsex")
 
-seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$T) %>% as.data.frame) %>%
+seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$event) %>% as.data.frame) %>%
   arrange(sex,stop) %>% mutate(id = 1:length(start) %>% factor, 
                                status = c("Dead", "Censored")[2-status])
 ggplot(seasonsex.df, aes(x = start, y = id, col = sex)) + 
@@ -26,3 +26,10 @@ ss.dead <- seasonsex.df %>% subset(status == "Dead") %>% mutate(time = (stop - f
 ggplot(ss.dead, aes(time, y=..density.., fill = sex)) + geom_density(alpha = 0.1) + 
   geom_histogram(alpha=0.5, position="identity")  + 
     ggtitle("Male vs. Female (simulated) mortalities")
+
+
+# test differences
+
+sex.fit <- factorfit_cyclomort(event ~ sex, data = seasonalsex, n.seasons = 1)
+summary(sex.fit)
+plot(sex.fit, ymax = 1.3)

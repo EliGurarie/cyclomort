@@ -14,10 +14,10 @@
 #' 
 #' @return  a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
 #' 
-#' @example examples/simPeriodicMort_example.R
+#' @example examples/simulate_cycloMort_example.R
 #' @export
 
-simPeriodicMorts <- function(n, period = 1, 
+simulate_cycloMort <- function(n, period = 1, 
          meanhazard = 0.5, 
          peaks = c(0.25, 0.75), 
          durations = c(0.2, 0.1), 
@@ -33,12 +33,12 @@ simPeriodicMorts <- function(n, period = 1,
   censor.times = rep(censor.times, n)
   
   if(length(weights) == length(peaks) - 1){
-    warning("Filling out the weight vector.")
+    message("Filling out the weight vector.")
     weights <- c(weights, 1 - sum(weights))
   }
   
   if(sum(weights) != 1){
-    warning("Weights do not sum to 1 ... we kindly fixed that for you.")
+    message("Weights do not sum to 1 ... we kindly fixed that for you.")
     weights <- weights/sum(weights)
   }
   
@@ -89,7 +89,7 @@ simPeriodicMorts <- function(n, period = 1,
     plot(t, cum.mortality, type = "l", ylim = c(0,1.1), main = "cumulative mortality: F(t)")
     abline(h = 1, col = "grey", lty = 3, xpd = FALSE, lwd = 2)
     hist(rawTimes, breaks = seq(0, max.periods*period, period / 6), 
-         col = "grey", bor = "darkgrey", freq = FALSE, main = "pdf and histogram of simulated mortalities")
+         col = "grey", bor = "darkgrey", freq = FALSE, main = "simulated mortalities")
     lines(t, pdf.mortality, type = "l")
     suppressWarnings(par(par.init))
   }

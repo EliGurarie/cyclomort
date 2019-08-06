@@ -3,36 +3,11 @@
 \docType{data}
 \name{seasonalsex}
 \alias{seasonalsex}
-\title{#' Mortality data for Northwest territory boreal woodland caribou.
-#'
-#' 
-#' @usage 
-#' data(nwt_morts)
-#' 
-#' @format Data frame with 370 rows and the following columns:
-#' \describe{
-#'   \item{id}{ID of animal}
-#'   \item{region}{Subpopulation marker - for comparisons}
-#'   \item{start}{Date of beginning of collaring}
-#'   \item{end}{Date of death or censoring}
-#'   \item{status}{"Mort" or "Cens" (dead or censored)}
-#'   }
-#' 
-#' @examples 
-#' data(nwt_morts)
-#' require(ggplot2)
-#' ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
-#' aes(x = start, y = id, col = status)) + 
-#'   geom_errorbarh(aes(xmin = start, xmax = end))
-#' 
-#' @source Government of Northwest Territories, Canada
-#' @keywords data
-"nwt_morts"
-Simulated data of seasonal mortality data for two sex groups}
+\title{Simulated data of seasonal mortality data for two sex groups}
 \format{Simulated data of single-season mortalities for two sex groups:
 \describe{
   \item{sex}{female (F) or male (M)}
-  \item{T}{\code{\link{cycloSurv}} object of (censored) survival data}
+  \item{event}{\code{\link{cycloSurv}} object of (censored) survival data}
 }}
 \usage{
 data(seasonalsex)
@@ -58,7 +33,7 @@ eval <- FALSE; if(eval){
 
 data("seasonalsex")
 
-seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$T) \%>\% as.data.frame) \%>\%
+seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$event) \%>\% as.data.frame) \%>\%
   arrange(sex,stop) \%>\% mutate(id = 1:length(start) \%>\% factor, 
                                status = c("Dead", "Censored")[2-status])
 ggplot(seasonsex.df, aes(x = start, y = id, col = sex)) + 
@@ -69,5 +44,12 @@ ss.dead <- seasonsex.df \%>\% subset(status == "Dead") \%>\% mutate(time = (stop
 ggplot(ss.dead, aes(time, y=..density.., fill = sex)) + geom_density(alpha = 0.1) + 
   geom_histogram(alpha=0.5, position="identity")  + 
     ggtitle("Male vs. Female (simulated) mortalities")
+
+
+# test differences
+
+sex.fit <- factorfit_cyclomort(event ~ sex, data = seasonalsex, n.seasons = 1)
+summary(sex.fit)
+plot(sex.fit, ymax = 1.3)
 }
 \keyword{data}

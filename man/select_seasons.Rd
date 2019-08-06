@@ -7,7 +7,7 @@
 select_seasons(x, max.season = 4, lrt = FALSE, print = TRUE)
 }
 \arguments{
-\item{x}{\code{\link{createCycloSurv}} object}
+\item{x}{\code{\link{create_cycloSurv}} object}
 
 \item{max.season}{maximum number of seasons to fit}
 

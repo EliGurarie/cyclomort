@@ -2,7 +2,7 @@
 #' 
 #' Compute a delta AIC table (and, optionally, likelihood ratio tests) for a sequence of models with a different number of seasons
 #' #' 
-#' @param x \code{\link{createCycloSurv}} object
+#' @param x \code{\link{create_cycloSurv}} object
 #' @param max.season maximum number of seasons to fit
 #' @param lrt whether or not to perform and return the complete results of nested likelihood ratio tests. 
 #' @param print boolean parameter; if TRUE the function prints the table out as a side effect of creating the object
@@ -44,7 +44,7 @@ summarize_listOfFits <- function(listOfFits, lrt = lrt, print = print){
     fits.ll <- AIC.table$logLik %>% as.numeric
     ks <- AIC.table$d.f.
     
-    chisq.vals <- outer(fits.ll, fits.ll, `-`) %>% abs %>% '*'(2)
+    chisq.vals <- (outer(fits.ll, fits.ll, `-`) %>% abs) * 2
     dfs <- outer(ks, ks, `-`) %>% abs
     p.vals <- 1-pchisq(chisq.vals, ks)
     mat.names <- outer(0:n.seasons, 0:n.seasons, paste, sep = "-")
