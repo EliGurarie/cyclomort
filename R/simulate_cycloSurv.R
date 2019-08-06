@@ -14,10 +14,10 @@
 #' 
 #' @return  a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
 #' 
-#' @example examples/simulate_cycloMort_example.R
+#' @example examples/simulate_cycloSurv_example.R
 #' @export
 
-simulate_cycloMort <- function(n, period = 1, 
+simulate_cycloSurv <- function(n, period = 1, 
          meanhazard = 0.5, 
          peaks = c(0.25, 0.75), 
          durations = c(0.2, 0.1), 

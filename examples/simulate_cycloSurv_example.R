@@ -1,5 +1,5 @@
 par(oma = c(2,0,2,0))
-T.morts1 <- simulate_cycloMort(1000, period = 1, 
+T.morts1 <- simulate_cycloSurv(1000, period = 1, 
                              meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
                              durations = c(0.2, 0.1), 
@@ -13,7 +13,7 @@ with(attributes(T.morts1),
 
 
 par(oma = c(2,0,2,0))
-T.morts2 <- simulate_cycloMort(300, period = 365, 
+T.morts2 <- simulate_cycloSurv(300, period = 365, 
                              meanhazard = 0.5/365, 
                              peaks = c(100, 250), 
                              durations = c(20, 40), 

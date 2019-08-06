@@ -41,12 +41,12 @@ curve(mwc(x, mus = c(0.25, 0.5, 0.75), rhos = c(0.6, 0.5, 0.4), gammas = c(0.5, 
 
 Here the effects of the parameters on the graph become quite clear. Note how the components of the mixture with higher rho values have distributions with more data closer to the peak.
 
-##The simulate_cycloMort function: verificiation of fit accuracy
+##The simulate_cycloSurv function: verificiation of fit accuracy
 
-Using the simulate_cycloMort function, we can verify that the fit_cyclomort function provides accurate estimates for each parameter. This function allows us to produce a set of random "Surv" objects that follow the distribution described by the set of input parameters. By producing a set of random mortalities we can observe what a mortality function with the specified distribution might actually look like.
+Using the simulate_cycloSurv function, we can verify that the fit_cyclomort function provides accurate estimates for each parameter. This function allows us to produce a set of random "Surv" objects that follow the distribution described by the set of input parameters. By producing a set of random mortalities we can observe what a mortality function with the specified distribution might actually look like.
 
 ```{r, fig.width = 7, fig.height = 5, fig.align = "center"}
-T.morts1 <- simulate_cycloMort(300, period = 365, 
+T.morts1 <- simulate_cycloSurv(300, period = 365, 
                              meanhazard = 0.5/365, 
                              peaks = c(100, 250), 
                              durations = c(20, 40), 
@@ -60,7 +60,7 @@ T.morts1 <- simulate_cycloMort(300, period = 365,
 Given a set of mortality data (formatted as a list of times of death/censoring with information about the current state (dead/censored) of each observation), the fit_cyclomort function estimates the parameters of the aforementioned Cauchy distribution using maximum likelihood estimation. The fit_cyclomort function returns a cmfit object; we have included print, summary, predict and plot functions for this class of objects to make these fits easier to interpret.
 
 ```{r}
-T.morts1 <- simulate_cycloMort(300, period = 365, 
+T.morts1 <- simulate_cycloSurv(300, period = 365, 
                              meanhazard = 0.5/365, 
                              peaks = c(100, 250), 
                              durations = c(20, 40), 
@@ -87,7 +87,7 @@ An important aspect of this model fitting is being able to definitively characte
 The select_seasons function returns a cmfitlist object which is equipped with unique print and summary functions. cmfitlist objects are simply lists of cmfit objects (each element of the list being the cmfit object representing a different seasonal assumption), but the summary.cmfitlist function allows for easier comparison of the different fits.
 
 ```{r}
-T.morts1 <- simulate_cycloMort(300, period = 365, 
+T.morts1 <- simulate_cycloSurv(300, period = 365, 
                              meanhazard = 0.5/365, 
                              peaks = c(100, 250), 
                              durations = c(20, 40), 
