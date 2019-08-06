@@ -5,8 +5,8 @@
 \title{Plot cmfit objects}
 \usage{
 \method{plot}{cmfit}(x, CI = TRUE, histogram = TRUE, add = FALSE,
-  nreps = 10000, hazcolor = "black", alpha = 0.3, ymax = NULL,
-  prediction = NULL, yaxt = par()$yaxt, ...)
+  months = TRUE, nreps = 10000, hazcolor = "black", alpha = 0.3,
+  ymax = NULL, prediction = NULL, yaxt = par()$yaxt, ...)
 }
 \arguments{
 \item{x}{a cmfit object}
@@ -16,6 +16,8 @@
 \item{histogram}{boolean variable determining whether a histogram will be included with the hazard}
 
 \item{add}{boolean variable determining whether the plot will be added to an existing plot}
+
+\item{months}{boolean parameter, if TRUE then x-axis labels are months, otherwise they are numeric within [0,1]}
 
 \item{nreps}{number of repetitions of random parameter sampling; used to develop confidence intervals}
 
@@ -39,7 +41,7 @@ and the actual results (as a histogram).
 Plot cmfit objects
 }
 \examples{
-T.morts1 <- simPeriodicMorts(1000, period = 365, 
+T.morts1 <- simulate_cycloMort(1000, period = 365, 
                              meanhazard = 0.3 / 365, 
                              peaks = c(0.25 * 365, 0.75 * 365), 
                              durations = c(0.3 * 365, 0.1 * 365), 

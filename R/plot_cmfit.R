@@ -4,6 +4,7 @@
 #' @param CI boolean variable determining whether confidence intervals are included in the hazard function estimate
 #' @param histogram boolean variable determining whether a histogram will be included with the hazard
 #' @param add boolean variable determining whether the plot will be added to an existing plot
+#' @param months boolean parameter, if TRUE then x-axis labels are months, otherwise they are numeric within [0,1]
 #' @param nreps number of repetitions of random parameter sampling; used to develop confidence intervals
 #' @param hazcolor color of lines for hazard function and confidence intervals
 #' @param alpha transparency of confidence interval polygon
@@ -18,10 +19,10 @@
 #' @example examples/cyclomortFit_example.R
 #' @export
 
-plot.cmfit = function(x, CI = TRUE, histogram = TRUE, add = FALSE, 
+plot.cmfit = function(x, CI = TRUE, histogram = TRUE, add = FALSE, months = TRUE,
                       nreps = 1e4, hazcolor = "black", alpha = 0.3, 
                       ymax = NULL, prediction = NULL, yaxt = par()$yaxt, ...) {
-
+  
   if(is.null(prediction)){
     prediction <- predict(x, CI = CI, nreps = nreps, type = "hazard")
     prediction$t <- prediction$t / x$period
@@ -40,9 +41,17 @@ plot.cmfit = function(x, CI = TRUE, histogram = TRUE, add = FALSE,
     par(mar = mars, bty = "u")
     
     h = hist(timeOfYearData, 
-             xlab = "Time within a period", ylab = "Number of mortalities",
-             main = "", col = "grey", bor = "darkgrey", freq = TRUE,
-             add = add, plot = histogram, ... )
+             xlab = ifelse(months, "Time of year", "Time within a period"), 
+             ylab = "Number of mortalities", main = "", col = "grey", 
+             bor = "darkgrey", freq = TRUE, add = add, xaxt = 'n', ... )
+    if (months) {
+      axis(side = 1, at = seq(0, 1, length.out = 12), 
+           labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+    } else {
+      axis(side = 1, at = seq(0, 1, length.out = 6), 
+           labels = seq(0, 1, length.out = 6))
+    }
     
    }
   
@@ -54,8 +63,16 @@ plot.cmfit = function(x, CI = TRUE, histogram = TRUE, add = FALSE,
     xmax = par("xaxp")[2]
     plot.window(xlim = c(0, xmax), ylim = c(0, ymax))
     asp = par("xaxp")[3]
-    axis(side = 1, at = 0:(asp * xmax) / asp, labels = 0:asp / asp)
-    mtext("Time within a period", side = 1, at = xmax / 2, line = 2)
+    if (months) {
+      axis(side = 1, at = seq(0, xmax, length.out = 12), 
+           labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+    } else {
+      axis(side = 1, at = seq(0, xmax, length.out = 6), 
+           labels = seq(0, 1, length.out = 6))
+    }
+    mtext(ifelse(months, "Time of year", "Time within a period")
+          , side = 1, at = xmax / 2, line = 2)
   }
   
   hazard.labs <- pretty(prediction$CI)
