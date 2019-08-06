@@ -19,8 +19,6 @@ create_cycloSurv(start, end, event, t0 = NULL, period,
 \item{period}{length of one period in the input data}
 
 \item{timeunits}{units that dates are inputted in if dates are being used}
-
-\item{data}{data.frame object containing start, end and event data}
 }
 \value{
 a Surv object with an attribute "period" that reads the period.

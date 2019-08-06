@@ -23,7 +23,7 @@ Compute a delta AIC table (and, optionally, likelihood ratio tests) for a sequen
 #'
 }
 \examples{
-T.morts1 <- simPeriodicMorts(1000, period = 1, 
+T.morts1 <- simulate_cycloMort(1000, period = 1, 
                              meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
                              durations = c(0.2, 0.1), 

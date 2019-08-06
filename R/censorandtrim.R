@@ -15,7 +15,6 @@ censor.cycloSurv <- function(x, censor.times){
   x2
 }
 
-#' @param x cycloSurv object
 #' @param trim.times time of (left) trimming, or vector of times of trimming
 #' @return trimmed Surv object
 #' @rdname censor.cycloSurv

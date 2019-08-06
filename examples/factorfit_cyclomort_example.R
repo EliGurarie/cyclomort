@@ -1,6 +1,6 @@
 # fit factorial model
 data(seasonalsex)
-x <- factorfit_cyclomort(T ~ sex, data = seasonalsex, n.seasons = 1)
+x <- factorfit_cyclomort(event ~ sex, data = seasonalsex, n.seasons = 1)
 
 # summary
 summary(x, coefs = TRUE)

@@ -3,7 +3,6 @@
 #'@param start a vector measuring time of birth (as a POSIXct, numeric, or Date)
 #'@param end a vector measuring time of death or censoring (as a POSIXct, numeric, or Date)
 #'@param event a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
-#'@param data data.frame object containing start, end and event data
 #'@param t0 reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIX).
 #'@param period length of one period in the input data
 #'@param timeunits units that dates are inputted in if dates are being used

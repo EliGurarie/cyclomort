@@ -2,8 +2,8 @@
 
 eval <- FALSE; if(eval){
   n <- 100
-  T.male = simPeriodicMorts(n, period = 1, meanhazard = 0.3, peaks = .25, durations = .3)
-  T.female = simPeriodicMorts(n, period = 1, meanhazard = 0.3, peaks = .75, durations = .3)
+  T.male = simulate_cycloMort(n, period = 1, meanhazard = 0.3, peaks = .25, durations = .3)
+  T.female = simulate_cycloMort(n, period = 1, meanhazard = 0.3, peaks = .75, durations = .3)
   T <- with(rbind(T.male, T.female) %>% data.frame,
             createCycloSurv(start = start, end = stop, 
                             event = status, period = 1))

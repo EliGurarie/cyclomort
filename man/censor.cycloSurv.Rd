@@ -15,8 +15,6 @@ trim.cycloSurv(x, trim.times)
 \item{censor.times}{time of  (right) censoring, or vector of times of censoring}
 
 \item{trim.times}{time of (left) trimming, or vector of times of trimming}
-
-\item{x}{cycloSurv object}
 }
 \value{
 Censored Surv object
