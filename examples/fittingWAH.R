@@ -6,7 +6,7 @@ START_TIME = "2010-08-01"
 CENSOR_TIME = "2016-09-01"
 difference = difftime(CENSOR_TIME, START_TIME, units = "days")
 
-wah = createCycloSurv(start = wah_morts$start, end = wah_morts$end, event = wah_morts$Fate == "DEAD", period = 365, t0 = START_TIME)
+wah = create_cycloSurv(start = wah_morts$start, end = wah_morts$end, event = wah_morts$Fate == "DEAD", period = 365, t0 = START_TIME)
 wah_pre2017 = censor.cycloSurv(wah, censor.times = difference)
 wah_post2017 = trim.cycloSurv(wah, trim.times = difference)
 

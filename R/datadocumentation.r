@@ -27,7 +27,7 @@
 
 #' Simulated data of seasonal mortality data for two sex groups
 #' 
-#' See examples below for the process of simulating and visualizing these data using \code{\link{simPeriodicMorts}}, and an example of analyzing these data with \code{\link{factorfit_cyclomort}}.
+#' See examples below for the process of simulating and visualizing these data using \code{\link{simulate_cycloSurv}}, and an example of analyzing these data with \code{\link{factorfit_cyclomort}}.
 #'
 #' @usage data(seasonalsex)
 #' 

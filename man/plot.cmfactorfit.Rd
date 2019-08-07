@@ -50,9 +50,11 @@ plot(sim.morts.fit, CI.level = 0.5, months = FALSE, histogram = FALSE, add = TRU
 
 # predict time to event given a start at times (this is a much slower calculation!)
 
-timetoevent <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent", CI = TRUE, nreps = 1e2)
+timetoevent <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent",
+                       CI = TRUE, nreps = 1e2)
 with(timetoevent, {
-  plot(t, fit, type = "l", lwd = 2,  main = "expected time to event", ylim = c(100,365), ylab = "days")
+  plot(t, fit, type = "l", lwd = 2,  main = "expected time to event", 
+       ylim = c(100,365), ylab = "days")
   lines(t, CI[1,], lty = 3)
   lines(t, CI[2,], lty = 3)
 })

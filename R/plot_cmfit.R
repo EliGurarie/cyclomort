@@ -2,6 +2,7 @@
 #' 
 #' @param x a cmfit object
 #' @param CI boolean variable determining whether confidence intervals are included in the hazard function estimate
+#' @param CI.level confidence level (default 0.95) for CIs (if CI is TRUE)
 #' @param histogram boolean variable determining whether a histogram will be included with the hazard
 #' @param add boolean variable determining whether the plot will be added to an existing plot
 #' @param monthlabs whether or not to label the x-axis with months - suitable for (common) annual seasonal data.  If FALSE, lables are numeric within the period [0,1]

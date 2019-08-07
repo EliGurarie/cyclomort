@@ -14,6 +14,8 @@
 
 \item{CI}{boolean variable determining whether confidence intervals are included in the hazard function estimate}
 
+\item{CI.level}{confidence level (default 0.95) for CIs (if CI is TRUE)}
+
 \item{histogram}{boolean variable determining whether a histogram will be included with the hazard}
 
 \item{add}{boolean variable determining whether the plot will be added to an existing plot}

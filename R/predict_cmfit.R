@@ -2,20 +2,20 @@
 #' 
 #' Obtain predictions and confidence intervals for the hazard function or the time to event from a fitted cyclomort object.
 #' 
-#'  @details Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
+#' @details Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
 #' 
 #' @param x a cmfit object
 #' @param t times for prediction.  By default, covers 100 observations over a single period. 
 #' @param type either \code{hazard} or \code{timetoevent} - dictates what function is called
 #' @param CI whether or not to compute confidence intervals
-#' @param CI.level confidence level (default 95%) for intervals
+#' @param CI.level confidence level (default 0.95) for CIs (if CI is TRUE)
 #' @param nreps number of samples drawn to generate confidence intervals.  The default 10^3 is generally sufficient, and very fast for the hazard function, but possibly prohibitively slow for the time-to-event functionality.  
 #' 
 #' @example examples/predict_cmfit_example.R
 #' @export
 
-predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2), 
-                          type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1e3){
+predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2), type = "hazard", 
+                          CI = FALSE, CI.level = 0.95, nreps = 1e3) {
 
     # some functions for time to event modeling
     ## square of cumulative survival function at interval t0 to t1 - 1/2
@@ -24,7 +24,8 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2),
         }
     ## computes median time to event starting at time "time" with given parameters
       timetoeventfun <- function(time, mus, rhos, gammas, tau, meanhazard) {
-        optimize(cumsurvsqd, t0 = time, mus = mus, rhos = rhos, gammas = gammas, tau = tau, interval = c(time, time + 3/meanhazard))$minimum - time
+        optimize(cumsurvsqd, t0 = time, mus = mus, rhos = rhos, gammas = gammas, 
+                 tau = tau, interval = c(time, time + 3/meanhazard))$minimum - time
       }
     ## vectorized version of timetoevent function
       ttefun.vec <- Vectorize(timetoeventfun, vectorize.args = c("time"))
