@@ -4,9 +4,10 @@
 \alias{plot.cmfit}
 \title{Plot cmfit objects}
 \usage{
-\method{plot}{cmfit}(x, CI = TRUE, histogram = TRUE, add = FALSE,
-  months = TRUE, nreps = 10000, hazcolor = "black", alpha = 0.3,
-  ymax = NULL, prediction = NULL, yaxt = par()$yaxt, ...)
+\method{plot}{cmfit}(x, CI = TRUE, CI.level = 0.95, histogram = TRUE,
+  add = FALSE, monthlabs = FALSE, nreps = 5000, hazcolor = "black",
+  alpha = 0.3, ymax = NULL, prediction = NULL, yaxt = par()$yaxt,
+  ...)
 }
 \arguments{
 \item{x}{a cmfit object}
@@ -17,9 +18,9 @@
 
 \item{add}{boolean variable determining whether the plot will be added to an existing plot}
 
-\item{months}{boolean parameter, if TRUE then x-axis labels are months, otherwise they are numeric within [0,1]}
+\item{monthlabs}{whether or not to label the x-axis with months - suitable for (common) annual seasonal data.  If FALSE, lables are numeric within the period [0,1]}
 
-\item{nreps}{number of repetitions of random parameter sampling; used to develop confidence intervals}
+\item{nreps}{number of samples from parameter estimates for confidence intervals (see \code{\link{predict.cmfit}})}
 
 \item{hazcolor}{color of lines for hazard function and confidence intervals}
 
@@ -31,7 +32,7 @@
 
 \item{yaxt}{location for y-axis label}
 
-\item{...}{additional parameters to histogram call (i.e., breaks, etc...)}
+\item{...}{additional parameters to \code{\link{hist}} (e.g., number of breaks, etc...)}
 }
 \value{
 a plot comparing the estimated mortality curve (based on parameter estimates)
@@ -41,7 +42,7 @@ and the actual results (as a histogram).
 Plot cmfit objects
 }
 \examples{
-T.morts1 <- simulate_cycloMort(1000, period = 365, 
+T.morts1 <- simulate_cycloSurv(1000, period = 365, 
                              meanhazard = 0.3 / 365, 
                              peaks = c(0.25 * 365, 0.75 * 365), 
                              durations = c(0.3 * 365, 0.1 * 365), 
@@ -58,4 +59,7 @@ attributes(T.morts1)
 AIC(fits)
 BIC(fits)
 logLik(fits)
+}
+\seealso{
+predict.cmfit
 }

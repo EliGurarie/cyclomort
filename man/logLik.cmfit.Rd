@@ -16,7 +16,7 @@ log-likelihod for the cmfit object to be used for comparison with other fits
 Determine log-likelihood for a cmfit object
 }
 \examples{
-T.morts1 <- simulate_cycloMort(1000, period = 365, 
+T.morts1 <- simulate_cycloSurv(1000, period = 365, 
                              meanhazard = 0.3 / 365, 
                              peaks = c(0.25 * 365, 0.75 * 365), 
                              durations = c(0.3 * 365, 0.1 * 365), 

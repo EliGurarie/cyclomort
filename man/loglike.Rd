@@ -22,7 +22,7 @@ the maximum likelihood value for this set of data
 Obtain log-likelihood value from a data set given a set of parameter values
 }
 \examples{
-T.morts1 <- simulate_cycloMort(1000, period = 1, 
+T.morts1 <- simulate_cycloSurv(1000, period = 1, 
                              meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
                              durations = c(0.2, 0.1), 

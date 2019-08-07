@@ -5,30 +5,59 @@
 \title{Prediction method for cyclomort fits}
 \usage{
 \method{predict}{cmfit}(x, t = seq(0, x$period, length = 100),
-  type = "hazard", CI = FALSE, CI.level = 0.05, nreps = 10000)
+  type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1000)
 }
 \arguments{
 \item{x}{a cmfit object}
 
-\item{t}{times for prediction}
+\item{t}{times for prediction.  By default, covers 100 observations over a single period.}
 
-\item{type}{either "hazard" or "timetoevent" - dictates what function is called}
+\item{type}{either \code{hazard} or \code{timetoevent} - dictates what function is called}
 
-\item{CI}{whether or not to compute 95\% confidence intervals}
+\item{CI}{whether or not to compute confidence intervals}
 
-\item{CI.level}{confidence level (must be on (0, 0.5) interval) for CIs if CI is TRUE}
+\item{CI.level}{confidence level (default 95%) for intervals}
 
-\item{nreps}{number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast}
+\item{nreps}{number of samples drawn to generate confidence intervals.  The default 10^3 is generally sufficient, and very fast for the hazard function, but possibly prohibitively slow for the time-to-event functionality.}
 }
 \description{
-Obtain predictions and - optionally - confidence intervals for the hazard function from a fitted periodic hazard functon. Confidence intervals are produced by assuming that the parameters follow a multivariate normal distribution
+Obtain predictions and confidence intervals for the hazard function or the time to event from a fitted cyclomort object.
+}
+\details{
+@details Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
 }
 \examples{
-T <- simulate_cycloMort(300, period = 1, peaks = c(0.3, 0.8), 
+# simulate two-peak mortality process
+sim.morts <- simulate_cycloSurv(300, period = 1, peaks = c(0.3, 0.8), 
                       durations = c(0.15, 0.20), weights = c(3, 2)/5, 
                       meanhazard = 1, plotme = FALSE, max.periods = 6)
-T.fit <- fit_cyclomort(T, n.seasons = 2)
-predictions = predict(T.fit, t = 0.5, CI = TRUE, type = "hazard")
+sim.morts <- simulate_cycloSurv(300, period = 365, peaks = c(0.3, 0.8)*365, 
+                                durations = c(0.15, 0.20)*365, weights = c(3, 2)/5, 
+                                meanhazard = 1/365, plotme = FALSE, max.periods = 6)
 
-plot(T.fit)
+# estimate parameters
+sim.morts.fit <- fit_cyclomort(sim.morts, n.seasons = 2)
+
+# compute predictions for one moment in time (with 95\% confidence interval)
+predict(sim.morts.fit, CI = TRUE, type = "hazard")
+
+# compute predictions for a range of times
+predict(sim.morts.fit, t = 1:365, CI = FALSE, type = "hazard")
+
+# these predictions are used (internally) in the plot.cmfit method:
+plot(sim.morts.fit, CI.level = 0.95, months = FALSE, histogram = FALSE, monthlabs = TRUE)
+plot(sim.morts.fit, CI.level = 0.8, months = FALSE, histogram = FALSE, add = TRUE)
+plot(sim.morts.fit, CI.level = 0.5, months = FALSE, histogram = FALSE, add = TRUE)
+
+
+# predict time to event given a start at times (this is a much slower calculation!)
+
+timetoevent <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent", CI = TRUE, nreps = 1e2)
+with(timetoevent, {
+  plot(t, fit, type = "l", lwd = 2,  main = "expected time to event", ylim = c(100,365), ylab = "days")
+  lines(t, CI[1,], lty = 3)
+  lines(t, CI[2,], lty = 3)
+})
+
+
 }

@@ -1,100 +1,119 @@
 #' Prediction method for cyclomort fits
 #' 
-#' Obtain predictions and - optionally - confidence intervals for the hazard function from a fitted periodic hazard functon. Confidence intervals are produced by assuming that the parameters follow a multivariate normal distribution 
+#' Obtain predictions and confidence intervals for the hazard function or the time to event from a fitted cyclomort object.
+#' 
+#'  @details Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
 #' 
 #' @param x a cmfit object
-#' @param t times for prediction
-#' @param type either "hazard" or "timetoevent" - dictates what function is called
-#' @param CI whether or not to compute 95\% confidence intervals
-#' @param CI.level confidence level (must be on (0, 0.5) interval) for CIs if CI is TRUE
-#' @param nreps number of samples drawn to generate confidence intervals.  The default 10^4 is more than enough, but is a little sluggish. 10^3 gives slightly rougher intervals, but is very fast
+#' @param t times for prediction.  By default, covers 100 observations over a single period. 
+#' @param type either \code{hazard} or \code{timetoevent} - dictates what function is called
+#' @param CI whether or not to compute confidence intervals
+#' @param CI.level confidence level (default 95%) for intervals
+#' @param nreps number of samples drawn to generate confidence intervals.  The default 10^3 is generally sufficient, and very fast for the hazard function, but possibly prohibitively slow for the time-to-event functionality.  
 #' 
 #' @example examples/predict_cmfit_example.R
 #' @export
 
-
 predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2), 
-                          type = "hazard", CI = FALSE, CI.level = 0.05, nreps = 1e4){
-  
-  if (! type %in% c("hazard", "timetoevent")) stop("Type must be 'hazard' or 'timetoevent'")
-  if (CI.level <= 0 | CI.level >= 0.5) stop("Invalid confidence level")
-  
-  needToFixVectorFlag = (length(t) == 1)
+                          type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1e3){
+
+    # some functions for time to event modeling
+    ## square of cumulative survival function at interval t0 to t1 - 1/2
+        cumsurvsqd <- function(t1, t0, mus, rhos, gammas, tau){
+          (exp(-(imwc(t1, mus, rhos, gammas, tau) - imwc(t0, mus, rhos, gammas, tau))) - 0.5)^2
+        }
+    ## computes median time to event starting at time "time" with given parameters
+      timetoeventfun <- function(time, mus, rhos, gammas, tau, meanhazard) {
+        optimize(cumsurvsqd, t0 = time, mus = mus, rhos = rhos, gammas = gammas, tau = tau, interval = c(time, time + 3/meanhazard))$minimum - time
+      }
+    ## vectorized version of timetoevent function
+      ttefun.vec <- Vectorize(timetoeventfun, vectorize.args = c("time"))
+    
+  if (! type %in% c("hazard", "timetoevent")) stop("Type must be one of 'hazard' or 'timetoevent'")
+  if (CI.level < 0 | CI.level > 1) stop("Invalid confidence level")
+  if(!CI) CI.level <- NULL
+        
+  needToFixVectorFlag = length(t) == 1
   if (needToFixVectorFlag) t = c(t, t)
-  if (type == "timetoevent") {
-    if (x$k > 1) {
+  
+  # number of peaks k >  1
+  if (x$k > 1) {
       Mu <- x$optim$par
       Sigma <- solve(x$optim$hessian)
+      tau <- x$period
       
-      lrhos = Mu[grepl("lrho", names(Mu))]
-      mus = Mu[grepl("mu", names(Mu))] * x$period
-      gammas = Mu[grepl("gamma", names(Mu))] / x$period
+      rhos <- expit(Mu[grepl("lrho", names(Mu))])
+      mus <- Mu[grepl("mu", names(Mu))] * tau
+      gammas <- Mu[grepl("gamma", names(Mu))] / tau
+      mh <- x$estimates$meanhazard[1,1]
       
-      cumsurvfun = function(t1, t0, mus, rhos, gammas, tau) {
-        exp(-(imwc(t1, mus, rhos, gammas, tau) - imwc(t0, mus, rhos, gammas, tau))) - 0.5
-      }
-      timetodeathfun = function(time, mus, rhos, gammas, tau) {
-        uniroot(cumsurvfun, t0 = time, mus = mus, rhos = rhos, gammas = gammas, tau = tau, interval = unlist(c(time, time + 5/x$estimates$meanhazard[1])))$root - time
-      }
+      if(type == "hazard")
+        fit <- mwc(t = t, mus = mus, rhos = rhos, gammas = gammas, tau = tau)
       
-      timetodeath.hat <- Vectorize(timetodeathfun, vectorize.args = c("time"))(t, mus, expit(lrhos), gammas, x$period) / x$period
-    } else {
-      timetodeath.hat <- rep(log(2) / x$estimates$meanhazard[1], 1e2)
-    }
-    
-    if(CI){
-      if (x$k > 1) {
+      if(type == "timetoevent")
+        fit <- ttefun.vec(t, mus = mus, rhos = rhos, gammas = gammas, 
+                                   tau = tau, meanhazard = mh)
+      
+      if(CI){
         pars.sample <- mvtnorm::rmvnorm(nreps, Mu, Sigma)
-        parnames <- colnames(pars.sample)
-        sample.fits <- aaply(pars.sample, 1, function(p){
-          Vectorize(timetodeathfun, vectorize.args = c("time"))(t,
-              mus = p[grep("mu", parnames)] * x$period, 
-              rhos = expit(p[grep("rho", parnames)]),
-              gammas = p[grep("gamma", parnames)] / x$period,
-              tau = 1) / x$period
-        })
-        CIs <- apply(sample.fits, 2, quantile, c(CI.level / 2, 1 - CI.level / 2))
-      } else {
-        CIs <- rbind(rep(log(2) / x$estimates$meanhazard[3], 1e2), rep(log(2) / x$estimates$meanhazard[2], 1e2))
-      }
+        
+        mu.index <- grep("mu", colnames(pars.sample))
+        lrho.index <- grep("lrho", colnames(pars.sample))
+        gamma.index <- grep("gamma", colnames(pars.sample))
+        
+        if(type == "hazard"){
+          message(paste0("\nEstimating ", CI.level*100, "% confidence intervals for the *hazard function* drawing ", 
+                         nreps, " samples from the parameter estimates.\n"))
+          sample.fits <- aaply(pars.sample, 1, function(p){
+            mwc(t, mus = p[mu.index] * tau, 
+                rhos = expit(p[lrho.index]),
+                gammas = p[gamma.index] / tau,
+                tau = tau)
+          })
+        }
+        if(type == "timetoevent"){
+          
+          message(paste0("Estimating ", CI.level*100, "% confidence intervals for the expected *time to event* using ", 
+                         nreps, " samples from the parameter estimates.\n"))
+          if(nreps >= 1e3)
+            warning(paste0("Using 1000 or more samples to obtain confidence intervals for the expected *time to event* process might be prohibitively slow.  Consider lowering the nreps to, e.g, 100."))
+          
+          sample.fits <- aaply(pars.sample, 1, function(p){
+            ttefun.vec(t,  mus = p[mu.index] * tau, 
+                       rhos = expit(p[lrho.index]),
+                       gammas = p[gamma.index] / tau, 
+                       tau = tau,
+                       meanhazard = mh)
+          })
+        }
+        CIs <- apply(sample.fits, 2, quantile, c((1 - CI.level)/2, (1 + CI.level)/2))
     } else CIs <- NULL
+  }
+
+  # number of peaks = 1
+  if (x$k == 1){
+    if(type == "hazard"){
+      fit <- rep(x$estimates$meanhazard[1,1], length(t))
+      if(CI) {
+        CIs <- rbind(rep(x$estimates$meanhazard[2], length(t)), rep(x$estimates$meanhazard[3], length(t)))
+      } else CIs <- NULL}
     
-    if (needToFixVectorFlag) return(list(t = t[1], fit = timetodeath.hat[1], CI = CIs[,1]))
-    return(list(t = t, fit = timetodeath.hat, CI = CIs, type = type))
+    if (type == "timetoevent"){
+      timetoevent.hat <- rep(log(2) / x$estimates$meanhazard[1,1], length(t))
+      if(CI) {
+        CIs <- rbind(rep(log(2) / x$estimates$meanhazard[3], length(t)), rep(log(2) / x$estimates$meanhazard[2], length(t)))
+      } else CIs <- NULL}
   }
   
-  if (x$k > 1) {
-    Mu <- x$optim$par
-    Sigma <- solve(x$optim$hessian)
-    
-    lrhos = Mu[grepl("lrho", names(Mu))]
-    mus = Mu[grepl("mu", names(Mu))]
-    gammas = Mu[grepl("gamma", names(Mu))]
-    hazard.hat <- mwc(t = t / x$period, mus = mus, rhos = expit(lrhos), gammas = gammas, tau = 1)
-  } else { 
-    hazard.hat <- rep(x$estimates$meanhazard[1], 1e2)
-  }
+  if (needToFixVectorFlag) 
+    result <- list(t = t[1], fit = fit, CI = CIs[,1], CI.level = CI.level, type = type, nreps = nreps) else
+      result <- list(t = t, fit = fit, 
+                     CI = CIs, CI.level = CI.level, 
+                     type = type, nreps = nreps)
   
-  if(CI){
-    if (x$k > 1) {
-      pars.sample <- mvtnorm::rmvnorm(nreps, Mu, Sigma)
-      parnames <- colnames(pars.sample)
-      sample.fits <- aaply(pars.sample, 1, function(p){
-        mwc(t / x$period, mus = p[grep("mu", parnames)], 
-            rhos = expit(p[grep("rho", parnames)]),
-            gammas = p[grep("gamma", parnames)],
-            tau = 1)
-      })
-      CIs <- apply(sample.fits, 2, quantile, c(CI.level / 2, 1 - CI.level / 2))
-    } else {
-      CIs <- rbind(rep(x$estimates$meanhazard[2], 1e2), rep(x$estimates$meanhazard[3], 1e2))
-    }
-  } else CIs <- NULL
-  
-  if (needToFixVectorFlag) return(list(t = t[1], fit = hazard.hat[1], CI = CIs[,1]))
-  return(list(t = t, fit = hazard.hat, CI = CIs, type = type))
+  return(result)
 }
 
 logit <- function(p){ log(p/(1-p)) }
-
 expit <- function(p){ exp(p)/(1+exp(p)) }
+
