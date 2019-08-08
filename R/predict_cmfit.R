@@ -112,6 +112,10 @@ predict.cmfit <- function(object, t = seq(0, object$period, length = 1e2), type 
                      CI = CIs, CI.level = CI.level, 
                      type = type, nreps = nreps)
   
+  if (any(result$fit < 0) | any(result$CI < 0)) warning("Some sampled values were less than zero. Manually correcting to provide sensible results.")
+  result$fit[result$fit < 0] = 0
+  result$CI[result$CI < 0] = 0
+  
   return(result)
 }
 
