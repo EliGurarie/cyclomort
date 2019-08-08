@@ -1,27 +1,9 @@
-#' Determine AIC for a cmfit object
-#' 
-#' @param x a cmfit object
-#' 
-#' @return AIC (a measure of model accuracy) for the cmfit object
-#' 
-#' @example examples/cyclomortFit_example.R
-#' 
 #' @export
-
-AIC.cmfit = function(x) {
-  x$AIC
+AIC.cmfit = function(object) {
+  object$AIC
 }
 
-#' Determine BIC for a cmfit object
-#' 
-#' @param x a cmfit object
-#' 
-#' @return BIC (a measure of model accuracy) for the cmfit object
-#' 
-#' @example examples/cyclomortFit_example.R
-#' 
 #' @export
-
-BIC.cmfit = function(x) {
-  x$BIC
+BIC.cmfit = function(object) {
+  object$BIC
 }
