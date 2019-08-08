@@ -81,9 +81,9 @@ plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, add = FAL
   hazard.labs <- pretty(prediction$CI)
   if (!add) {
     # if we don't have a histogram our hazard axis should be on the left!
-    if(yaxt != "n")  axis(ifelse(histogram, 4, 2), at = hazard.labs * K, hazard.labs)
-    mtext(side = ifelse(histogram, 4, 2), line = 2.5, "Estimated hazard function")
-  }
+    if(yaxt != "n")  axis(ifelse(histogram, 4, 2), at = hazard.labs * K, hazard.labs, col = hazcolor)
+    mtext(side = ifelse(histogram, 4, 2), line = par()$mgp[1], "Estimated hazard function", las = 0, col = hazcolor)
+    }
   
   if (CI) {
     with(prediction, {

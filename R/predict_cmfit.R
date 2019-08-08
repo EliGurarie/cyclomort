@@ -63,7 +63,7 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2), type = "hazard"
         gamma.index <- grep("gamma", colnames(pars.sample))
         
         if(type == "hazard"){
-          message(paste0("\nEstimating ", CI.level*100, "% confidence intervals for the *hazard function* drawing ", 
+          message(paste0("Estimating ", CI.level*100, "% confidence intervals for the *hazard function* drawing ", 
                          nreps, " samples from the parameter estimates.\n"))
           sample.fits <- aaply(pars.sample, 1, function(p){
             mwc(t, mus = p[mu.index] * tau, 
@@ -75,7 +75,7 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 1e2), type = "hazard"
         if(type == "timetoevent"){
           
           message(paste0("Estimating ", CI.level*100, "% confidence intervals for the expected *time to event* using ", 
-                         nreps, " samples from the parameter estimates.\n"))
+                         nreps, " samples from the parameter estimates."))
           if(nreps >= 1e3)
             warning(paste0("Using 1000 or more samples to obtain confidence intervals for the expected *time to event* process might be prohibitively slow.  Consider lowering the nreps to, e.g, 100."))
           
