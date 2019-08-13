@@ -1,7 +1,7 @@
 #' Produce a table explaining the results of a cmfactorfit model
 #' 
 #' @param x a cmfactorfit object
-#' @param coefs a boolean variable determining whether the individual summaries of each model component will be displayed along with the LRT resul
+#' @param coefs boolean dictating whether the individual summaries of each model component will be displayed along with the LRT result
 #' 
 #' @return a table comparing log-likelihood and AIC between null and multi-factor model, as well as a p-value from likelihood ratio test, or a list of such a table combined with the individual model summaries if coefs is listed as TRUE
 #' 
@@ -25,7 +25,3 @@ summary.cmfactorfit = function(x, coefs = FALSE) {
   result = list(result, lapply(x$fits$alt, summary))
   result
 }
-
-
-
-

@@ -1,10 +1,10 @@
 #' Plot cmfit objects
 #' 
 #' @param x a cmfit object
-#' @param CI boolean variable determining whether confidence intervals are included in the hazard function estimate
+#' @param CI boolean dictating whether confidence intervals are included in the hazard function estimate
 #' @param CI.level confidence level (default 0.95) for CIs (if CI is TRUE)
-#' @param histogram boolean variable determining whether a histogram will be included with the hazard
-#' @param add boolean variable determining whether the plot will be added to an existing plot
+#' @param histogram boolean dictating whether a histogram of actual mortalities will be included in the plot
+#' @param add boolean dictating whether the plot will be added to an existing plot
 #' @param monthlabs whether or not to label the x-axis with months - suitable for (common) annual seasonal data.  If FALSE, lables are numeric within the period [0,1]
 #' @param nreps number of samples from parameter estimates for confidence intervals (see \code{\link{predict.cmfit}})
 #' @param hazcolor color of lines for hazard function and confidence intervals
@@ -12,7 +12,7 @@
 #' @param ymax maximum value for the y-axis - can be useful for scaling purposes
 #' @param prediction an optional \code{\link{predict.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow. 
 #' @param yaxt location for y-axis label
-#' @param ... additional parameters to \code{\link{hist}} (e.g., number of breaks, etc...)
+#' @param ... additional parameters to \code{\link{hist}} (e.g., number of breaks)
 #' 
 #' @return a plot comparing the estimated mortality curve (based on parameter estimates)
 #' and the actual results (as a histogram).

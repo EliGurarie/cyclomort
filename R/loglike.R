@@ -3,7 +3,7 @@
 #'@param T a cycloSurv object
 #'@param gammas k-vector of average hazard values for each component
 #'@param mus k-vector of peaks
-#'@param rhos k-vector of rhos (concentration parameters)
+#'@param rhos k-vector of concentration parameters
 #'
 #'@return the maximum likelihood value for this set of data
 #'

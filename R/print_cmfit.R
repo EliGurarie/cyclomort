@@ -1,7 +1,7 @@
 #' Print a short summary of cmfit (parameter estimates for periodic mortality curves) objects
 #' 
 #' @param x a cmfit object
-#' @param maxDigits number of digits to round to
+#' @param maxDigits number of digits to round parameter estimates to
 #' 
 #' @return a short summary of the estimates for each parameter along with confidence intervals and AIC
 #' 

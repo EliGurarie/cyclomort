@@ -1,9 +1,9 @@
 #'Create an object that can be fitted with a given period from survival (time of death or censoring) data
 #'
-#'@param start a vector measuring time of birth (as a POSIXct, numeric, or Date)
-#'@param end a vector measuring time of death or censoring (as a POSIXct, numeric, or Date)
+#'@param start a vector measuring time of birth or left-censoring (as a POSIXct, numeric, or Date)
+#'@param end a vector measuring time of death or right-censoring (as a POSIXct, numeric, or Date)
 #'@param event a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
-#'@param t0 reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIX).
+#'@param t0 reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIXct).
 #'@param period length of one period in the input data
 #'@param timeunits units that dates are inputted in if dates are being used
 #'

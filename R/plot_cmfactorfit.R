@@ -2,11 +2,11 @@
 #' 
 #' @param x a cmfactorfit object
 #' @param fit a character (either "null", "alt", or "both") that dictates what fits will be plotted
-#' @param colors vector of colors 
-#' @param legend whether to automatically make a legend 
+#' @param colors vector of colors (one component for each individual fit being plotted) for the hazard estimates
+#' @param legend boolean parameter dictating whether or not a legend will be added to the plot
 #' @param ... additional parameters to pass to the \code{\link{plot.cmfit}} function. Perhaps most usefully: lowering the default nreps (e.g. to 1000) makes plotting much faster. 
 #' 
-#' @return a plot comparing the estimates from the null model with the individual estimates from each factor level
+#' @return a plot comparing the hazard estimates from the null model with the individual estimates from each factor level
 #' 
 #' @example examples/predict_cmfit_example.R
 #' @export
