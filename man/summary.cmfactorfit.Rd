@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{a cmfactorfit object}
 
-\item{coefs}{a boolean variable determining whether the individual summaries of each model component will be displayed along with the LRT resul}
+\item{coefs}{boolean dictating whether the individual summaries of each model component will be displayed along with the LRT result}
 }
 \value{
 a table comparing log-likelihood and AIC between null and multi-factor model, as well as a p-value from likelihood ratio test, or a list of such a table combined with the individual model summaries if coefs is listed as TRUE

@@ -1,6 +1,6 @@
 # Cyclomort package - Parametric periodic survival modelling in R
 
-## likelihood
+## Likelihood
 
 Basically, we'd like to estimate the parameters of a periodic hazard function, i.e.:
 $h(t|\theta) = h(t \pm T_P | \theta)$, where $T_P$ is the period of the periodic function.  The simple sinusoid example above fills that requirement, where the parameters are the amplitude and mean of the hazard function. 
@@ -15,16 +15,16 @@ or, assuming some discretization (e.g. daily), and scalar observations $T_i$:
 $${\cal l}(\theta | T_i) = \sum_{i = 1}^n \left( \log(h(T_i | \theta)) - \sum_{j = T_{0,i}}^{T_i} h(T_j|\theta) \Delta t \right) $$
 
 ```{r}
-loglike <- function(T, a, p, dt, period){
-	hazard <- function(t, A, peak, period)
-	 A * sin( (t - peak) * pi/period)^2
-
-	logcumhaz <- sapply(T, function(t){
-			t.total <- seq(0, t, dt)
-			sum(hazard(t.total, A = a, peak = p, period)) * dt
-		})
-	
-	loghaz <- log(hazard(T, A = a, peak = p, period) + 1e-40)
-	sum(loghaz - logcumhaz)
+loglike <- function(T, gammas, mus, rhos) {
+  T_censoring = T[,3]
+  T_end = T[,2]
+  T_start = T[,1]
+  T_diff = T_end - T_start
+  hazard = mwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
+  cumhazard = imwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1) - imwc(T_start, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
+  cum.prob.survival <-  exp(-cumhazard)
+  F <- 1 - cum.prob.survival
+  f <- hazard * cum.prob.survival
+  sum(T_censoring * log(f) + (1-T_censoring) * log(1-F))
 }
 ```

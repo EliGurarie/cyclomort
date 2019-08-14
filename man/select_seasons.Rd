@@ -11,7 +11,7 @@ select_seasons(x, max.season = 4, lrt = FALSE, print = TRUE)
 
 \item{max.season}{maximum number of seasons to fit}
 
-\item{lrt}{whether or not to perform and return the complete results of nested likelihood ratio tests.}
+\item{lrt}{whether or not to perform and return the complete results of nested likelihood ratio tests}
 
 \item{print}{boolean parameter; if TRUE the function prints the table out as a side effect of creating the object}
 }
@@ -20,7 +20,6 @@ a list containing (1) a list of all the fitted objects, and (2) an AIC (and, opt
 }
 \description{
 Compute a delta AIC table (and, optionally, likelihood ratio tests) for a sequence of models with a different number of seasons
-#'
 }
 \examples{
 T.morts1 <- simulate_cycloSurv(1000, period = 1, 

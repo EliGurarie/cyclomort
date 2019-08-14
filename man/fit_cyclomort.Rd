@@ -18,10 +18,10 @@ fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
 
 \item{method}{method for optim call}
 
-\item{period}{expected periodicity of survival data. Can be passed in with cycloSurv input parameter.}
+\item{period}{expected periodicity of survival data. Can be passed in with cycloSurv input parameter}
 }
 \value{
-parameter estimates for weights, rhos, peaks and A
+a cmfit object containing parameter estimates for peaks, durations, and weights for each season
 }
 \description{
 Get maximum likelihood estimates for periodic mortality data. Uses the optim

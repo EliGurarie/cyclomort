@@ -13,7 +13,7 @@ loglike(T, gammas, mus, rhos)
 
 \item{mus}{k-vector of peaks}
 
-\item{rhos}{k-vector of rhos (concentration parameters)}
+\item{rhos}{k-vector of concentration parameters}
 }
 \value{
 the maximum likelihood value for this set of data

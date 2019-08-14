@@ -12,13 +12,13 @@
 \arguments{
 \item{x}{a cmfit object}
 
-\item{CI}{boolean variable determining whether confidence intervals are included in the hazard function estimate}
+\item{CI}{boolean dictating whether confidence intervals are included in the hazard function estimate}
 
 \item{CI.level}{confidence level (default 0.95) for CIs (if CI is TRUE)}
 
-\item{histogram}{boolean variable determining whether a histogram will be included with the hazard}
+\item{histogram}{boolean dictating whether a histogram of actual mortalities will be included in the plot}
 
-\item{add}{boolean variable determining whether the plot will be added to an existing plot}
+\item{add}{boolean dictating whether the plot will be added to an existing plot}
 
 \item{monthlabs}{whether or not to label the x-axis with months - suitable for (common) annual seasonal data.  If FALSE, lables are numeric within the period [0,1]}
 
@@ -34,7 +34,7 @@
 
 \item{yaxt}{location for y-axis label}
 
-\item{...}{additional parameters to \code{\link{hist}} (e.g., number of breaks, etc...)}
+\item{...}{additional parameters to \code{\link{hist}} (e.g., number of breaks)}
 }
 \value{
 a plot comparing the estimated mortality curve (based on parameter estimates)

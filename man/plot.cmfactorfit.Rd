@@ -12,14 +12,14 @@
 
 \item{fit}{a character (either "null", "alt", or "both") that dictates what fits will be plotted}
 
-\item{colors}{vector of colors}
+\item{colors}{vector of colors (one component for each individual fit being plotted) for the hazard estimates}
 
-\item{legend}{whether to automatically make a legend}
+\item{legend}{boolean parameter dictating whether or not a legend will be added to the plot}
 
 \item{...}{additional parameters to pass to the \code{\link{plot.cmfit}} function. Perhaps most usefully: lowering the default nreps (e.g. to 1000) makes plotting much faster.}
 }
 \value{
-a plot comparing the estimates from the null model with the individual estimates from each factor level
+a plot comparing the hazard estimates from the null model with the individual estimates from each factor level
 }
 \description{
 Plot cmfactorfit objects

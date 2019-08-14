@@ -6,6 +6,9 @@
 \alias{cyclomort-package}
 \title{Cyclomort: a package for parameteric periodic survival modeling}
 \description{
+This package provides tools for estimating periodic hazard functions from right-censored time-to-event (e.g. mortality) data, as well as functions for simulation of periodic mortality processes, visualization of fits, and a priori hypothesis testing tools.  The package was inspired by the need to detect annual seasonal patterns in mortality of wildlife, thus, the central assumption is that the period itself is known (e.g. 1 year, 24 hours, etc.), but the number, intensity and duration of the peaks of increased hazard are unknown.
+}
+\details{
 With the functions included in this package one can fit mortality data (stored as Surv objects) to a model that assumes a hazard function with a mixed wrapped Cauchy distribution. We use maximum likelihood estimation to produce esimates for the peaks in mortality over the course of the year as well as the strength or condensation of mortality around these peak indices. We also include a function that simulates a random set of mortalities given a set of parameters, allowing one to test the accuracy of their fits.
 }
 \author{
@@ -17,3 +20,4 @@ Other contributors:
 }
 
 }
+\keyword{internal}

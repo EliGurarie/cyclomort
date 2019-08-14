@@ -7,9 +7,9 @@
 generateInitialParameterEstimate(T, n, null_fits)
 }
 \arguments{
-\item{T}{set of Surv objects representing time of death or censorship}
+\item{T}{cycloSurv vector representing time of death or censorship}
 
-\item{n}{expected number of seasons within a period}
+\item{n}{expected number of mortality seasons within a period}
 
 \item{null_fits}{original estimate for mortality rate assuming constant hazard function}
 }

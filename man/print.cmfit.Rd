@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{a cmfit object}
 
-\item{maxDigits}{number of digits to round to}
+\item{maxDigits}{number of digits to round parameter estimates to}
 }
 \value{
 a short summary of the estimates for each parameter along with confidence intervals and AIC
