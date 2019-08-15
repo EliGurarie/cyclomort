@@ -8,7 +8,7 @@ T.morts1 <- simulate_cycloSurv(1000, period = 1,
 
 with(attributes(T.morts1),
      title(paste0("mean hazard: ", meanhazard, "; peaks: ",
-                  paste(peaks, collapse = ",")), outer = TRUE));
+                  paste(peaks, collapse = ",")), outer = TRUE))
 
 
 
@@ -23,7 +23,7 @@ T.morts2 <- simulate_cycloSurv(300, period = 365,
 
 with(attributes(T.morts2),
      title(paste0("mean hazard: ", round(meanhazard, 3), "; peaks: ",
-                  paste(peaks, collapse = ",")), outer = TRUE));
+                  paste(peaks, collapse = ",")), outer = TRUE))
 
 
 
