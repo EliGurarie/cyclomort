@@ -31,8 +31,11 @@ select_seasons = function(x, max.season = 4, lrt = FALSE, print = TRUE) {
 
 
 summarize_listOfFits <- function(listOfFits, lrt = lrt, print = print){
-  AIC.table <- ldply(listOfFits, summarize, logLik = logLik, d.f. = ifelse(n.seasons == 0, 1, n.seasons * 3), 
-                      AIC = AIC) %>% mutate(dAIC = AIC - min(AIC)) %>% plyr::rename(c(.id = "n.seasons"))
+  AIC.table <- ldply(listOfFits, summarize, 
+                     n.seasons = n.seasons, 
+                     logLik = logLik, 
+                     d.f. = ifelse(n.seasons == 0, 1, n.seasons * 3), 
+                     AIC = AIC) %>% mutate(dAIC = AIC - min(AIC), .id = NULL)
   
   n.seasons <- length(listOfFits) - 1
   if(print){

@@ -4,11 +4,11 @@
 \alias{predict.cmfit}
 \title{Prediction method for cyclomort fits}
 \usage{
-\method{predict}{cmfit}(object, t = seq(0, object$period, length = 100),
+\method{predict}{cmfit}(x, t = seq(0, x$period, length = 500),
   type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1000)
 }
 \arguments{
-\item{object}{a cmfit object}
+\item{x}{a cmfit object}
 
 \item{t}{times for prediction.  By default, covers 100 observations over a single period.}
 

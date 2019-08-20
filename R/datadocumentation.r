@@ -1,6 +1,6 @@
 #' Mortality data for Western Arctic Herd Caribou
 #'
-#' Describing the data.
+#' Anonymized mortality data on Western Arctic Herd caribou collected by the U.S. National Park Service, Alaska, with grateful acknowledgments to K. Joly. 
 #'
 #' @usage 
 #' data(wah_morts)
@@ -43,6 +43,7 @@
 
 #' Mortality data for Northwest territory boreal woodland caribou.
 #'
+#' Mortality data for Northwest territory boreal woodland caribou, anonymized and randomized by year, thereby retaining the multi-seasonal signal without, with grateful acknowledgements to A. Kelly and N. Larter. 
 #'
 #' @usage
 #' data(nwt_morts)
@@ -53,7 +54,7 @@
 #'   \item{start}{Date of beginning of collaring}
 #'   \item{end}{Date of death or censoring}
 #'   \item{status}{"Mort" or "Cens" (dead or censored)}
-#'   }?
+#'   }
 #'
 #' @examples
 #' data(nwt_morts)
@@ -65,3 +66,25 @@
 #' @source Government of Northwest Territories, Canada
 #' @keywords data
 "nwt_morts"
+
+
+#' Example fitted time to event prediction
+#'
+#' @usage
+#' data(timetoeventprediction)
+#' @keywords data
+#' @examples
+#' \dontrun{
+#' ## Code that generates this object - following example in vignette
+#' set.seed(10)
+#' T.morts.sim <- simulate_cycloSurv(300, period = 365, meanhazard = 1/365, 
+#' peaks = c(100, 250), durations = c(25, 40), weights = c(0.4, 0.6), plotme = FALSE)
+#' T.morts.fit <- fit_cyclomort(T.morts.sim, n.seasons = 2)
+#' timetoeventprediction <- predict(T.morts.fit, t = 1:365, type = "timetoevent", CI = TRUE, nreps = 100)
+#' }
+#' data(timetoeventprediction)
+#' with(timetoeventprediction, {
+#' plot(t, fit, type = "l", ylab = "Time to event", ylim = range(CI), lwd = 2)
+#' lines(t, CI[1,])
+#' lines(t, CI[2,])})
+"timetoeventprediction"

@@ -1,6 +1,6 @@
 # cyclomort package - Parametric periodic survival modelling in R
 
-The cyclomort package contains novel likelihood-based methods that allow for the fitting of seasonal mortality models. Using the functions in this package, one can identify trends and seasonalities in a set of mortality (or any time-to-event-based data, for that matter), in addition to understanding the accuracy of the method using confidence intervals for the fits. Additionally, we provide various data sets that allow users to immediately become familiar with the workflow for this package.
+The cyclomort package contains novel likelihood-based methods that allow for the fitting of seasonal mortality models. Using the functions in this package, one can identify trends and seasonalities in a set of mortality (or any time-to-event-based data), in addition to understanding the accuracy of the method using confidence intervals for the fits. Additionally, we provide various data sets that allow users to immediately become familiar with the workflow for this package.
 
 ## Likelihood
 

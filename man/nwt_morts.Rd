@@ -10,7 +10,7 @@
   \item{start}{Date of beginning of collaring}
   \item{end}{Date of death or censoring}
   \item{status}{"Mort" or "Cens" (dead or censored)}
-  }?}
+  }}
 \source{
 Government of Northwest Territories, Canada
 }
@@ -18,7 +18,7 @@ Government of Northwest Territories, Canada
 data(nwt_morts)
 }
 \description{
-Mortality data for Northwest territory boreal woodland caribou.
+Mortality data for Northwest territory boreal woodland caribou, anonymized and randomized by year, thereby retaining the multi-seasonal signal without, with grateful acknowledgements to A. Kelly and N. Larter.
 }
 \examples{
 data(nwt_morts)

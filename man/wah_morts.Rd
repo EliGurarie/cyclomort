@@ -18,7 +18,7 @@ U.S. National Park Service, Alaska
 data(wah_morts)
 }
 \description{
-Describing the data.
+Anonymized mortality data on Western Arctic Herd caribou collected by the U.S. National Park Service, Alaska, with grateful acknowledgments to K. Joly.
 }
 \examples{
 data(wah_morts)
