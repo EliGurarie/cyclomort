@@ -158,7 +158,7 @@ summary(Survival.factorfit)
 
 The analyses reports a p-value based on a likelihood ratio test of a model that includes the factor against a null model that does not, as well as reporting AIC values.  A plotting method provides a visual comparison of the fits.
 
-```{r plotSim, fig.width = 7, fig.height = 5, fig.align = "center"}
+```{r plotFactorFit, fig.width = 7, fig.height = 5, fig.align = "center"}
 plot(Survival.factorfit, ymax = 1.2)
 ```
 
