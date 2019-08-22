@@ -1,6 +1,25 @@
-# cyclomort package - Parametric periodic survival modelling in R
+# `cyclomort` package 
+## Parametric periodic survival modelling in `R`
 
-The cyclomort package contains novel likelihood-based methods that allow for the fitting of seasonal mortality models. Using the functions in this package, one can identify trends and seasonalities in a set of mortality (or any time-to-event-based data), in addition to understanding the accuracy of the method using confidence intervals for the fits. Additionally, we provide various data sets that allow users to immediately become familiar with the workflow for this package.
+The `cyclomort` package provides tools for modeling and analysis of periodic mortality (or other time-to event) processes from right-censored data. The package was inspired by the need to detect annual seasonal patterns in mortality of wildlife, thus, the central assumption is that the period itself is known (e.g. 1 year, 24 hours, etc.), but the number, intensity and duration of the peaks of increased hazard are unknown.  The central function estimates these parameters from right-censored data. Other functions allow for simulation, visualization of fits, and *a priori* hypothesis testing tools.  
+
+Examples are provided in the [package vignette](https://github.com/EliGurarie/cyclomort/blob/master/doc/cyclomort.html)
+
+To install from GitHub:
+
+```
+library(devtools)
+install_github("https://github.com/EliGurarie/cyclomort", vignettes = TRUE)
+```
+
+This project is fairly mature, and will soon be uploaded to CRAN, but GitHub is a good place to report issues for further development. 
+
+## References
+
+
+
+
+<!--
 
 ## Likelihood
 
@@ -98,3 +117,5 @@ x <- factorfit_cyclomort(event ~ sex, data = seasonalsex, n.seasons = 1)
 summary(x, coefs = TRUE)
 plot(x)
 ```
+
+-->

@@ -1,6 +1,5 @@
 ---
-title: "Using Cyclomort"
-subtitle: "fitting periodic hazard functions"
+title: "Using `cyclomort`: A tool for estimating seasonal mortality patterns"
 author: "Elie Gurarie and Peter Thompson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -8,6 +7,8 @@ vignette: >
   %\VignetteIndexEntry{cyclomort}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 
@@ -15,20 +16,26 @@ vignette: >
 require(cyclomort)
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ">",
+  fig.width = 6,
+  fig.height = 4
 )
 ```
 
-The `cyclomort` package presents a selection of tools for fitting, exploring, and visualizing uni- or multi-modal periodic hazard functions to right-censored mortality data. The central function `fit_cyclomort` returns parametric estimates of the timing of the peak of a mortality season, the duration of that season, and - in cases with multiple seasons - the relative contribution to the overall mortality of that season.  Other functions help summarize, visualize, and perform some statistical tests comparing models. The model and its implementation are described in detail in Gurarie et al. (*in review*), and users are encouraged to read the paper for a deeper understanding of the model and the likelihood estimation of the parameters.  This vignette briefly illustrates the main functions.  
+The `cyclomort` package presents a selection of tools for fitting, exploring, and visualizing uni- or multi-modal periodic hazard functions to right-censored mortality data.  Its development was motivated by the fairly common observation in wildlife populations that the risk of mortality is higher in certain times of year than others.  The central function, `fit_cyclomort`, returns estimates of the timing, duration, and intensity of one or more "mortality seasons". Other functions summarize, visualize, and perform some statistical tests comparing models. The underlying model and its implementation are described in detail in Gurarie et al. (*in review*), and users are encouraged to read the paper for a deeper understanding of the likelihood based estimation of the parameters.  This vignette illustrates the basic use of the most important functions.  
+
+To load the package:
+```{r}
+library(cyclomort)
+```
 
 
 ## Underlying wrapped Cauchy hazard model
 
 The underlying hazard model is based on a mixture of a modified wrapped Cauchy-like functions. The basic function is `wc()`  are parameterized in terms of a mean `mu`, a concentration parameter `rho` which ranges from 0 to 1, and a periodicity `tau`.  
 
-```{r plotWC, fig.width = 7, fig.align = "center", echo = FALSE}
-require(cyclomort)
-
+```{r plotWC, fig.align = "center", echo = FALSE, echo = -1}
+par(bty = "l", mar = c(4,4,2,2))
 curve(wc(x, mu = 100, rho = .7, tau = 365), xlim = c(0,365), n = 1e4, ylab = "hazard", xlab = "time")
 curve(wc(x, mu = 100, rho = .5, tau = 365), add = TRUE, col = 2)
 curve(wc(x, mu = 100, rho = .3, tau = 365), add = TRUE, col = 3)
@@ -37,26 +44,33 @@ legend("topright", col = 1:3, legend = c(.7,.5,.3), title = "rho", lty = 1)
 
 The mixture version `mwc()` includes a vector of weights `gammas`.  Several examples (on a periodicity of 1) are illustrated below:
 
-```{r plotMWC, fig.width = 7, fig.align = "center", echo = FALSE}
-curve(mwc(x, mus = c(0.125, 0.5), rhos = c(0.7, 0.5), gammas = c(2, 1), tau = 1), xlim = c(0,1), ylab = "hazard", xlab = "time")
-curve(mwc(x, mus = c(0.25, 0.75), rhos = c(0.3, 0.8), gammas = c(0.6, 0.4), tau = 1), add = TRUE, col = 2)
-curve(mwc(x, mus = c(0.25, 0.5, 0.75), rhos = c(0.6, 0.5, 0.4), gammas = c(0.5, 0.2, 0.3), tau = 1), add = TRUE, col = 3)
+```{r plotMWC, fig.align = "center", echo = -1}
+par(bty = "l", mar = c(4,4,2,2), xpd = NA)
+
+mus <-  c(.3,.5,.9)
+rhos <-  c(.5,.9,.7)
+gammas <- c(.6,.1,.3)
+
+curve(mwc(x, mus = mus[1], rhos = rhos[1], gammas = 1, tau = 1), 
+      xlim = c(0,1), ylab = "hazard", xlab = "time")
+curve(mwc(x, mus = mus[1:2], rhos = rhos[1:2], gammas = gammas[1:2]/sum(gammas[1:2]), tau = 1), 
+      add = TRUE, col = 2)
+curve(mwc(x, mus = mus, rhos = rhos, gammas = gammas, tau = 1), 
+      add = TRUE, col = 3)
 ```
 
-Note that these functions are not distributions but positive recurring functions whose mean is 1 defined on an infinite support.  Additionally there are functions for the integrals of these functions : `iwc()` and `imwc()` respectively.  This complete set of functions are mainly internal and used for fitting, though they can be useful for visualizing the shape of an underlying hazard.  In subsequent analyses and applications, the parameter `rho` is replaced with a "season duration" parameter, and an additional parameter of the mean overall hazard.  
+Note that in the three-peak mode above, the second peak above is quite pronounced (i.e. has the highest instantaneous hazard), but it accounts for only 1/10 of the total hazard (i.e. had a very short duration). 
+Additionally there are functions for the integrals of these functions : `iwc()` and `imwc()` respectively. It is important to remember that these functions are not probability distributions (or, respectively, cumulative probability distributions) but positive recurring functions the mean of which is the sum of gamma vector, defined on an infinite support. This complete set of functions are mainly internal and used for fitting, though they can be useful for visualizing the shape of an underlying hazard.  In subsequent analyses and applications, the parameter `rho` is replaced with a "season duration" parameter, and an additional parameter of the mean overall hazard.  
 
 ## Simulating periodic mortality processes
 
 The `simulate_cycloSurv()` function generates time-to-event data from an underlying periodic hazard process.  Note that this function is parameterized via the (spelled-out) parameters: `period`, `meanhazard`, `peaks`, `durations` and `weights`.  By default, this function plots the hazard, cumulative mortality, survival curve, and a histogram of simulated mortalities: 
 
-```{r plotSim, fig.width = 7, fig.height = 5, fig.align = "center", echo = -1}
-set.seed(10)
-T.morts.sim <- simulate_cycloSurv(300, period = 365, 
-                             meanhazard = 1/365, 
-                             peaks = c(100, 250), 
-                             durations = c(25, 40), 
-                             weights = c(0.4, 0.6), 
-                             plotme = TRUE,
+```{r plotSim, fig.align = "center", echo = -1}
+set.seed(1976)
+T.morts.sim <- simulate_cycloSurv(n = 300, period = 365, meanhazard = 1/365, 
+                             peaks = c(100, 250), durations = c(25, 40), 
+                             weights = c(0.6, 0.4), plotme = TRUE,
                              max.periods = 5)
 ```
 
@@ -92,13 +106,14 @@ From the summary, we see that the estimated values are within the 95% confidence
 
 The default plot:
 
-```{r plotSimFits, fig.width = 7, fig.height = 5, fig.align = "center"}
+```{r plotSimFits, fig.align = "center"}
 plot(T.morts.fit, breaks = 30)
 ```
 
 By default, plots a historgram of the data as well.  It can be useful to plot only the fit and the confidence interval, for example to compare the 2 season fit with a 1 season and null fit, while suppressing the histogram:
 
-```{r, message = FALSE}
+```{r, message = FALSE, echo = -1}
+par(bty = "l", mar = c(4,4,2,2))
 T.morts.1season.fit <- fit_cyclomort(T.morts.sim, n.seasons = 1)
 T.morts.null.fit <- fit_cyclomort(T.morts.sim, n.seasons = 0)
 plot(T.morts.fit, histogram = FALSE, monthlabs = TRUE)
@@ -119,8 +134,8 @@ data(timetoeventprediction)
 
 The figure below illustrates the extent to which the expected time to an event depends on when an individual "enters" the process. 
 
-```{r TimeToEventPrediction, fig.width = 7, fig.height = 5, fig.align = "center", echo = -1}
-par(bty = "l")
+```{r TimeToEventPrediction, fig.align = "center", echo = -1}
+par(bty = "l", mar = c(4,4,2,2))
 with(timetoeventprediction, {
   plot(t, fit, type = "l", ylab = "Time to event", ylim = range(CI), lwd = 2)
   lines(t, CI[1,])
@@ -135,10 +150,10 @@ An important aspect of this model fitting is being able to definitively characte
 The select_seasons function returns a cmfitlist object which is equipped with unique print and summary functions. cmfitlist objects are simply lists of cmfit objects (each element of the list being the cmfit object representing a different seasonal assumption), but the summary.cmfitlist function allows for easier comparison of the different fits.
 
 ```{r}
-T.select <- select_seasons(T.morts.sim, max.season = 3)
+T.select <- select_seasons(T.morts.sim, max.season = 4)
 ```
 
-As expected, `select_seasons` function identifies the two season model as the one with the lowest AIC value. 
+As expected, `select_seasons` function identifies the two season model as the one with the lowest AIC value. Note, the likelihood maximization algorithm had some difficulty obtaining the Hessian matrix for the overly complex 4 season model, but (in our experience) the inference for model selection is still generally stable.  
 
 ## Simple factor analyses
 
@@ -158,11 +173,94 @@ summary(Survival.factorfit)
 
 The analyses reports a p-value based on a likelihood ratio test of a model that includes the factor against a null model that does not, as well as reporting AIC values.  A plotting method provides a visual comparison of the fits.
 
-```{r plotFactorFit, fig.width = 7, fig.height = 5, fig.align = "center"}
+```{r plotFactorFit, fig.align = "center"}
 plot(Survival.factorfit, ymax = 1.2)
 ```
 
 
+## Data
+
+Aside from the simulated sex-difference process, the package includes two anonymized and randomized caribou mortality datasets.  The code below replicates the analyses presented in Gurarie et al. (*in review*). 
+
+### Northwest Territory woodland caribou
+
+The first is from woodland caribou (*Rangifer tarandus caribou*) collected throughout the Northwest Territories in Canada, loaded and plotted as follows:
+
+```{r, message = FALSE}
+require(ggplot2)
+data(nwt_morts)
+ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
+aes(x = start, y = id, col = status)) +
+  geom_errorbarh(aes(xmin = start, xmax = end))
+```
+
+Note these data have been randomized by *year*, such that the seasonal patterns are retained. 
+
+
+These data need to be converted to a `cycloSurv` data type, which inherits from the `Surv` class used in `survival` and other survival modeling packages: 
+
+```{r}
+nwt_surv = with(nwt_morts,
+                create_cycloSurv(start, end, event = status == "Mort", 
+                                 period = 365, timeunit = "days"))
+```
+
+Note, it is important to specify the length of the period and time-unit. 
+
+Once these data are converted to the right class, they can be analyzed as in the examples above.  For exampe, the northwest territories woodland caribou show three distinct seasons of higher mortality:
+
+```{r}
+nwt_fit <- fit_cyclomort(nwt_surv, n.seasons = 3)
+plot(nwt_fit, breaks = 40)
+summary(nwt_fit)
+```
+
+### Western Arctic herd caribou
+
+The second data set is from the western Arctic herd (WAH) of migratory tundra caribou in western Alaska, U.S:
+
+```{r, message = FALSE}
+data(wah_morts)
+ggplot(wah_morts %>% arrange(start),
+aes(x = start, y = id, col = Fate)) + 
+  geom_errorbarh(aes(xmin = start, xmax = end))
+```
+
+
+The western Arctic herd, with two pronounced seasons of mortality, showed an increase in mortality in the 2017-2018 winter season, which we analyze by creating two `cycloSurv` objects, cutting the data off in September 2019:
+
+```{r}
+START_TIME = ymd("2010-01-01")
+CUT_TIME = ymd("2017-09-01")
+START_TIME2 = ymd("2017-01-01")
+
+wah_pre = with(subset(wah_morts,start < CUT_TIME),  
+  create_cycloSurv(start = start, end = pmin(end, CUT_TIME), 
+                   event = (Fate == "DEAD" & end < CUT_TIME), 
+                   period = 365, t0 = START_TIME))
+
+
+wah_post = with(subset(wah_morts, end > CUT_TIME),  
+               create_cycloSurv(start = pmax(start, CUT_TIME), 
+                                end = end, event = Fate == "DEAD", 
+                                period = 365, t0 = START_TIME2))
+
+wah_fit_pre <- fit_cyclomort(wah_pre, n.seasons = 1)
+wah_fit_post <- fit_cyclomort(wah_post, n.seasons = 1)
+```
+
+```{r}
+summary(wah_fit_pre)
+summary(wah_fit_post)
+```
+
+```{r}
+plot(wah_fit_pre, hist= FALSE, ymax = 0.005, monthlabs = TRUE)
+plot(wah_fit_post, hist= FALSE, add = TRUE, hazcolor = "red")
+```
+
+Note that this analysis differs somewhat from that in Gurare et al. (*in review*) since the data provided in the package is a subset of the complete data set, and are too sparse to fit a more appropriate two season model. 
+
 ## References
 
-E. Gurarie, P. Thompson, A. Kelly,  N. Larter, W. Fagan and K. Joly.  For Everything There is a Season: Estimating periodic hazard functions with the `cyclomort` R package. *Methods in Ecology and Evolution*. 
+E. Gurarie, P. Thompson, A. Kelly,  N. Larter, W. Fagan and K. Joly. (*in review*) For Everything There is a Season: Estimating periodic hazard functions with the `cyclomort` R package. *Methods in Ecology and Evolution*. 

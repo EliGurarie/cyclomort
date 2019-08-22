@@ -1,7 +1,13 @@
-#' Cyclomort: a package for parameteric periodic survival modeling
+#' Cyclomort: periodic survival modeling
 #' 
-#' @details Functions in this package allow the user to fit right-censored mortality data to a parametric model that is periodic. We use maximum likelihood estimation to produce esimates for the peaks in mortality over the course of the year as well as the strength or condensation of mortality around these peak indices. We also include a function that simulates a random set of mortalities given a set of parameters, allowing one to test the accuracy of their fits.
+#' @description This package allows users to estimate parameteric hazard functions with a known periodicity and one of more peak seasons of heightened mortality risk. It was motivated by the strongly seasonal mortality signal observed in many wild animal populations, but the model may be useful for any periodic time-to-event process.  
+#' 
+#' 
+#' @details #' The central estimation function \code{\link{fit_cyclomort}} produces esimates for timing, duration and intensity of mortality peaks from right-censored survival data.  Other functions simulate survival data from periodic hazard functions (\code{\link{simulate_cycloSurv}}), perform model selection to identiy the number of seasons (\code{\link{select_seasons}}), perform simple hypothesis tests (\code{\link{factorfit_cyclomort}}), and various methods for visualizing and summarizing fits and model predictions.  Several data sets are also included. 
+#' 
+#' Details of the underlying model, motivation, and examples of implementation on mortality data are in the Gurarie et al. (*in review*). An active development version is on GitHub at https://github.com/EliGurarie/cyclomort.  The vignette provides several examples of the functionality of the package.
 #' 
 #' @keywords internal
+#' @references E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. For Everything There is a Season: Estimating periodic hazard functions with the cyclomort R package. *Methods in Ecology and Evolution.*
 #' 
 "_PACKAGE"
