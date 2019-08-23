@@ -60,7 +60,7 @@ curve(mwc(x, mus = mus, rhos = rhos, gammas = gammas, tau = 1),
 ```
 
 Note that in the three-peak mode above, the second peak above is quite pronounced (i.e. has the highest instantaneous hazard), but it accounts for only 1/10 of the total hazard (i.e. had a very short duration). 
-Additionally there are functions for the integrals of these functions : `iwc()` and `imwc()` respectively. It is important to remember that these functions are not probability distributions (or, respectively, cumulative probability distributions) but positive recurring functions the mean of which is the sum of gamma vector, defined on an infinite support. This complete set of functions are mainly internal and used for fitting, though they can be useful for visualizing the shape of an underlying hazard.  In subsequent analyses and applications, the parameter `rho` is replaced with a "season duration" parameter, and an additional parameter of the mean overall hazard.  
+Additionally there are functions for the integrals of these functions : `iwc()` and `imwc()` respectively. It is important to remember that these functions are not probability distributions (or, respectively, cumulative probability distributions) but positive recurring functions the mean of which is the sum of gamma vector, defined on an infinite support. This complete set of functions are mainly internal and used for fitting, though they can be useful for visualizing the shape of an underlying hazard.  In subsequent analyses and applications, the parameter `rho` is replaced with a "season duration" parameter, and an additional parameter of the mean overall hazard. In turn, gammas are converted to "weight" parameters for each component, with all weights from each component summing to 1.
 
 ## Simulating periodic mortality processes
 
@@ -91,7 +91,7 @@ The `fit_cyclomort()` function estimates the parameters of the periodic hazard p
 T.morts.fit <- fit_cyclomort(T.morts.sim, n.seasons = 2)
 ```
 
-The returned object is of class `fit_cyclomort`, which has `summary`, `print` and `plot` methods: 
+The returned object is of class `cmfit`, which has `summary`, `print` and `plot` methods: 
 
 ```{r}
 print(T.morts.fit)
@@ -110,7 +110,7 @@ The default plot:
 plot(T.morts.fit, breaks = 30)
 ```
 
-By default, plots a historgram of the data as well.  It can be useful to plot only the fit and the confidence interval, for example to compare the 2 season fit with a 1 season and null fit, while suppressing the histogram:
+By default, the function plots a historgram of the data as well.  It can be useful to plot only the fit and the confidence interval, for example to compare the 2 season fit with a 1 season and null fit, while suppressing the histogram:
 
 ```{r, message = FALSE, echo = -1}
 par(bty = "l", mar = c(4,4,2,2))
@@ -121,11 +121,9 @@ plot(T.morts.1season.fit, histogram = FALSE, add = TRUE, hazcolor = "red")
 plot(T.morts.null.fit, histogram = FALSE, add = TRUE, hazcolor = "blue")
 ```
 
-The confidence intervals illustrated in these plots are 
-
 The plot our fit objects, notice that we include confidence intervals on our estiamtes to display the true accuracy of our fitting process. We do this with the `predict` method (`predict.cmfit` function), which returns a set of predictions for a given fit at a time or set of times. 
 
-Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a ***very*** (in fact, embarassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
+Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a* **very** *(in fact, embarassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
 
 ```{r, eval = 2, echo = 1}
 timetoeventprediction <- predict(T.morts.fit, t = 1:365, type = "timetoevent", CI = TRUE, nreps = 100)
@@ -143,21 +141,21 @@ with(timetoeventprediction, {
 })
 ```
 
-## Identifying the number of mortality seasons within a system using select_Seasons
+## Identifying the number of mortality seasons within a system using select_seasons
 
-An important aspect of this model fitting is being able to definitively characterize specific aspects of a data set. Identifying the probable number of mortality seasons in a system is a powerful and useful claim that we attempt to help make here with the select_seasons function. This function performs fit_cyclomort for a number of different seasons (ranging from the null model of 0 seasons to max.season), identifying the best model using the Akaike Information Criterion (AIC).
+An important aspect of survival modelling is the ability to definitively characterize specific traits of a data set or population. Identifying the probable number of mortality seasons in a system is a powerful and useful claim that one can make using the `select_seasons` function. This function calls `fit_cyclomort` for a number of different seasons (ranging from the null model of 0 seasons to the `max.season` parameter), identifying the best model using Akaike Information Criterion (AIC).
 
-The select_seasons function returns a cmfitlist object which is equipped with unique print and summary functions. cmfitlist objects are simply lists of cmfit objects (each element of the list being the cmfit object representing a different seasonal assumption), but the summary.cmfitlist function allows for easier comparison of the different fits.
+The `select_seasons` function returns a `cmfitlist` object which is equipped with unique print and summary functions. While `cmfitlist` objects are simply lists of cmfit objects (each element of the list being the cmfit object representing a different seasonal assumption), the unique `summary.cmfitlist` function allows for easier comparison of the different fits.
 
 ```{r}
 T.select <- select_seasons(T.morts.sim, max.season = 4)
 ```
 
-As expected, `select_seasons` function identifies the two season model as the one with the lowest AIC value. Note, the likelihood maximization algorithm had some difficulty obtaining the Hessian matrix for the overly complex 4 season model, but (in our experience) the inference for model selection is still generally stable.  
+As expected, the `select_seasons` function identifies the two season model as the one with the lowest AIC value. Note, the likelihood maximization algorithm had some difficulty obtaining the Hessian matrix for the overly complex 4 season model, but (in our experience) the inference for model selection is still generally stable.  
 
 ## Simple factor analyses
 
-The `factorfit_cyclomort` function allows users to test whether or not a categorical variable has an impact on seasonal mortality patterns, using R's formula notation.  The data can be structured as a data frame with a categorical variable and a `Surv` (or `cycloSurv`) object in columns.  There is a simulated dataset in the package called `seasonalsex`:
+The `factorfit_cyclomort` function allows users to test whether or not a categorical variable has an impact on seasonal mortality patterns, using R's formula notation. Input data for this function can be structured as a data frame with a categorical variable and a `Surv` (or `cycloSurv`) object in columns.  There is a simulated dataset in the package called `seasonalsex` that illustrates a hypothetical example where factorial analysis may be useful:
 
 ```{r}
 data(seasonalsex)
@@ -207,7 +205,7 @@ nwt_surv = with(nwt_morts,
 
 Note, it is important to specify the length of the period and time-unit. 
 
-Once these data are converted to the right class, they can be analyzed as in the examples above.  For exampe, the northwest territories woodland caribou show three distinct seasons of higher mortality:
+Once these data are converted to the right class, they can be analyzed as in the examples above.  For exampe, the Northwest Territories woodland caribou show three distinct seasons of higher mortality:
 
 ```{r}
 nwt_fit <- fit_cyclomort(nwt_surv, n.seasons = 3)
@@ -217,7 +215,7 @@ summary(nwt_fit)
 
 ### Western Arctic herd caribou
 
-The second data set is from the western Arctic herd (WAH) of migratory tundra caribou in western Alaska, U.S:
+The second data set is from the western Arctic herd (WAH) of migratory tundra caribou in western Alaska, U.S.:
 
 ```{r, message = FALSE}
 data(wah_morts)

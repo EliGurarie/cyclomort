@@ -108,9 +108,6 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 5e2), type = "hazard"
       } else CIs <- NULL}
   }
   
-  
-  
-  
   if (needToFixVectorFlag) 
     result <- list(t = t[1], fit = fit, CI = CIs[,1], CI.level = CI.level, type = type, nreps = nreps) else
       result <- list(t = t, fit = fit, 
