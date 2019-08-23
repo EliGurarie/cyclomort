@@ -48,9 +48,6 @@ T.morts.fit <- fit_cyclomort(T.morts.sim, n.seasons = 2)
 ## ------------------------------------------------------------------------
 print(T.morts.fit)
 
-## ------------------------------------------------------------------------
-summary(T.morts.fit)
-
 ## ----plotSimFits, fig.align = "center"-----------------------------------
 plot(T.morts.fit, breaks = 30)
 
@@ -87,4 +84,54 @@ summary(Survival.factorfit)
 
 ## ----plotFactorFit, fig.align = "center"---------------------------------
 plot(Survival.factorfit, ymax = 1.2)
+
+## ---- message = FALSE----------------------------------------------------
+require(ggplot2)
+data(nwt_morts)
+ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
+aes(x = start, y = id, col = status)) +
+  geom_errorbarh(aes(xmin = start, xmax = end))
+
+## ------------------------------------------------------------------------
+nwt_surv = with(nwt_morts,
+                create_cycloSurv(start, end, event = status == "Mort", 
+                                 period = 365, timeunit = "days"))
+
+## ------------------------------------------------------------------------
+nwt_fit <- fit_cyclomort(nwt_surv, n.seasons = 3)
+plot(nwt_fit, breaks = 40)
+summary(nwt_fit)
+
+## ---- message = FALSE----------------------------------------------------
+data(wah_morts)
+ggplot(wah_morts %>% arrange(start),
+aes(x = start, y = id, col = Fate)) + 
+  geom_errorbarh(aes(xmin = start, xmax = end))
+
+## ------------------------------------------------------------------------
+START_TIME = ymd("2010-01-01")
+CUT_TIME = ymd("2017-09-01")
+START_TIME2 = ymd("2017-01-01")
+
+wah_pre = with(subset(wah_morts,start < CUT_TIME),  
+  create_cycloSurv(start = start, end = pmin(end, CUT_TIME), 
+                   event = (Fate == "DEAD" & end < CUT_TIME), 
+                   period = 365, t0 = START_TIME))
+
+
+wah_post = with(subset(wah_morts, end > CUT_TIME),  
+               create_cycloSurv(start = pmax(start, CUT_TIME), 
+                                end = end, event = Fate == "DEAD", 
+                                period = 365, t0 = START_TIME2))
+
+wah_fit_pre <- fit_cyclomort(wah_pre, n.seasons = 1)
+wah_fit_post <- fit_cyclomort(wah_post, n.seasons = 1)
+
+## ------------------------------------------------------------------------
+summary(wah_fit_pre)
+summary(wah_fit_post)
+
+## ------------------------------------------------------------------------
+plot(wah_fit_pre, hist= FALSE, ymax = 0.005, monthlabs = TRUE)
+plot(wah_fit_post, hist= FALSE, add = TRUE, hazcolor = "red")
 
