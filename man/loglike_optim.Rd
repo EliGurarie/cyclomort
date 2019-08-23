@@ -4,12 +4,12 @@
 \alias{loglike_optim}
 \title{Log-likelihood function that is useable for the optim command}
 \usage{
-loglike_optim(pars, T)
+loglike_optim(pars, x)
 }
 \arguments{
 \item{pars}{named vector including "gamma", "mu", and "rho" (because this function is entirely internal) parameters for the appropriate number of seasons}
 
-\item{T}{times of death or censoring as Surv objects}
+\item{x}{times of death or censoring as Surv objects}
 }
 \value{
 likelihood value given named vector of parameters as well as set of observations

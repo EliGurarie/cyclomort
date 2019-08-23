@@ -180,8 +180,8 @@ Aside from the simulated sex-difference process, the package includes two anonym
 The first is from woodland caribou (*Rangifer tarandus caribou*) collected throughout the Northwest Territories in Canada, loaded and plotted as follows:
 
 ```{r, message = FALSE}
-require(ggplot2)
 data(nwt_morts)
+require(ggplot2); require(magrittr); require(plyr)
 ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
 aes(x = start, y = id, col = status)) +
   geom_errorbarh(aes(xmin = start, xmax = end))
@@ -215,27 +215,28 @@ The second data set is from the western Arctic herd (WAH) of migratory tundra ca
 ```{r, message = FALSE}
 data(wah_morts)
 ggplot(wah_morts %>% arrange(start),
-aes(x = start, y = id, col = Fate)) + 
+aes(x = start, y = id, col = fate)) + 
   geom_errorbarh(aes(xmin = start, xmax = end))
 ```
 
 
-The western Arctic herd, with two pronounced seasons of mortality, showed an increase in mortality in the 2017-2018 winter season, which we analyze by creating two `cycloSurv` objects, cutting the data off in September 2019:
+The western Arctic herd, with two pronounced seasons of mortality, showed an increase in mortality in the 2017-2018 winter season, which we analyze by creating two `cycloSurv` objects, cutting the data off in September 2017:
 
 ```{r}
+require(lubridate)
 START_TIME = ymd("2010-01-01")
 CUT_TIME = ymd("2017-09-01")
 START_TIME2 = ymd("2017-01-01")
 
 wah_pre = with(subset(wah_morts,start < CUT_TIME),  
   create_cycloSurv(start = start, end = pmin(end, CUT_TIME), 
-                   event = (Fate == "DEAD" & end < CUT_TIME), 
+                   event = (fate == "dead" & end < CUT_TIME), 
                    period = 365, t0 = START_TIME))
 
 
 wah_post = with(subset(wah_morts, end > CUT_TIME),  
                create_cycloSurv(start = pmax(start, CUT_TIME), 
-                                end = end, event = Fate == "DEAD", 
+                                end = end, event = fate == "dead", 
                                 period = 365, t0 = START_TIME2))
 
 wah_fit_pre <- fit_cyclomort(wah_pre, n.seasons = 1)
@@ -252,7 +253,7 @@ plot(wah_fit_pre, hist= FALSE, ymax = 0.005, monthlabs = TRUE)
 plot(wah_fit_post, hist= FALSE, add = TRUE, hazcolor = "red")
 ```
 
-Note that this analysis differs somewhat from that in Gurarie et al. (*in review*) since the data provided in the package is a subset of the complete data set, and are too sparse to fit a more appropriate two season model. 
+Note that this result differs somewhat from that in Gurarie et al. (*in review*) since the data provided in the package is a subset of the complete data set, and are too sparse to fit a more appropriate two season model. 
 
 ## References
 

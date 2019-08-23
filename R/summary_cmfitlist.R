@@ -1,25 +1,29 @@
-#'Provides a short summary of the cmfitlist object, displaying the effectiveness of each model
+#'Summary method for cmfitlist objects
 #'
-#'@param x a cmfitlist object
-#'@param coefs prints out list of model coefficient estimates if true, otherwise prints out simple AIC table comparing models
-#'@param plotme plots AIC/BIC values from each cmfit object in the list to identify the best model choice
+#'@param object a \code{cmfitlist} object - output of \code{\link{select_seasons}}
+#'@param ... (currently not implemented)
+#'@param coefs whether or not to return model coefficients along with statistic test table.
 #'
 #'@return a data frame describing the AIC, log-likelihood, number of parameters and parameter estimates for each model
 #'
-#'@example examples/getIdealPeakFit_example.R
+#'@example examples/selectNSeasons_example.R
 #'@export
 
 
-summary.cmfitlist = function(x, coefs = TRUE, plotme = FALSE) {
+summary.cmfitlist = function(object, ..., coefs = TRUE) {
   if (coefs) {
-    estimates = ldply(x, function(l) cbind(l$n.seasons, rbind(ldply(l$estimates))))
+    estimates = ldply(object, function(l) cbind(l$n.seasons, rbind(ldply(l$estimates))))
     names(estimates)[1] = "n.seasons"
     estimates$parameter[is.na(estimates$parameter)] = "meanhazard"
-    values = ldply(x, AIC) %>% rename(c(V1 = "AIC"))
-    if (plotme) {
-      plot(0:(length(x) - 1), values[,2], xlab = "Number of seasons", ylab = "Akaike Information Criterion (AIC)")
-    }
-    return(list(estimates = estimates, model.accuracy = values))
+    values = ldply(object, function(x) x$AIC) %>% rename(c(V1 = "AIC"))
+    return(list(estimates = estimates, AICtable = values))
   }
-  summarize_listOfFits(x, lrt = TRUE, print = FALSE)
+  summarize_listOfFits(object, lrt = TRUE, print = FALSE)
 }
+
+
+#' @export
+print.cmfitlist = function(x, ...) {
+  print(summary(x, ...))
+}
+

@@ -21,15 +21,3 @@ a list containing (1) a list of all the fitted objects, and (2) an AIC (and, opt
 \description{
 Compute a delta AIC table (and, optionally, likelihood ratio tests) for a sequence of models with a different number of seasons
 }
-\examples{
-T.morts1 <- simulate_cycloSurv(1000, period = 1, 
-                             meanhazard = 0.3, 
-                             peaks = c(0.25, 0.75), 
-                             durations = c(0.2, 0.1), 
-                             weights = 0.3, 
-                             plotme = FALSE)
-
-model_selection = select_seasons(T.morts1, max.season = 4)
-
-model_selection$summary
-}

@@ -23,10 +23,10 @@
 
 create_cycloSurv = function(start, end, event, t0 = NULL, period, timeunits = "days") {
   
-  if(is.POSIXct(start)) start <- as.Date(start)
-  if(is.POSIXct(end)) end <- as.Date(end)
-  if(is.Date(start) & is.Date(end)){
-    if(is.null(t0)) t0 <- min(start) - ddays(yday(min(start)))
+  if(lubridate::is.POSIXct(start)) start <- as.Date(start)
+  if(lubridate::is.POSIXct(end)) end <- as.Date(end)
+  if(lubridate::is.Date(start) & lubridate::is.Date(end)){
+    if(is.null(t0)) t0 <- min(start) - lubridate::ddays(lubridate::yday(min(start)))
     if(timeunits == "years"){
       startPhased = as.numeric(difftime(start, t0, units = "days")) / 365.242
       endPhased = as.numeric(difftime(end, t0, units = "days")) / 365.242

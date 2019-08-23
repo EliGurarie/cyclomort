@@ -6,11 +6,11 @@
 function along with a named vector of initial guesses and returns the parameter
 estimates.}
 \usage{
-fit_cyclomort(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
+fit_cyclomort(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
   period = NULL)
 }
 \arguments{
-\item{T}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
+\item{x}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
 
 \item{inits}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
 
@@ -33,17 +33,14 @@ T.morts1 <- simulate_cycloSurv(1000, period = 365,
                              meanhazard = 0.3 / 365, 
                              peaks = c(0.25 * 365, 0.75 * 365), 
                              durations = c(0.3 * 365, 0.1 * 365), 
-                             weights = 0.7, 
+                             weights = c(0.7,0.3), 
                              plotme = FALSE)
 
 ##MLE for parameters based on simulated data
 fits = fit_cyclomort(T.morts1, n.seasons = 2)
 print(fits)
 plot(fits)
+
 ##Actual parameter values from simulated data
 attributes(T.morts1)
-##Measures of model accuracy
-AIC(fits)
-BIC(fits)
-logLik(fits)
 }

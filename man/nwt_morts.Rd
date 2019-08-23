@@ -22,7 +22,7 @@ Mortality data for Northwest territory boreal woodland caribou, anonymized and r
 }
 \examples{
 data(nwt_morts)
-require(ggplot2)
+require(ggplot2); require(magrittr); require(plyr)
 ggplot(nwt_morts \%>\% arrange(start) \%>\% mutate(id = factor(id, levels = id)),
 aes(x = start, y = id, col = status)) +
   geom_errorbarh(aes(xmin = start, xmax = end))

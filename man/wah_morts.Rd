@@ -9,7 +9,7 @@
   \item{id}{ID of animal}
   \item{start}{Date of beginning of collaring}
   \item{end}{Date of death or censoring}
-  \item{Fate}{One of "DEAD", of (censored): "DROPOFF", "CollarFail", "LIVE ANIMAL"}
+  \item{fate}{One of "dead", or "censored"}
 }}
 \source{
 U.S. National Park Service, Alaska
@@ -22,9 +22,9 @@ Anonymized mortality data on Western Arctic Herd caribou collected by the U.S. N
 }
 \examples{
 data(wah_morts)
-require(ggplot2)
+require(ggplot2); require(magrittr); require(plyr)
 ggplot(wah_morts \%>\% arrange(start),
-aes(x = start, y = id, col = Fate)) + 
+aes(x = start, y = id, col = fate)) + 
   geom_errorbarh(aes(xmin = start, xmax = end))
 
 }

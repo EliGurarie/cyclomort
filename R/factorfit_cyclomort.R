@@ -27,7 +27,7 @@ factorfit_cyclomort = function(f, data = NULL, n.seasons = 2, ... ) {
   #L = list(null = nullModelFits)
   
   ll_null = logLik(fit_null)
-  AIC_null = AIC(fit_null)
+  AIC_null = fit_null$AIC
   k_null <- max(1, 3*n.seasons)
   
   x.levels = levels(droplevels(x))

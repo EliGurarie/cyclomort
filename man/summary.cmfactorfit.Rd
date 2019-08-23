@@ -2,20 +2,22 @@
 % Please edit documentation in R/summary_cmfactorfit.R
 \name{summary.cmfactorfit}
 \alias{summary.cmfactorfit}
-\title{Produce a table explaining the results of a cmfactorfit model}
+\title{Summary method for cyclomort factorial fit}
 \usage{
-\method{summary}{cmfactorfit}(x, coefs = FALSE)
+\method{summary}{cmfactorfit}(object, ..., coefs = FALSE)
 }
 \arguments{
-\item{x}{a cmfactorfit object}
+\item{object}{a \code{cmfactorfit} object - the output of \code{\link{factorfit_cyclomort}}.}
 
-\item{coefs}{boolean dictating whether the individual summaries of each model component will be displayed along with the LRT result}
+\item{...}{}
+
+\item{coefs}{whether or not to report the individual summaries of each model component along with the statistical test results}
 }
 \value{
-a table comparing log-likelihood and AIC between null and multi-factor model, as well as a p-value from likelihood ratio test, or a list of such a table combined with the individual model summaries if coefs is listed as TRUE
+a table comparing log-likelihood and AIC between null and multi-factor model, and a p-value from likelihood ratio test, optionally combined with the individual model summaries.
 }
 \description{
-Produce a table explaining the results of a cmfactorfit model
+Summary method for cyclomort factorial fit
 }
 \examples{
 # fit factorial model

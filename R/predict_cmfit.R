@@ -4,7 +4,8 @@
 #' 
 #' @details Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
 #' 
-#' @param x a cmfit object
+#' @param object a cmfit object
+#' @param ...
 #' @param t times for prediction.  By default, covers 100 observations over a single period.
 #' @param type either \code{hazard} or \code{timetoevent} - dictates what exactly will be predicted
 #' @param CI a boolean dictating whether or not to compute confidence intervals
@@ -16,7 +17,7 @@
 #' @example examples/predict_cmfit_example.R
 #' @export
 
-predict.cmfit <- function(x, t = seq(0, x$period, length = 5e2), type = "hazard", 
+predict.cmfit <- function(object, ..., t = seq(0, object$period, length = 5e2), type = "hazard", 
                           CI = FALSE, CI.level = 0.95, nreps = 1e3) {
 
     # some functions for time to event modeling
@@ -40,15 +41,15 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 5e2), type = "hazard"
   if (needToFixVectorFlag) t = c(t, t)
   
   # number of peaks k >  1
-  if (x$k > 1) {
-      Mu <- x$optim$par
-      Sigma <- solve(x$optim$hessian)
-      tau <- x$period
+  if (object$k > 1) {
+      Mu <- object$optim$par
+      Sigma <- solve(object$optim$hessian)
+      tau <- object$period
       
       rhos <- expit(Mu[grepl("lrho", names(Mu))])
       mus <- Mu[grepl("mu", names(Mu))] * tau
       gammas <- Mu[grepl("gamma", names(Mu))] / tau
-      mh <- x$estimates$meanhazard[1,1]
+      mh <- object$estimates$meanhazard[1,1]
       
       if(type == "hazard")
         fit <- mwc(t = t, mus = mus, rhos = rhos, gammas = gammas, tau = tau)
@@ -94,17 +95,17 @@ predict.cmfit <- function(x, t = seq(0, x$period, length = 5e2), type = "hazard"
   }
 
   # number of peaks = 1
-  if (x$k == 1){
+  if (object$k == 1){
     if(type == "hazard"){
-      fit <- rep(x$estimates$meanhazard[1], length(t))
+      fit <- rep(object$estimates$meanhazard[1], length(t))
       if(CI) {
-        CIs <- rbind(rep(x$estimates$meanhazard[2], length(t)), rep(x$estimates$meanhazard[3], length(t)))
+        CIs <- rbind(rep(object$estimates$meanhazard[2], length(t)), rep(object$estimates$meanhazard[3], length(t)))
       } else CIs <- NULL}
     
     if (type == "timetoevent"){
-      timetoevent.hat <- rep(log(2) / x$estimates$meanhazard[1,1], length(t))
+      timetoevent.hat <- rep(log(2) / object$estimates$meanhazard[1,1], length(t))
       if(CI) {
-        CIs <- rbind(rep(log(2) / x$estimates$meanhazard[3], length(t)), rep(log(2) / x$estimates$meanhazard[2], length(t)))
+        CIs <- rbind(rep(log(2) / object$estimates$meanhazard[3], length(t)), rep(log(2) / object$estimates$meanhazard[2], length(t)))
       } else CIs <- NULL}
   }
   

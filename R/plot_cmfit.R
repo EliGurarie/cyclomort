@@ -90,7 +90,7 @@ plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, add = FAL
       lines(t, fit*K, col = hazcolor, lwd = 2)
       t.poly <- c(t, t[length(t):1])
       CI.poly <- c(CI[1,], CI[2,length(t):1])*K
-      polygon(t.poly, CI.poly, col = alpha(hazcolor, alpha), bor = NA)
+      polygon(t.poly, CI.poly, col = scales::alpha(hazcolor, alpha), bor = NA)
       lines(t, CI[1,]*K, col = hazcolor, lty = 3)
       lines(t, CI[2,]*K, col = hazcolor, lty = 3)
     })

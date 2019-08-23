@@ -105,7 +105,7 @@ summary(nwt_fit)
 ## ---- message = FALSE----------------------------------------------------
 data(wah_morts)
 ggplot(wah_morts %>% arrange(start),
-aes(x = start, y = id, col = Fate)) + 
+aes(x = start, y = id, col = fate)) + 
   geom_errorbarh(aes(xmin = start, xmax = end))
 
 ## ------------------------------------------------------------------------
@@ -115,13 +115,13 @@ START_TIME2 = ymd("2017-01-01")
 
 wah_pre = with(subset(wah_morts,start < CUT_TIME),  
   create_cycloSurv(start = start, end = pmin(end, CUT_TIME), 
-                   event = (Fate == "DEAD" & end < CUT_TIME), 
+                   event = (fate == "dead" & end < CUT_TIME), 
                    period = 365, t0 = START_TIME))
 
 
 wah_post = with(subset(wah_morts, end > CUT_TIME),  
                create_cycloSurv(start = pmax(start, CUT_TIME), 
-                                end = end, event = Fate == "DEAD", 
+                                end = end, event = fate == "dead", 
                                 period = 365, t0 = START_TIME2))
 
 wah_fit_pre <- fit_cyclomort(wah_pre, n.seasons = 1)

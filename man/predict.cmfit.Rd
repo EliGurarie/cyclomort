@@ -4,11 +4,11 @@
 \alias{predict.cmfit}
 \title{Prediction method for cyclomort fits}
 \usage{
-\method{predict}{cmfit}(x, t = seq(0, x$period, length = 500),
-  type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1000)
+\method{predict}{cmfit}(object, ..., t = seq(0, object$period, length =
+  500), type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1000)
 }
 \arguments{
-\item{x}{a cmfit object}
+\item{object}{a cmfit object}
 
 \item{t}{times for prediction.  By default, covers 100 observations over a single period.}
 
@@ -55,14 +55,18 @@ plot(sim.morts.fit, CI.level = 0.5, months = FALSE, histogram = FALSE, add = TRU
 
 # predict time to event given a start at times (this is a much slower calculation!)
 
+## Not run
 timetoevent <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent",
                        CI = TRUE, nreps = 1e2)
+## End(**Not run**)
+
+# the following object contains a prediction
+data(timetoeventprediction)
+
 with(timetoevent, {
   plot(t, fit, type = "l", lwd = 2,  main = "expected time to event", 
        ylim = c(100,365), ylab = "days")
   lines(t, CI[1,], lty = 3)
   lines(t, CI[2,], lty = 3)
 })
-
-
 }

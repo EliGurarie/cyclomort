@@ -1,6 +1,8 @@
-# Example of simulating multi-factor data
+# useful packages
+require(ggplot2); require(magrittr); require(plyr)
 
-eval <- FALSE; if(eval){
+# Example of simulating multi-factor data:
+## Not run:** 
   n <- 100
   T.male = simulate_cycloSurv(n, period = 1, meanhazard = 0.3, peaks = .25, durations = .3)
   T.female = simulate_cycloSurv(n, period = 1, meanhazard = 0.3, peaks = .75, durations = .3)
@@ -8,16 +10,16 @@ eval <- FALSE; if(eval){
             createCycloSurv(start = start, end = stop, 
                             event = status, period = 1))
   seasonalsex <- data.frame( sex = rep(c("M","F"), each = n), T = T)
-}
-
+## End(**Not run**)
 
 # load and visualize simulated sex-specific survival data
-
 data("seasonalsex")
 
 seasonsex.df <- cbind(seasonalsex, as.matrix(seasonalsex$event) %>% as.data.frame) %>%
   arrange(sex,stop) %>% mutate(id = 1:length(start) %>% factor, 
                                status = c("Dead", "Censored")[2-status])
+
+require(ggplot2)
 ggplot(seasonsex.df, aes(x = start, y = id, col = sex)) + 
   geom_errorbarh(aes(xmin = start, xmax = stop, lty = status)) + 
     ggtitle("Simualted sex-specific mortality data")

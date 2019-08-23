@@ -2,32 +2,32 @@
 % Please edit documentation in R/summary_cmfitlist.R
 \name{summary.cmfitlist}
 \alias{summary.cmfitlist}
-\title{Provides a short summary of the cmfitlist object, displaying the effectiveness of each model}
+\title{Summary method for cmfitlist objects}
 \usage{
-\method{summary}{cmfitlist}(x, coefs = TRUE, plotme = FALSE)
+\method{summary}{cmfitlist}(object, ..., coefs = TRUE)
 }
 \arguments{
-\item{x}{a cmfitlist object}
+\item{object}{a \code{cmfitlist} object - output of \code{\link{select_seasons}}}
 
-\item{coefs}{prints out list of model coefficient estimates if true, otherwise prints out simple AIC table comparing models}
+\item{...}{(currently not implemented)}
 
-\item{plotme}{plots AIC/BIC values from each cmfit object in the list to identify the best model choice}
+\item{coefs}{whether or not to return model coefficients along with statistic test table.}
 }
 \value{
 a data frame describing the AIC, log-likelihood, number of parameters and parameter estimates for each model
 }
 \description{
-Provides a short summary of the cmfitlist object, displaying the effectiveness of each model
+Summary method for cmfitlist objects
 }
 \examples{
 T.morts1 <- simulate_cycloSurv(1000, period = 1, 
                              meanhazard = 0.3, 
                              peaks = c(0.25, 0.75), 
                              durations = c(0.2, 0.1), 
-                             weights = 0.3, 
+                             weights = c(0.3, 0.7), 
                              plotme = FALSE)
 
 model_selection = select_seasons(T.morts1, max.season = 4)
 
-model_selection$summary
+summary(model_selection$fits)
 }

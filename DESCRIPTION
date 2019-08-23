@@ -7,9 +7,11 @@ Authors@R: c(person("Eliezer", "Gurarie", role = c("aut", "cre"), email = "egura
 Description: This package provides tools for modeling and analysis of periodic mortality (or other time-to event) processes from right-censored data. 
 License: GPL (>= 3)
 RoxygenNote: 6.1.1
-Depends: magrittr, survival, plyr, flexsurv, stats, mixtools, lubridate, mvtnorm, scales, fields, R (>= 3.5.0)
+Depends: R (>= 3.5.0)
+Imports: flexsurv, lubridate, magrittr, mvtnorm, plyr, scales, stats, survival
 Suggests: 
     knitr,
-    rmarkdown 
+    rmarkdown,
+    ggplot2
 VignetteBuilder: knitr
 Encoding: UTF-8

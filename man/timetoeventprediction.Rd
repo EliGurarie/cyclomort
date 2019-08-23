@@ -18,7 +18,8 @@ set.seed(10)
 T.morts.sim <- simulate_cycloSurv(300, period = 365, meanhazard = 1/365, 
 peaks = c(100, 250), durations = c(25, 40), weights = c(0.4, 0.6), plotme = FALSE)
 T.morts.fit <- fit_cyclomort(T.morts.sim, n.seasons = 2)
-timetoeventprediction <- predict(T.morts.fit, t = 1:365, type = "timetoevent", CI = TRUE, nreps = 100)
+timetoeventprediction <- predict(T.morts.fit, t = 1:365, 
+                                 type = "timetoevent", CI = TRUE, nreps = 100)
 }
 data(timetoeventprediction)
 with(timetoeventprediction, {

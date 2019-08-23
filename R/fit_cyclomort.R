@@ -2,7 +2,7 @@
 #'function along with a named vector of initial guesses and returns the parameter
 #'estimates.
 #'
-#'@param T a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period
+#'@param x a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period
 #'@param inits set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.
 #'@param n.seasons number of seasons to fit model to
 #'@param method method for optim call
@@ -13,22 +13,22 @@
 #'@example examples/cyclomortFit_example.R
 #'@export
 
-fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", period = NULL) {
+fit_cyclomort = function(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B", period = NULL) {
   
   # normalize to period 1
-  if (is.null(period))  period = attributes(T)$period
+  if (is.null(period))  period = attributes(x)$period
   if (is.null(period))  stop("Data does not contain a period attribute. Must be entered manually.\n")
   
   # times
-  T[,1:2] <- T[,1:2]/period
-  T[T[,2] <= T[,1], 2] = T[T[,2] <= T[,1], 1] + 1e-6
+  x[,1:2] <- x[,1:2]/period
+  x[x[,2] <= x[,1], 2] = x[x[,2] <= x[,1], 1] + 1e-6
   
   #sometimes simPeriodicMorts puts out slightly odd numbers that can easily be corrected
   
-  null_fits = flexsurvreg(T ~ 1, dist = "exp")
+  null_fits = flexsurvreg(x ~ 1, dist = "exp")
   meanhazard = null_fits$res[1,1]
   
-  p0 = generateInitialParameterEstimate(T, n.seasons, null_fits)
+  p0 = guess_initial_parameters(x, n.seasons, null_fits)
   
   inits.vector <- unlist(inits)
   
@@ -49,8 +49,8 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", pe
     names(meanhazard) <- c("estimate", "CI.low", "CI.high", "se")
     cm$estimates = list(meanhazard = meanhazard) # mortality rate a.k.a. average hazard
     cm$logLik = logLik(null_fits)
-    cm$AIC = AIC(null_fits)
-    cm$BIC = BIC(null_fits)
+    cm$AIC = null_fits$AIC
+    # cm$BIC = BIC(null_fits)
     cm$k = 1
   } else {
     
@@ -64,13 +64,13 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", pe
     
     if(method %in% "L-BFGS-B"){
       fits = optim(p0, loglike_optim,  
-                   T = T, 
+                   x = x, 
                    hessian = TRUE,
                    method = method,
                    lower = lower, upper = upper)
     } else {
       fits = optim(p0, loglike_optim, 
-                   T = T, hessian = TRUE, 
+                   x = x, hessian = TRUE, 
                    method = method)
     }
     
@@ -144,11 +144,11 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", pe
     cm$optim = fits
     cm$logLik = -fits$value
     cm$AIC = 2 * fits$value + 2 * n.seasons*3
-    cm$BIC = 2 * fits$value + log(length(T)) * n.seasons * 3
+    cm$BIC = 2 * fits$value + log(length(x)) * n.seasons * 3
     cm$k = 3*n.seasons
   }
   cm$period = period
-  cm$data = T
+  cm$data = x
   class(cm) = "cmfit"
   cm
 }
@@ -157,14 +157,14 @@ fit_cyclomort = function(T, inits = NULL, n.seasons = 2, method = "L-BFGS-B", pe
 #' 
 #' Uses a basic flexsurvreg exponential mortality model to find the average hazard value, and fits a mixed normal distribution model to estimate the peaks, season durations, and weight distributions for the model. These estimates are not meant to be fully accurate but instead are meant to be good initial guesses for the fit_cyclomort function.
 #' 
-#' @param T cycloSurv vector representing time of death or censorship
+#' @param x \code{cycloSurv} object representing time of death or censorship
 #' @param n expected number of mortality seasons within a period
 #' @param null_fits original estimate for mortality rate assuming constant hazard function
 #' 
 #' @return a named vector listing intial guesses for parameter values, to be used in the fitting process
 #' 
 #' @export
-generateInitialParameterEstimate = function(T, n, null_fits) {
+guess_initial_parameters = function(x, n, null_fits) {
   if (n == 0) return (NULL)
   result = c() # blank vector to be filled up with parameters
   

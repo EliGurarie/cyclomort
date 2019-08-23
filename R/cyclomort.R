@@ -8,6 +8,14 @@
 #' Details of the underlying model, motivation, and examples of implementation on mortality data are in the Gurarie et al. (*in review*). An active development version is on GitHub at https://github.com/EliGurarie/cyclomort.  The vignette provides several examples of the functionality of the package.
 #' 
 #' @keywords internal
-#' @references E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. For Everything There is a Season: Estimating periodic hazard functions with the cyclomort R package. *Methods in Ecology and Evolution.*
+#' @references E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. \emph{in review} For Everything There is a Season: Estimating periodic hazard functions with the cyclomort R package. \emph{Methods in Ecology and Evolution}.
+#' 
+#' @import stats
+#' @import magrittr
+#' @import plyr
+#' @import mvtnorm
+#' @import survival
+#' @import flexsurv
+#' @import graphics
 #' 
 "_PACKAGE"
