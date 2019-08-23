@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{a cmfit object}
 
-\item{...}{}
+\item{...}{(not implemented)}
 }
 \value{
 a list containing a short summary of the estimates for each parameter along with confidence intervals and AIC

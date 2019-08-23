@@ -1,7 +1,7 @@
 #' Summary method for cyclomort factorial fit
 #' 
 #' @param object a \code{cmfactorfit} object - the output of \code{\link{factorfit_cyclomort}}.
-#' @param ... 
+#' @param ... (not implemented) 
 #' @param coefs whether or not to report the individual summaries of each model component along with the statistical test results
 #' 
 #' @return a table comparing log-likelihood and AIC between null and multi-factor model, and a p-value from likelihood ratio test, optionally combined with the individual model summaries. 

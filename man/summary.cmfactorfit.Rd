@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{a \code{cmfactorfit} object - the output of \code{\link{factorfit_cyclomort}}.}
 
-\item{...}{}
+\item{...}{(not implemented)}
 
 \item{coefs}{whether or not to report the individual summaries of each model component along with the statistical test results}
 }

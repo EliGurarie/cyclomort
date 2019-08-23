@@ -17,5 +17,6 @@
 #' @import survival
 #' @import flexsurv
 #' @import graphics
+#' @import grDevices
 #' 
 "_PACKAGE"

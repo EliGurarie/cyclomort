@@ -24,7 +24,7 @@ plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, ...) 
   if (fit == "alt" | fit == "both") {
     altFits = x$fits$alt
     numPlots = length(altFits)
-    if(is.null(colors)) colors = hsv(h = 0:numPlots / numPlots, s = 1, v = 1)
+    if(is.null(colors)) colors = grDevices::hsv(h = 0:numPlots / numPlots, s = 1, v = 1)
     for (i in 1:numPlots) {
       add = fit == "both" | i > 1
       plot(altFits[[i]], hist = FALSE, add = add, hazcolor = colors[i], ...)

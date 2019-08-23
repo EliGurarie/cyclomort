@@ -5,7 +5,7 @@
 #' @details Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
 #' 
 #' @param object a cmfit object
-#' @param ...
+#' @param ... (not implemented)
 #' @param t times for prediction.  By default, covers 100 observations over a single period.
 #' @param type either \code{hazard} or \code{timetoevent} - dictates what exactly will be predicted
 #' @param CI a boolean dictating whether or not to compute confidence intervals

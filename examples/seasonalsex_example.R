@@ -7,7 +7,7 @@ require(ggplot2); require(magrittr); require(plyr)
   T.male = simulate_cycloSurv(n, period = 1, meanhazard = 0.3, peaks = .25, durations = .3)
   T.female = simulate_cycloSurv(n, period = 1, meanhazard = 0.3, peaks = .75, durations = .3)
   T <- with(rbind(T.male, T.female) %>% data.frame,
-            createCycloSurv(start = start, end = stop, 
+            create_cycloSurv(start = start, end = stop, 
                             event = status, period = 1))
   seasonalsex <- data.frame( sex = rep(c("M","F"), each = n), T = T)
 ## End(**Not run**)

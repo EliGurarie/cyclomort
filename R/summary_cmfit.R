@@ -1,7 +1,7 @@
 #' Provide a short summary of cmfit (parameter estimates for periodic mortality curves) objects
 #' 
 #' @param object a cmfit object
-#' @param ...
+#' @param ... (not implemented)
 #' 
 #' @return a list containing a short summary of the estimates for each parameter along with confidence intervals and AIC
 #' 

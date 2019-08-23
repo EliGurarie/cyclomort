@@ -10,6 +10,8 @@
 \arguments{
 \item{object}{a cmfit object}
 
+\item{...}{(not implemented)}
+
 \item{t}{times for prediction.  By default, covers 100 observations over a single period.}
 
 \item{type}{either \code{hazard} or \code{timetoevent} - dictates what exactly will be predicted}
