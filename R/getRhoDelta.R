@@ -1,13 +1,13 @@
-#' Convert Rho to Tau
+#' Converting between Rho to Delta
 #' 
-#' Functions for converting the concentration parameter rho to the season duration parameter delta and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
-#' 
-#' 
+#' Functions for converting the concentration parameter rho to the season 
+#' duration parameter delta and vice versa.  They are: \code{findDelta(rho)}.  
+#' These are mainly internal. 
+#'  
 #' @examples 
 #' findDelta(rho = 0.9); findRho(0.0167)
 #' findDelta(rho = 0.1); findRho(0.218)
-#' 
-#' 
+#'  
 #' # Plot the relationship
 #' par(mfrow = c(1,2))
 #' rhos <- seq(0, 1, length = 1e3)
@@ -32,7 +32,8 @@ findRho <- Vectorize(function(delta){
   RhoToDelta <- function(rho, delta) DeltaToRho(delta, rho)
   ifelse(delta == 0.5, 0, 
          ifelse(delta == 0, 1,
-                uniroot(RhoToDelta, delta = delta, interval = c(1e-6, 1-1e-6))$root))
+                uniroot(RhoToDelta, delta = delta, 
+                        interval = c(1e-6, 1-1e-6))$root))
 })
 
 #' @rdname findDelta
