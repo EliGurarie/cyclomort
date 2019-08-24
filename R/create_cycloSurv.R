@@ -1,13 +1,26 @@
-#'Create an object that can be fitted with a given period from survival (time of death or censoring) data
+#'Create a cycloSurv object
 #'
-#'@param start a vector measuring time of birth or left-censoring (as a POSIXct, numeric, or Date)
-#'@param end a vector measuring time of death or right-censoring (as a POSIXct, numeric, or Date)
-#'@param event a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation
-#'@param t0 reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIXct).
+#' \code{cycloSurv} is a superclass of \code{Surv}, the standard data type for
+#' survival analysis in R, with an additional period attribute necessary for 
+#' estimating periodic hazard functions. 
+#'
+#'@param start a vector measuring time an individual enters a population
+#'(can be POSIX, numeric, or Date)
+#'@param end a vector measuring time an individual leaves a population, e.g. via 
+#'death (or other precipitation event of interest) or censoring. 
+#'(as a POSIXct, numeric, or Date)
+#'@param event the status indicator, normally 0=alive/censored, 1=dead. 
+#'@param t0 reference time for event times.  By default, \code{t0} is set to 
+#'January 1 of the first year of observations if times are POSIXct. There are 
+#'many reasons why a biological year may more conveniently start on a different 
+#'day.  All else being equal, it can be useful to start a "mortality year" at a 
+#'period of low mortality to better isolate the seasons of higher mortality. 
 #'@param period length of one period in the input data
 #'@param timeunits units that dates are inputted in if dates are being used
 #'
-#'@return a Surv object with an attribute "period" that reads the period.
+#'@return an object of class \code{cycloSurv} which is identical to and 
+#'compatible with a '\code{Surv} object, with, however, an addition "period" 
+#'attribute. 
 #'
 #'@examples
 #'startTimes = as.Date(origin = "2010-01-01", 
@@ -21,12 +34,14 @@
 #'@export
 #'
 
-create_cycloSurv = function(start, end, event, t0 = NULL, period, timeunits = "days") {
+create_cycloSurv = function(start, end, event, t0 = NULL, period, 
+                            timeunits = "days") {
   
   if(lubridate::is.POSIXct(start)) start <- as.Date(start)
   if(lubridate::is.POSIXct(end)) end <- as.Date(end)
   if(lubridate::is.Date(start) & lubridate::is.Date(end)){
-    if(is.null(t0)) t0 <- min(start) - lubridate::ddays(lubridate::yday(min(start)))
+    if(is.null(t0)) t0 <- min(start) - 
+        lubridate::ddays(lubridate::yday(min(start)))
     if(timeunits == "years"){
       startPhased = as.numeric(difftime(start, t0, units = "days")) / 365.242
       endPhased = as.numeric(difftime(end, t0, units = "days")) / 365.242

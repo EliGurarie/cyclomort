@@ -1,14 +1,19 @@
 #' Factorial analysis of seasonal survival models
 #' 
-#' This function takes a \code{Y~X} style formula to compare null models of pooled data against separately fitted models against a given factor.  For now - this works only for a single discrete factor. 
+#' This function takes a \code{Y~X} style formula to compare null models of 
+#' pooled data against separately fitted models against a given factor.  For now 
+#' this works only for a single discrete factor. 
 #' 
 #' @param f formula object used for identifying different classes
-#' @param data a data frame containing a cycloSurv object detailing mortalities for a set of observations and a factor identifying the value of a categorical variable for each observation
+#' @param data a data frame containing a cycloSurv object detailing mortalities 
+#' for a set of observations and a factor identifying the value of a categorical 
+#' variable for each observation
 #' @param n.seasons number of seasons to fit model to
 #' @param ... additional arguments to fit_cyclomort call
 #' 
-#' @return table comparing outputs from null (factor has no effect on mortality and they are all
-#' in the same group) model to multi-factor model using AIC, log-likelihood and likelihood ratio test
+#' @return table comparing outputs from null (factor has no effect on mortality 
+#' and they are all in the same group) model to multi-factor model using AIC, 
+#' log-likelihood and likelihood ratio test
 #' 
 #' @example examples/factorfit_cyclomort_example.R
 #' @export

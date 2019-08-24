@@ -1,6 +1,10 @@
 #' Wrapped Cauchy and Integrated Wrapped Cauchy functions 
 #' 
-#' Fundamental periodic hazard function and its (analytical) integral - required for efficient estimation. These are mainly internal functions. They are both parameterized in terms of peak mean  \eqn{\mu}, concentration parameter  \eqn{\rho}, and period \eqn{\tau}. They are "unweighted", i.e. \deqn{\int_0^\tau f(t) dt = \tau}
+#' Fundamental periodic hazard function and its (analytical) integral - required 
+#' for efficient estimation. These are mainly internal functions. They are both 
+#' parameterized in terms of peak mean  \eqn{\mu}, concentration parameter  
+#' \eqn{\rho}, and period \eqn{\tau}. They are "unweighted", i.e. 
+#' \deqn{\int_0^\tau f(t) dt = \tau}
 #' 
 #' @param t  time
 #' @param mu mean peak
@@ -26,20 +30,28 @@ iwc <- function(t, mu, rho, tau){
 
 #' Mixed Wrapped Cauchy and Integrated Mixed Wrapped Cauchy Functions
 #' 
-#' Allows for the fitting of models with multiple "seasons" of high mortality by producing a multimodal version of the wrapped Cauchy function. A simple mixture model that evaluates the wrapped Cauchy function for each individual component and then combines all components according to the individual linear weights.
+#' Allows for the fitting of models with multiple "seasons" of high mortality by 
+#' producing a multimodal version of the wrapped Cauchy function. A simple 
+#' mixture model that evaluates the wrapped Cauchy function for each individual 
+#' component and then combines all components according to the individual linear 
+#' weights.
 #' @param mus k-vector of mean peaks (assuming k seasons)
 #' @param rhos k-vector of concentration parameters
 #' @param gammas k-vector of average hazard values for each component
 #' @rdname wc
 #' @export 
 mwc <- function(t, mus, rhos, gammas, tau){
-  rowSums(Vectorize(wc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = rhos, tau = tau) %*% gammas)
+  rowSums(Vectorize(wc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = 
+                                                           rhos, tau = tau) %*% 
+            gammas)
 }
 
 #' @rdname wc
 #' @export 
 imwc <- function(t, mus, rhos, gammas, tau){
-  rowSums(Vectorize(iwc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = rhos, tau = tau) %*% gammas)
+  rowSums(Vectorize(iwc, vectorize.args = c("mu", "rho"))(t = t, mu = mus, rho = 
+                                                            rhos, tau = tau) %*% 
+            gammas)
 }
 
 

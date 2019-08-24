@@ -2,17 +2,20 @@
 % Please edit documentation in R/create_cycloSurv.R
 \name{create_cycloSurv}
 \alias{create_cycloSurv}
-\title{Create an object that can be fitted with a given period from survival (time of death or censoring) data}
+\title{Create a cycloSurv object}
 \usage{
 create_cycloSurv(start, end, event, t0 = NULL, period,
   timeunits = "days")
 }
 \arguments{
-\item{start}{a vector measuring time of birth or left-censoring (as a POSIXct, numeric, or Date)}
+\item{start}{a vector measuring time an individual enters a population
+(can be POSIX, numeric, or Date)}
 
-\item{end}{a vector measuring time of death or right-censoring (as a POSIXct, numeric, or Date)}
+\item{end}{a vector measuring time an individual leaves a population, e.g. via 
+death (or other precipitation event of interest) or censoring. 
+(as a POSIXct, numeric, or Date)}
 
-\item{event}{a vector of booleans (0 = alive, 1 = dead) detailing the status of the observation}
+\item{event}{the status indicator, normally 0=alive/censored, 1=dead.}
 
 \item{t0}{reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIXct).}
 
@@ -21,10 +24,11 @@ create_cycloSurv(start, end, event, t0 = NULL, period,
 \item{timeunits}{units that dates are inputted in if dates are being used}
 }
 \value{
-a Surv object with an attribute "period" that reads the period.
+an object of class \code{cycloSurv} which is identical to a 
+\code{\link{survival::Surv}} with an attribute "period".
 }
 \description{
-Create an object that can be fitted with a given period from survival (time of death or censoring) data
+\code{cycloSurv} is a superclass of \cole
 }
 \examples{
 startTimes = as.Date(origin = "2010-01-01", 
@@ -35,4 +39,7 @@ censored = c(1, 1, 0, 1, 1, 0, 1, 0, 0, 0)
 period = 365
 morts = create_cycloSurv(start = startTimes, end = endTimes, 
                        event = censored, period = period)
+}
+\seealso{
+Surv
 }

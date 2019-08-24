@@ -22,12 +22,14 @@
 #' @example examples/cyclomortFit_example.R
 #' @export
 
-plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, add = FALSE, monthlabs = FALSE,
+plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, 
+                      add = FALSE, monthlabs = FALSE,
                       nreps = 5e3, hazcolor = "black", alpha = 0.3, 
                       ymax = NULL, prediction = NULL, yaxt = par()$yaxt, ...) {
   
   if(is.null(prediction)){
-    prediction <- predict(x, CI = CI, CI.level = CI.level, nreps = nreps, type = "hazard")
+    prediction <- predict(x, CI = CI, CI.level = CI.level, nreps = nreps, 
+                          type = "hazard")
     prediction$t <- prediction$t / x$period
     CI <- !is.null(prediction$CI)
   }
@@ -81,8 +83,10 @@ plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, add = FAL
   hazard.labs <- pretty(prediction$CI)
   if (!add) {
     # if we don't have a histogram our hazard axis should be on the left!
-    if(yaxt != "n")  axis(ifelse(histogram, 4, 2), at = hazard.labs * K, hazard.labs, col = hazcolor)
-    mtext(side = ifelse(histogram, 4, 2), line = par()$mgp[1], "Estimated hazard function", las = 0, col = hazcolor)
+    if(yaxt != "n")  axis(ifelse(histogram, 4, 2), at = hazard.labs * K, 
+                          hazard.labs, col = hazcolor)
+    mtext(side = ifelse(histogram, 4, 2), line = par()$mgp[1], 
+          "Estimated hazard function", las = 0, col = hazcolor)
     }
   
   if (CI) {

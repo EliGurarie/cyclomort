@@ -1,6 +1,7 @@
 #' Mortality data for Western Arctic Herd Caribou
 #'
-#' Anonymized mortality data on Western Arctic Herd caribou collected by the U.S. National Park Service, Alaska, with grateful acknowledgments to K. Joly. 
+#' Anonymized mortality data on Western Arctic Herd caribou collected by the 
+#' U.S. National Park Service, Alaska, with grateful acknowledgments to K. Joly. 
 #'
 #' @usage 
 #' data(wah_morts)
@@ -28,7 +29,9 @@
 
 #' Mortality data for Northwest territory boreal woodland caribou.
 #'
-#' Mortality data for Northwest territory boreal woodland caribou, anonymized and randomized by year, thereby retaining the multi-seasonal signal without, with grateful acknowledgements to A. Kelly and N. Larter. 
+#' Mortality data for Northwest territory boreal woodland caribou, anonymized 
+#' and randomized by year, thereby retaining the multi-seasonal signal without, 
+#' with grateful acknowledgements to A. Kelly and N. Larter. 
 #'
 #' @usage
 #' data(nwt_morts)
@@ -55,7 +58,9 @@
 
 #' Simulated data of seasonal mortality data for two sex groups
 #' 
-#' See examples below for the process of simulating and visualizing these data using \code{\link{simulate_cycloSurv}}, and an example of analyzing these data with \code{\link{factorfit_cyclomort}}.
+#' See examples below for the process of simulating and visualizing these data 
+#' using \code{\link{simulate_cycloSurv}}, and an example of analyzing these 
+#' data with \code{\link{factorfit_cyclomort}}.
 #'
 #' @usage data(seasonalsex)
 #' 

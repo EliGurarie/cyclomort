@@ -28,7 +28,8 @@ simulate_cycloSurv <- function(n, period = 1,
          n.times = 1e3, 
          plotme = TRUE) {
   
-  if (!censoring %in% c("none", "fixed", "random")) stop("Invalid censoring format.")
+  if (!censoring %in% c("none", "fixed", "random")) 
+    stop("Invalid censoring format.")
   
   censor.times = rep(censor.times, n)
   
@@ -58,21 +59,24 @@ simulate_cycloSurv <- function(n, period = 1,
     pdf[,2] <- pdf[,2]/max(pdf[,2])
     xlim <- range(pdf[,1])
     XY.scatter <- cbind(sample(pdf[,1], n*1e2, replace = TRUE), runif(n*1e2))
-    sample <- apply(XY.scatter, 1, function(v) if(v[2] < pdf[pdf[,1] == v[1],2]) return(v[1])) 
+    sample <- apply(XY.scatter, 1, function(v) if(v[2] < pdf[pdf[,1] == v[1],2]) 
+      return(v[1])) 
     sample <- unlist(sample)
     return(sample[1:n])
   }
   
   rawTimes = sampleFromPdf(n, cbind(t, pdf.mortality))
   #times if no censoring existed
-  if (censoring == "random") censor.times = runif(n, min = 0, max = max.periods * period)
+  if (censoring == "random") censor.times = runif(n, min = 0, 
+                                                  max = max.periods * period)
   if (censoring == "none") censor.times = rep(max.periods * period + 1, n)
   
   morts_t <- rawTimes
   censored = (morts_t > censor.times)
   morts_t[morts_t <= 0] = 1e-6
   morts_t[censored] = censor.times[censored]
-  morts = Surv(time = rep(0, length(morts_t)), time2 = morts_t, event = !censored)
+  morts = Surv(time = rep(0, length(morts_t)), 
+               time2 = morts_t, event = !censored)
   
   attributes(morts)$meanhazard <- meanhazard
   attributes(morts)$peaks <- peaks
@@ -83,13 +87,17 @@ simulate_cycloSurv <- function(n, period = 1,
   
   if(plotme){
     par.init <- par()
-    par(mfrow = c(2,2), bty = "l", mar = c(2,4,4,2), tck = 0.02, mgp = c(1.5,.25,0), xpd = NA)
+    par(mfrow = c(2,2), bty = "l", mar = c(2,4,4,2), tck = 0.02, 
+        mgp = c(1.5,.25,0), xpd = NA)
     plot(t, hazard, type = "l", main = "hazard function")
-    plot(t, cum.prob.survival, type = "l", ylim = c(0,1), main = "survival curve")
-    plot(t, cum.mortality, type = "l", ylim = c(0,1.1), main = "cumulative mortality: F(t)")
+    plot(t, cum.prob.survival, type = "l", ylim = c(0,1), 
+         main = "survival curve")
+    plot(t, cum.mortality, type = "l", ylim = c(0,1.1), 
+         main = "cumulative mortality: F(t)")
     abline(h = 1, col = "grey", lty = 3, xpd = FALSE, lwd = 2)
     hist(rawTimes, breaks = seq(0, max.periods*period, period / 6), 
-         col = "grey", bor = "darkgrey", freq = FALSE, main = "simulated mortalities")
+         col = "grey", bor = "darkgrey", freq = FALSE, 
+         main = "simulated mortalities")
     lines(t, pdf.mortality, type = "l")
     suppressWarnings(par(par.init))
   }

@@ -1,4 +1,4 @@
-#' Selecting the number of seasons of mortality
+#' Select the number of  mortality seasons
 #' 
 #' Compute a delta AIC table (and, optionally, likelihood ratio tests) for a sequence of models with a different number of seasons
 #' 
@@ -56,8 +56,10 @@ summarize_listOfFits <- function(listOfFits, lrt = lrt, print = print){
     LRT.table <- data.frame( comparison = mat.names[ut],
                              ChiSq = chisq.vals[ut] %>% round(2),
                              d.f. = dfs[ut],
-                             p.value = p.vals[ut] %>%  signif(3)) %>% arrange(comparison) %>% 
-      mutate(signif = cut(p.value, c(-1,0.001, 0.01, 0.05, 0.1, 1), labels = c("***", "**", "*", "-", "")))
+                             p.value = p.vals[ut] %>%  signif(3)) %>% 
+      arrange(comparison) %>% 
+      mutate(signif = cut(p.value, c(-1,0.001, 0.01, 0.05, 0.1, 1), 
+                          labels = c("***", "**", "*", "-", "")))
     if(print){
       cat("\nNested likelihood-ratio tests:\n")
       print(LRT.table, row.names = FALSE)  

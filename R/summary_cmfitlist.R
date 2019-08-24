@@ -12,7 +12,8 @@
 
 summary.cmfitlist = function(object, ..., coefs = TRUE) {
   if (coefs) {
-    estimates = ldply(object, function(l) cbind(l$n.seasons, rbind(ldply(l$estimates))))
+    estimates = ldply(object, function(l) cbind(l$n.seasons, 
+                                                rbind(ldply(l$estimates))))
     names(estimates)[1] = "n.seasons"
     estimates$parameter[is.na(estimates$parameter)] = "meanhazard"
     values = ldply(object, function(x) x$AIC) %>% rename(c(V1 = "AIC"))

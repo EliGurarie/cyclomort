@@ -12,24 +12,32 @@
 
 \item{...}{(not implemented)}
 
-\item{t}{times for prediction.  By default, covers 100 observations over a single period.}
+\item{t}{times for prediction.  By default, covers 100 observations over a 
+single period.}
 
-\item{type}{either \code{hazard} or \code{timetoevent} - dictates what exactly will be predicted}
+\item{type}{either \code{hazard} or \code{timetoevent} - dictates what 
+exactly will be predicted}
 
 \item{CI}{a boolean dictating whether or not to compute confidence intervals}
 
 \item{CI.level}{confidence level (default 0.95) for CIs (if CI is TRUE)}
 
-\item{nreps}{number of samples drawn to generate confidence intervals.  The default 10^3 is generally sufficient, and very fast for the hazard function, but possibly prohibitively slow for the time-to-event functionality.}
+\item{nreps}{number of samples drawn to generate confidence intervals.  The 
+default 10^3 is generally sufficient, and very fast for the hazard function, 
+but possibly prohibitively slow for the time-to-event functionality.}
 }
 \value{
-a list of vectors containing predictions for each value in t, as well as (optional) confidence intervals and additional data about the prediction
+a list of vectors containing predictions for each value in \code{t}, 
+as well as (optional) confidence intervals.
 }
 \description{
-Obtain predictions and confidence intervals for the hazard function or the time to event from a fitted cyclomort object.
+Obtain predictions and confidence intervals for the hazard function or the 
+time to event from a fitted cyclomort object.
 }
 \details{
-Confidence intervals are produced by sampling from the multivariate normal distribution of the MLE parameter estimates with a variance-covariance derived from the M
+Confidence intervals are produced by sampling from the multivariate 
+normal distribution of the MLE parameter estimates accounting for the 
+covariance in the estimates by using the Hessian of the MLE.
 }
 \examples{
 # simulate two-peak mortality process

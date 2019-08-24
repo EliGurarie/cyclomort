@@ -15,19 +15,26 @@ loglike <- function(x, gammas, mus, rhos) {
   T_start = x[,1]
   T_diff = T_end - T_start
   hazard = mwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
-  cumhazard = imwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1) - imwc(T_start, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
+  cumhazard = imwc(T_end, mus = mus, rhos = rhos, gammas = gammas, tau = 1) - 
+    imwc(T_start, mus = mus, rhos = rhos, gammas = gammas, tau = 1)
   cum.prob.survival <-  exp(-cumhazard)
   F <- 1 - cum.prob.survival
   f <- hazard * cum.prob.survival
   sum(T_censoring * log(f) + (1-T_censoring) * log(1-F))
 }
 
-#'Log-likelihood function that is useable for the optim command
+#' Log-likelihood function 
 #'
-#'@param x times of death or censoring as Surv objects
-#'@param pars named vector including "gamma", "mu", and "rho" (because this function is entirely internal) parameters for the appropriate number of seasons
+#' Internal function used for computing the log-likelihood of a parameterized 
+#' model within \code{\link{fit_cyclomort}}.  
 #'
-#'@return likelihood value given named vector of parameters as well as set of observations
+#' @param x times of death or censoring as Surv objects
+#' @param pars named vector including "gamma", "mu", and "rho" 
+#' parameters for the appropriate number of seasons
+#'
+#'@return likelihood value given named vector of parameters as well as set of 
+#'observations
+#'@seealso \code{\link{fit_cyclomort}}
 #'
 #'@export
 
@@ -38,7 +45,5 @@ loglike_optim<- function(pars, x) {
            mus = pars[grepl("mu", names(pars))],
            rhos = rhos)
 }
-
 logit <- function(p){ log(p/(1-p)) }
-
 expit <- function(p){ exp(p)/(1+exp(p)) }

@@ -11,7 +11,8 @@
 #' @example examples/predict_cmfit_example.R
 #' @export
 
-plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, ...) {
+plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, 
+                            ...) {
   
   if (!fit %in% c("null", "alt", "both")) stop("Invalid \"fit\" parameter.")
 
@@ -24,11 +25,11 @@ plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, ...) 
   if (fit == "alt" | fit == "both") {
     altFits = x$fits$alt
     numPlots = length(altFits)
-    if(is.null(colors)) colors = grDevices::hsv(h = 0:numPlots / numPlots, s = 1, v = 1)
+    if(is.null(colors)) colors = grDevices::hsv(h = 0:numPlots / numPlots, 
+                                                s = 1, v = 1)
     for (i in 1:numPlots) {
       add = fit == "both" | i > 1
       plot(altFits[[i]], hist = FALSE, add = add, hazcolor = colors[i], ...)
-      #slight issue with axes (they only reflect the first model plotted).. any idea how to fix?
     }
   }
   
