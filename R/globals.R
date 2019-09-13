@@ -1,0 +1,1 @@
+utils::globalVariables(c('comparison', 'estimate', 'p.value', 'parameter'))
