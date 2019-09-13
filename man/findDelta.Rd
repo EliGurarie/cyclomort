@@ -4,7 +4,7 @@
 \alias{findDelta}
 \alias{findRho}
 \alias{DeltaToRho}
-\title{Convert Rho to Tau}
+\title{Converting between Rho to Delta}
 \usage{
 findDelta(rho)
 
@@ -23,13 +23,14 @@ duration parameter delta
 concentration parameter rho on interval [0, 1]
 }
 \description{
-Functions for converting the concentration parameter rho to the season duration parameter delta and vice versa.  They are: \code{findDelta(rho)} and \code{findDelta(delta)}.  These are not very exciting functions, but making them work correctly involved quite a bit of calculus and algebra!
+Functions for converting the concentration parameter rho to the season 
+duration parameter delta and vice versa.  They are: \code{findDelta(rho)}.  
+These are mainly internal.
 }
 \examples{
 findDelta(rho = 0.9); findRho(0.0167)
 findDelta(rho = 0.1); findRho(0.218)
-
-
+ 
 # Plot the relationship
 par(mfrow = c(1,2))
 rhos <- seq(0, 1, length = 1e3)

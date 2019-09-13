@@ -11,11 +11,17 @@ guess_initial_parameters(x, n, null_fits)
 
 \item{n}{expected number of mortality seasons within a period}
 
-\item{null_fits}{original estimate for mortality rate assuming constant hazard function}
+\item{null_fits}{original estimate for mortality rate assuming constant 
+hazard function}
 }
 \value{
-a named vector listing intial guesses for parameter values, to be used in the fitting process
+a named vector listing intial guesses for parameter values, to be 
+used in the fitting process
 }
 \description{
-Uses a basic flexsurvreg exponential mortality model to find the average hazard value, and fits a mixed normal distribution model to estimate the peaks, season durations, and weight distributions for the model. These estimates are not meant to be fully accurate but instead are meant to be good initial guesses for the fit_cyclomort function.
+Uses a basic flexsurvreg exponential mortality model to find the average 
+hazard value, and fits a mixed normal distribution model to estimate the 
+peaks, season durations, and weight distributions for the model. These 
+estimates are not meant to be fully accurate but instead are meant to be 
+good initial guesses for the fit_cyclomort function.
 }

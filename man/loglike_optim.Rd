@@ -2,18 +2,24 @@
 % Please edit documentation in R/loglike.R
 \name{loglike_optim}
 \alias{loglike_optim}
-\title{Log-likelihood function that is useable for the optim command}
+\title{Log-likelihood function}
 \usage{
 loglike_optim(pars, x)
 }
 \arguments{
-\item{pars}{named vector including "gamma", "mu", and "rho" (because this function is entirely internal) parameters for the appropriate number of seasons}
+\item{pars}{named vector including "gamma", "mu", and "rho" 
+parameters for the appropriate number of seasons}
 
 \item{x}{times of death or censoring as Surv objects}
 }
 \value{
-likelihood value given named vector of parameters as well as set of observations
+likelihood value given named vector of parameters as well as set of 
+observations
 }
 \description{
-Log-likelihood function that is useable for the optim command
+Internal function used for computing the log-likelihood of a parameterized 
+model within \code{\link{fit_cyclomort}}.
+}
+\seealso{
+\code{\link{fit_cyclomort}}
 }

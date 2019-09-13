@@ -17,18 +17,25 @@ death (or other precipitation event of interest) or censoring.
 
 \item{event}{the status indicator, normally 0=alive/censored, 1=dead.}
 
-\item{t0}{reference time for event times.  By default, \code{t0} is set to January 1 of the first year of observations (if times are POSIXct).}
+\item{t0}{reference time for event times.  By default, \code{t0} is set to 
+January 1 of the first year of observations if times are POSIXct. There are 
+many reasons why a biological year may more conveniently start on a different 
+day.  All else being equal, it can be useful to start a "mortality year" at a 
+period of low mortality to better isolate the seasons of higher mortality.}
 
 \item{period}{length of one period in the input data}
 
 \item{timeunits}{units that dates are inputted in if dates are being used}
 }
 \value{
-an object of class \code{cycloSurv} which is identical to a 
-\code{\link{survival::Surv}} with an attribute "period".
+an object of class \code{cycloSurv} which is identical to and 
+compatible with a '\code{Surv} object, with, however, an addition "period" 
+attribute.
 }
 \description{
-\code{cycloSurv} is a superclass of \cole
+\code{cycloSurv} is a superclass of \code{Surv}, the standard data type for
+survival analysis in R, with an additional period attribute necessary for 
+estimating periodic hazard functions.
 }
 \examples{
 startTimes = as.Date(origin = "2010-01-01", 
@@ -39,7 +46,4 @@ censored = c(1, 1, 0, 1, 1, 0, 1, 0, 0, 0)
 period = 365
 morts = create_cycloSurv(start = startTimes, end = endTimes, 
                        event = censored, period = period)
-}
-\seealso{
-Surv
 }

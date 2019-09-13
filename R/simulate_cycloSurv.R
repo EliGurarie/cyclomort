@@ -86,7 +86,8 @@ simulate_cycloSurv <- function(n, period = 1,
   attributes(morts)$phase <- 0
   
   if(plotme){
-    par.init <- par()
+    par.init <- par(no.readonly = TRUE)
+    on.exit(par(par.init))
     par(mfrow = c(2,2), bty = "l", mar = c(2,4,4,2), tck = 0.02, 
         mgp = c(1.5,.25,0), xpd = NA)
     plot(t, hazard, type = "l", main = "hazard function")
@@ -99,7 +100,7 @@ simulate_cycloSurv <- function(n, period = 1,
          col = "grey", bor = "darkgrey", freq = FALSE, 
          main = "simulated mortalities")
     lines(t, pdf.mortality, type = "l")
-    suppressWarnings(par(par.init))
+    # suppressWarnings(par(par.init))
   }
   
   class(morts) = c("cycloSurv", "Surv")

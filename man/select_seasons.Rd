@@ -2,7 +2,7 @@
 % Please edit documentation in R/select_seasons.R
 \name{select_seasons}
 \alias{select_seasons}
-\title{Selecting the number of seasons of mortality}
+\title{Select the number of  mortality seasons}
 \usage{
 select_seasons(x, max.season = 4, lrt = FALSE, print = TRUE)
 }

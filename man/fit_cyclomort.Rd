@@ -2,31 +2,33 @@
 % Please edit documentation in R/fit_cyclomort.R
 \name{fit_cyclomort}
 \alias{fit_cyclomort}
-\title{Get maximum likelihood estimates for periodic mortality data. Uses the optim
-function along with a named vector of initial guesses and returns the parameter
-estimates.}
+\title{Estimate periodic hazard function.}
 \usage{
 fit_cyclomort(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
   period = NULL)
 }
 \arguments{
-\item{x}{a cycloSurv object recording start and end times as well as status (dead/censored) and the length of one full period}
+\item{x}{a cycloSurv object recording start and end times as well as status 
+(dead/censored) and the length of one full period}
 
-\item{inits}{set of initial guesses; a named vector or list with values for "peak" and "duration". Leaving some or all of these parameters as NULL will trigger the automatic selection of an initial guess.}
+\item{inits}{set of initial guesses; a named vector or list with values for 
+"peak" and "duration". Leaving some or all of these parameters as NULL will 
+trigger the automatic selection of an initial guess.}
 
 \item{n.seasons}{number of seasons to fit model to}
 
 \item{method}{method for optim call}
 
-\item{period}{expected periodicity of survival data. Can be passed in with cycloSurv input parameter}
+\item{period}{expected periodicity of survival data. Can be passed in with 
+cycloSurv input parameter}
 }
 \value{
-a cmfit object containing parameter estimates for peaks, durations, and weights for each season
+a cmfit object containing parameter estimates for peaks, durations, 
+and weights for each season
 }
 \description{
-Get maximum likelihood estimates for periodic mortality data. Uses the optim
-function along with a named vector of initial guesses and returns the parameter
-estimates.
+This function takes time-to-event data formatted as a \code{cycloSurv} object 
+and estimates an undelying hazard function for a given numer of seasons.
 }
 \examples{
 T.morts1 <- simulate_cycloSurv(1000, period = 365, 
