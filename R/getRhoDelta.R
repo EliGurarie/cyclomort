@@ -23,7 +23,7 @@ findDelta <- Vectorize(function(rho){
          ifelse(rho == 1, 0, 
                 uniroot(DeltaToRho, rho = rho, interval = c(0, .5))$root))
 })
-
+  
 #' @rdname findDelta
 #' @param delta duration parameter
 #' @return concentration parameter rho on interval [0, 1]

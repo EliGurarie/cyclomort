@@ -7,7 +7,6 @@
 #' @return a table comparing log-likelihood and AIC between null and multi-factor model, and a p-value from likelihood ratio test, optionally combined with the individual model summaries. 
 #' 
 #' @example examples/factorfit_cyclomort_example.R
-#' @see
 #' @export
 
 summary.cmfactorfit = function(object, ..., coefs = FALSE) {

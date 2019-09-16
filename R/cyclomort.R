@@ -5,10 +5,10 @@
 #' 
 #' @details #' The central estimation function \code{\link{fit_cyclomort}} produces esimates for timing, duration and intensity of mortality peaks from right-censored survival data.  Other functions simulate survival data from periodic hazard functions (\code{\link{simulate_cycloSurv}}), perform model selection to identiy the number of seasons (\code{\link{select_seasons}}), perform simple hypothesis tests (\code{\link{factorfit_cyclomort}}), and various methods for visualizing and summarizing fits and model predictions.  Several data sets are also included. 
 #' 
-#' Details of the underlying model, motivation, and examples of implementation on mortality data are in the Gurarie et al. (*in review*). An active development version is on GitHub at https://github.com/EliGurarie/cyclomort.  The vignette provides several examples of the functionality of the package.
+#' Details of the underlying model, motivation, and examples of implementation on mortality data are in the Gurarie et al. (\emph{in press}). An active development version is on GitHub at \href{https://github.com/EliGurarie/cyclomort}.  The vignette provides several examples of the functionality of the package.
 #' 
 #' @keywords internal
-#' @references E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. \emph{in review} For Everything There is a Season: Estimating periodic hazard functions with the cyclomort R package. \emph{Methods in Ecology and Evolution}.
+#' @references E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. \emph{in press} For Everything There is a Season: Estimating periodic hazard functions with the cyclomort R package. \emph{Methods in Ecology and Evolution}.
 #' 
 #' @import stats
 #' @import magrittr

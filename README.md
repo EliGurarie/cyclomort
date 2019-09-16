@@ -16,4 +16,4 @@ This project is fairly mature, and will soon be uploaded to CRAN, but GitHub is 
 
 ## References
 
-E. Gurarie, P. Thompson, A. Kelly,  N. Larter, W. Fagan and K. Joly. (*in review*) For Everything There is a Season: Estimating periodic hazard functions with the `cyclomort` R package. *Methods in Ecology and Evolution*. 
+E. Gurarie, P. Thompson, A. Kelly,  N. Larter, W. Fagan and K. Joly. (*in press*) For Everything There is a Season: Estimating periodic hazard functions with the `cyclomort` R package. *Methods in Ecology and Evolution*. 
