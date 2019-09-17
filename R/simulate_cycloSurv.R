@@ -90,17 +90,22 @@ simulate_cycloSurv <- function(n, period = 1,
     on.exit(par(par.init))
     par(mfrow = c(2,2), bty = "l", mar = c(2,4,4,2), tck = 0.02, 
         mgp = c(1.5,.25,0), xpd = NA)
-    plot(t, hazard, type = "l", main = "hazard function")
+    plot(t, hazard, type = "l", main = "hazard function", xlab = "time")
     plot(t, cum.prob.survival, type = "l", ylim = c(0,1), 
-         main = "survival curve")
+         main = "survival curve", xlab = "time")
     plot(t, cum.mortality, type = "l", ylim = c(0,1.1), 
-         main = "cumulative mortality: F(t)")
+         main = "cumulative mortality: F(t)", xlab = "time")
     abline(h = 1, col = "grey", lty = 3, xpd = FALSE, lwd = 2)
     hist(rawTimes, breaks = seq(0, max.periods*period, period / 6), 
          col = "grey", bor = "darkgrey", freq = FALSE, 
-         main = "simulated mortalities")
+         main = "mortality distribution", xlab = "time", ylab = "density")
     lines(t, pdf.mortality, type = "l")
-    # suppressWarnings(par(par.init))
+    legend("topright", lty = c(NA, 1), pch = c(22, NA),
+           pt.bg = c("grey", NA), bty = "n", 
+           col = c("darkgrey", "black"), 
+           pt.cex = 2, 
+           legend = c("simulated", "p.d.f."))
+    suppressWarnings(par(par.init))
   }
   
   class(morts) = c("cycloSurv", "Surv")
