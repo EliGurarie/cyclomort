@@ -101,8 +101,10 @@ fit_cyclomort = function(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
     weights.se <- gammas.se / (meanhazard.hat * period)
     weights.CI <- weights.hat + (weights.se) %*% t(c(-2,2))
     if (any(is.na(meanhazard.CI)) | 
-        (weights.CI[1] < 1e-6 & weights.CI[1] > (1 - 1e-6))) 
+        (weights.CI[1] < 1e-6 | weights.CI[1] > (1 - 1e-6))) 
       warning("Could not produce accurate confidence intervals for weight parameter. Interpret results with skepticism.\n")
+    if (any(!is.na(weights.CI) & weights.CI > 1)) warning('Upper confidence limit for weights manually coerced to 1')
+    weights.CI[weights.CI > 1] = 1
     
     ## Peaks 
     peaks.hat <- mus.hat * period
@@ -120,7 +122,7 @@ fit_cyclomort = function(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
     durations.low <- findDelta(rhos.upper) * period
     durations.high <- findDelta(rhos.lower) * period
     durations.CI <- cbind(durations.low, durations.high)
-    if (any(is.na(meanhazard.CI)) | (durations.CI[1] < 1e-6 & 
+    if (any(is.na(meanhazard.CI)) | (durations.CI[1] < 1e-6 | 
                                      durations.CI[1] > period * (1 - 1e-6))) 
       warning("Could not produce confidence intervals for duration parameter. Interpret results with skepticism.\n")
     

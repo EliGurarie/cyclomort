@@ -4,10 +4,12 @@
 \alias{summary.cmfit}
 \title{Provide a short summary of cmfit (parameter estimates for periodic mortality curves) objects}
 \usage{
-\method{summary}{cmfit}(object, ...)
+\method{summary}{cmfit}(object, date = FALSE, ...)
 }
 \arguments{
 \item{object}{a cmfit object}
+
+\item{date}{logical dictating whether peaks of high mortality are expressed as Dates}
 
 \item{...}{(not implemented)}
 }
