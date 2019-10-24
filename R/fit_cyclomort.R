@@ -105,6 +105,7 @@ fit_cyclomort = function(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
       warning("Could not produce accurate confidence intervals for weight parameter. Interpret results with skepticism.\n")
     if (any(!is.na(weights.CI) & weights.CI > 1)) warning('Upper confidence limit for weights manually coerced to 1')
     weights.CI[weights.CI > 1] = 1
+    weights.CI[weights.CI < 0] = 0
     
     ## Peaks 
     peaks.hat <- mus.hat * period
@@ -204,3 +205,6 @@ guess_initial_parameters = function(x, n, null_fits) {
                     paste0("lrho", 1:n))
   result
 }
+
+logit <- function(p){ log(p/(1-p)) }
+expit <- function(p){ exp(p)/(1+exp(p)) }
