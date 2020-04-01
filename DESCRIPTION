@@ -6,7 +6,7 @@ Date: 2019-02-07
 Authors@R: c(person("Eliezer", "Gurarie", role = c("aut", "cre"), email = "egurarie@umd.edu"), person("Thompson", "Peter", role = "ctb"))
 Description: This package provides tools for modeling and analysis of periodic mortality (or other time-to event) processes from right-censored data. 
 License: GPL (>= 3)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Depends: R (>= 3.5.0)
 Imports: flexsurv, lubridate, magrittr, mvtnorm, plyr, scales, stats, survival
 Suggests: 
