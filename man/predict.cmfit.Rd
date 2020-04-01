@@ -4,8 +4,15 @@
 \alias{predict.cmfit}
 \title{Prediction method for cyclomort fits}
 \usage{
-\method{predict}{cmfit}(object, ..., t = seq(0, object$period, length =
-  500), type = "hazard", CI = FALSE, CI.level = 0.95, nreps = 1000)
+\method{predict}{cmfit}(
+  object,
+  ...,
+  t = seq(0, object$period, length = 500),
+  type = "hazard",
+  CI = FALSE,
+  CI.level = 0.95,
+  nreps = 1000
+)
 }
 \arguments{
 \item{object}{a cmfit object}

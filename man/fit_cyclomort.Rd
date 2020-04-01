@@ -4,8 +4,13 @@
 \alias{fit_cyclomort}
 \title{Estimate periodic hazard function.}
 \usage{
-fit_cyclomort(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
-  period = NULL)
+fit_cyclomort(
+  x,
+  inits = NULL,
+  n.seasons = 2,
+  method = "L-BFGS-B",
+  period = NULL
+)
 }
 \arguments{
 \item{x}{a cycloSurv object recording start and end times as well as status 

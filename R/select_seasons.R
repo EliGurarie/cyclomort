@@ -9,7 +9,7 @@
 #' 
 #' @return a list containing (1) a list of all the fitted objects, and (2) an AIC (and, optionally, LRT) summary table.  Also prints both tables by default.  
 #' 
-#' @example examples/selectNseasons_example.R
+#' @example examples/select_seasons_example.R
 #' 
 #' @export
 

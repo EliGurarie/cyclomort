@@ -4,8 +4,7 @@
 \alias{plot.cmfactorfit}
 \title{Plot cmfactorfit objects}
 \usage{
-\method{plot}{cmfactorfit}(x, fit = "both", colors = NULL,
-  legend = TRUE, ...)
+\method{plot}{cmfactorfit}(x, fit = "both", colors = NULL, legend = TRUE, ...)
 }
 \arguments{
 \item{x}{a cmfactorfit object}

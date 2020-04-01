@@ -4,10 +4,21 @@
 \alias{plot.cmfit}
 \title{Plot cmfit objects}
 \usage{
-\method{plot}{cmfit}(x, CI = TRUE, CI.level = 0.95, histogram = TRUE,
-  add = FALSE, monthlabs = FALSE, nreps = 5000, hazcolor = "black",
-  alpha = 0.3, ymax = NULL, prediction = NULL, yaxt = par()$yaxt,
-  ...)
+\method{plot}{cmfit}(
+  x,
+  CI = TRUE,
+  CI.level = 0.95,
+  histogram = TRUE,
+  add = FALSE,
+  monthlabs = FALSE,
+  nreps = 5000,
+  hazcolor = "black",
+  alpha = 0.3,
+  ymax = NULL,
+  prediction = NULL,
+  yaxt = par()$yaxt,
+  ...
+)
 }
 \arguments{
 \item{x}{a cmfit object}

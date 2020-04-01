@@ -4,8 +4,7 @@
 \alias{create_cycloSurv}
 \title{Create a cycloSurv object}
 \usage{
-create_cycloSurv(start, end, event, t0 = NULL, period,
-  timeunits = "days")
+create_cycloSurv(start, end, event, t0 = NULL, period, timeunits = "days")
 }
 \arguments{
 \item{start}{a vector measuring time an individual enters a population

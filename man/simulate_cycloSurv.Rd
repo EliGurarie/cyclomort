@@ -4,10 +4,19 @@
 \alias{simulate_cycloSurv}
 \title{Simulate periodic mortality process}
 \usage{
-simulate_cycloSurv(n, period = 1, meanhazard = 0.5, peaks = c(0.25,
-  0.75), durations = c(0.2, 0.1), weights = c(0.5, 0.5),
-  censoring = "random", censor.times = max.periods * period/2,
-  max.periods = 10, n.times = 1000, plotme = TRUE)
+simulate_cycloSurv(
+  n,
+  period = 1,
+  meanhazard = 0.5,
+  peaks = c(0.25, 0.75),
+  durations = c(0.2, 0.1),
+  weights = c(0.5, 0.5),
+  censoring = "random",
+  censor.times = max.periods * period/2,
+  max.periods = 10,
+  n.times = 1000,
+  plotme = TRUE
+)
 }
 \arguments{
 \item{n}{number of simulated mortality/censoring events}
