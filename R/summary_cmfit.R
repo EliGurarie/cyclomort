@@ -6,7 +6,7 @@
 #' 
 #' @return a list containing a short summary of the estimates for each parameter along with confidence intervals and AIC
 #' 
-#' @example examples/cyclomortFit_example.R
+#' @example demo/cyclomortFit_example.R
 #' @export
 
 summary.cmfit = function(object, date = FALSE, ...) {

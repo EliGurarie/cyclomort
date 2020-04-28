@@ -6,7 +6,7 @@
 #'
 #'@return a data frame describing the AIC, log-likelihood, number of parameters and parameter estimates for each model
 #'
-#'@example examples/select_seasons_example.R
+#'@example demo/select_seasons_example.R
 #'@export
 
 

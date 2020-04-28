@@ -19,7 +19,7 @@
 #' 
 #' @seealso predict.cmfit
 #' 
-#' @example examples/cyclomortFit_example.R
+#' @example demo/cyclomortFit_example.R
 #' @export
 
 plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, 

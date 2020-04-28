@@ -8,7 +8,7 @@
 #' 
 #' @return a plot comparing the hazard estimates from the null model with the individual estimates from each factor level
 #' 
-#' @example examples/predict_cmfit_example.R
+#' @example demo/predict_cmfit_example.R
 #' @export
 
 plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, 

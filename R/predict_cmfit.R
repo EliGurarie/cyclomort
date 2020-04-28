@@ -22,7 +22,7 @@
 #' @return a list of vectors containing predictions for each value in \code{t}, 
 #' as well as (optional) confidence intervals.
 #' 
-#' @example examples/predict_cmfit_example.R
+#' @example demo/predict_cmfit_example.R
 #' @export
 
 predict.cmfit <- function(object, ..., t = seq(0, object$period, length = 5e2),

@@ -10,7 +10,7 @@
 #' @param mu mean peak
 #' @param rho concentration parameter (0 <= rho <= 1)
 #' @param tau period
-#' @example examples/iwc_example.R
+#' @example demo/iwc_example.R
 #' @export 
 #' @aliases iwc
 

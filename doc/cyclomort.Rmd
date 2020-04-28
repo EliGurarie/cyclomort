@@ -180,8 +180,8 @@ Aside from the simulated sex-difference process, the package includes two anonym
 The first is from woodland caribou (*Rangifer tarandus caribou*) collected throughout the Northwest Territories in Canada, loaded and plotted as follows:
 
 ```{r, message = FALSE}
-require(ggplot2)
 data(nwt_morts)
+require(ggplot2); require(magrittr); require(plyr)
 ggplot(nwt_morts %>% arrange(start) %>% mutate(id = factor(id, levels = id)),
 aes(x = start, y = id, col = status)) +
   geom_errorbarh(aes(xmin = start, xmax = end))
@@ -223,6 +223,7 @@ aes(x = start, y = id, col = fate)) +
 The western Arctic herd, with two pronounced seasons of mortality, showed an increase in mortality in the 2017-2018 winter season, which we analyze by creating two `cycloSurv` objects, cutting the data off in September 2017:
 
 ```{r}
+require(lubridate)
 START_TIME = ymd("2010-01-01")
 CUT_TIME = ymd("2017-09-01")
 START_TIME2 = ymd("2017-01-01")

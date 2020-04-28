@@ -16,7 +16,7 @@
 #'@return a cmfit object containing parameter estimates for peaks, durations, 
 #'and weights for each season
 #'
-#'@example examples/cyclomortFit_example.R
+#'@example demo/cyclomortFit_example.R
 #'@export
 
 fit_cyclomort = function(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B", 

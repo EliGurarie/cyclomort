@@ -15,7 +15,7 @@
 #' and they are all in the same group) model to multi-factor model using AIC, 
 #' log-likelihood and likelihood ratio test
 #' 
-#' @example examples/factorfit_cyclomort_example.R
+#' @example demo/factorfit_cyclomort_example.R
 #' @export
 
 factorfit_cyclomort = function(f, data = NULL, n.seasons = 2, ... ) {
