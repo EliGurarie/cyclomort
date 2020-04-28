@@ -1,15 +1,15 @@
 #' Cyclomort: periodic survival modeling
 #' 
-#' @description This package allows users to estimate parameteric hazard functions 
+#' @description This package allows users to estimate parametric hazard functions 
 #' with a known periodicity and one of more peak seasons of heightened mortality risk. 
 #' It was motivated by the strongly seasonal mortality signal observed in many wild 
 #' animal populations, but the model may be useful for any periodic time-to-event process.  
 #' 
 #' 
-#' @details The central estimation function \code{\link{fit_cyclomort}} produces esimates 
+#' @details The central estimation function \code{\link{fit_cyclomort}} produces estimates 
 #' for timing, duration and intensity of mortality peaks from right-censored survival data. 
 #' Other functions simulate survival data from periodic hazard functions 
-#' (\code{\link{simulate_cycloSurv}}), perform model selection to identiy the number of 
+#' (\code{\link{simulate_cycloSurv}}), perform model selection to identify the number of 
 #' seasons (\code{\link{select_seasons}}), perform simple hypothesis tests 
 #' (\code{\link{factorfit_cyclomort}}), and various methods for visualizing and summarizing 
 #' fits and model predictions.  Several data sets are also included. 

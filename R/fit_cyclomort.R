@@ -1,7 +1,7 @@
 #' Estimate periodic hazard function. 
 #'
 #' This function takes time-to-event data formatted as a \code{cycloSurv} object 
-#' and estimates an undelying hazard function for a given numer of seasons. 
+#' and estimates an underlying hazard function for a given number of seasons. 
 #'
 #'@param x a cycloSurv object recording start and end times as well as status 
 #'(dead/censored) and the length of one full period
@@ -186,8 +186,8 @@ fit_cyclomort = function(x, inits = NULL, n.seasons = 2, method = "L-BFGS-B",
 #' @param null_fits original estimate for mortality rate assuming constant 
 #' hazard function
 #' 
-#' @return a named vector listing intial guesses for parameter values, to be 
-#' used in the fitting process
+#' @return a named vector of guesses for parameter values, used to initialize 
+#' the fitting process
 #' 
 #' 
 #' @export

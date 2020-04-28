@@ -15,8 +15,8 @@ guess_initial_parameters(x, n, null_fits)
 hazard function}
 }
 \value{
-a named vector listing intial guesses for parameter values, to be 
-used in the fitting process
+a named vector of guesses for parameter values, used to initialize 
+the fitting process
 }
 \description{
 Uses a basic flexsurvreg exponential mortality model to find the average 

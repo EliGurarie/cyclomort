@@ -33,7 +33,7 @@ and weights for each season
 }
 \description{
 This function takes time-to-event data formatted as a \code{cycloSurv} object 
-and estimates an undelying hazard function for a given numer of seasons.
+and estimates an underlying hazard function for a given number of seasons.
 }
 \examples{
 T.morts1 <- simulate_cycloSurv(1000, period = 365, 

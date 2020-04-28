@@ -118,7 +118,7 @@ plot(T.morts.null.fit, histogram = FALSE, add = TRUE, hazcolor = "blue")
 
 The plot of the fitted objects includes confidence intervals around the predictions. These are obtained numerically by generating a hazard curve many (by default: 5000) times using parameter value sampled from the MLE estimates using the Hessian to generate a variance covariance matrix across the parameters. This procedure is performed with the `predict` method (`predict.cmfit` function), which returns a set of predictions for a given fit at a time or set of times with a specific parameter sets. 
 
-Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a* **very** *(in fact, embarassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
+Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a* **very** *(in fact, embarrassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
 
 ```{r, eval = 2, echo = 1}
 timetoeventprediction <- predict(T.morts.fit, t = 1:365, type = "timetoevent", CI = TRUE, nreps = 100)

@@ -1,5 +1,5 @@
 # `cyclomort` package 
-## Parametric periodic survival modelling in `R`
+## Parametric periodic survival modeling in `R`
 
 The `cyclomort` package provides tools for modeling and analysis of periodic mortality (or other time-to event) processes from right-censored data. The package was inspired by the need to detect annual seasonal patterns in mortality of wildlife, thus, the central assumption is that the period itself is known (e.g. 1 year, 24 hours, etc.), but the number, intensity and duration of the peaks of increased hazard are unknown.  The central function estimates these parameters from right-censored data. Other functions allow for simulation, visualization of fits, and *a priori* hypothesis testing tools.  
 

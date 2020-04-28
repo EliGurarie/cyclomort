@@ -31,7 +31,8 @@
 
 \item{add}{boolean dictating whether the plot will be added to an existing plot}
 
-\item{monthlabs}{whether or not to label the x-axis with months - suitable for (common) annual seasonal data.  If FALSE, lables are numeric within the period [0,1]}
+\item{monthlabs}{whether or not to label the x-axis with months - suitable for (common) annual seasonal data.
+If FALSE, labels are numeric within the period [0,1]}
 
 \item{nreps}{number of samples from parameter estimates for confidence intervals (see \code{\link{predict.cmfit}})}
 
@@ -41,7 +42,8 @@
 
 \item{ymax}{maximum value for the y-axis - can be useful for scaling purposes}
 
-\item{prediction}{an optional \code{\link{predict.cmfit}} object- otherwise the function will estimate this every time which can be a bit slow.}
+\item{prediction}{an optional \code{\link{predict.cmfit}} object- otherwise the function will estimate this every 
+time which can be a bit slow.}
 
 \item{yaxt}{location for y-axis label}
 
