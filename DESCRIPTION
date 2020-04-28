@@ -1,8 +1,8 @@
 Package: cyclomort
 Type: Package
 Title: R package for survival modeling with a periodic hazards
-Version: 1.0.1
-Date: 2019-02-07
+Version: 1.0.2
+Date: 2020-04-27
 Authors@R: c(person("Eliezer", "Gurarie", role = c("aut", "cre"), email = "egurarie@umd.edu"), person("Thompson", "Peter", role = "ctb"))
 Description: This package provides tools for modeling and analysis of periodic mortality (or other time-to event) processes from right-censored data. 
 License: GPL (>= 3)
