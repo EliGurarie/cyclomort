@@ -22,10 +22,9 @@ Summary method for cyclomort factorial fit
 \examples{
 # fit factorial model
 data(seasonalsex)
-x <- factorfit_cyclomort(event ~ sex, data = seasonalsex, n.seasons = 1)
+seasonalsex.factorfit <- factorfit_cyclomort(event ~ sex, data = seasonalsex, n.seasons = 1)
 
 # summary
-summary(x, coefs = TRUE)
-plot(x)
-
+summary(seasonalsex.factorfit, coefs = TRUE)
+\donttest{plot(seasonalsex.factorfit)}
 }

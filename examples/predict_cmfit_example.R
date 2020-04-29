@@ -16,22 +16,24 @@ predict(sim.morts.fit, CI = TRUE, type = "hazard")
 predict(sim.morts.fit, t = 1:365, CI = FALSE, type = "hazard")
 
 # these predictions are used (internally) in the plot.cmfit method:
+
+\donttest{
 plot(sim.morts.fit, CI.level = 0.95, months = FALSE, histogram = FALSE, monthlabs = TRUE)
 plot(sim.morts.fit, CI.level = 0.8, months = FALSE, histogram = FALSE, add = TRUE)
 plot(sim.morts.fit, CI.level = 0.5, months = FALSE, histogram = FALSE, add = TRUE)
+}
 
-
-# predict time to event given a start at times (this is a much slower calculation!)
+# predict time to event given a start at times (this is a very slower calculation!)
 
 ## Not run
-timetoevent <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent",
+timetoeventprediction <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent",
                        CI = TRUE, nreps = 1e2)
 ## End(**Not run**)
 
 # the following object contains a prediction
 data(timetoeventprediction)
 
-with(timetoevent, {
+with(timetoeventprediction, {
   plot(t, fit, type = "l", lwd = 2,  main = "expected time to event", 
        ylim = c(100,365), ylab = "days")
   lines(t, CI[1,], lty = 3)

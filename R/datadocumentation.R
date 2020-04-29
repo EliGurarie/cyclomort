@@ -69,7 +69,7 @@
 #'   \item{sex}{female (F) or male (M)}
 #'   \item{event}{\code{cycloSurv} object of (censored) survival data}
 #' }
-#' @example demo/seasonalsex_example.R
+#' @example examples/seasonalsex_example.R
 #' @keywords data
 "seasonalsex"
 

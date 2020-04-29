@@ -14,7 +14,7 @@
 #' 
 #' @return  a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
 #' 
-#' @example demo/simulate_cycloSurv_example.R
+#' @example examples/simulate_cycloSurv_example.R
 #' @export
 
 simulate_cycloSurv <- function(n, period = 1, 

@@ -21,7 +21,7 @@
 #' 
 #' @seealso predict.cmfit
 #' 
-#' @example demo/cyclomortFit_example.R
+#' @example examples/cyclomortFit_example.R
 #' @export
 
 plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, 
