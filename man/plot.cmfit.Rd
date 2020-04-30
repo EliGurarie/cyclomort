@@ -57,6 +57,7 @@ and the actual results (as a histogram).
 Plot cmfit objects
 }
 \examples{
+# Simulate data
 T.morts1 <- simulate_cycloSurv(1000, period = 365, 
                              meanhazard = 0.3 / 365, 
                              peaks = c(0.25 * 365, 0.75 * 365), 
@@ -64,12 +65,16 @@ T.morts1 <- simulate_cycloSurv(1000, period = 365,
                              weights = c(0.7,0.3), 
                              plotme = FALSE)
 
-##MLE for parameters based on simulated data
-fits = fit_cyclomort(T.morts1, n.seasons = 2)
-print(fits)
-plot(fits)
+# Estimate simulated data
+fits <- fit_cyclomort(T.morts1, n.seasons = 2)
+fits
 
-##Actual parameter values from simulated data
+# Plot results
+plot(fits, nreps = 1000, monthlabs = TRUE)
+# NB: `nreps` is for the bootstrap of the confidence interval 
+# The default (5000) is slower but smoother
+
+# Actual parameter values from simulated data
 attributes(T.morts1)
 }
 \seealso{
