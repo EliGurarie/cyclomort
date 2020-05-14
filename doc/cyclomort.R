@@ -109,21 +109,12 @@ aes(x = start, y = id, col = fate)) +
   geom_errorbarh(aes(xmin = start, xmax = end))
 
 ## -----------------------------------------------------------------------------
-require(lubridate)
-START_TIME = ymd("2010-01-01")
-CUT_TIME = ymd("2017-09-01")
-START_TIME2 = ymd("2017-01-01")
+wah <- with(wah_morts, create_cycloSurv(start = start, end = end, 
+                                        event = fate == "dead", period = 365))
 
-wah_pre = with(subset(wah_morts,start < CUT_TIME),  
-  create_cycloSurv(start = start, end = pmin(end, CUT_TIME), 
-                   event = (fate == "dead" & end < CUT_TIME), 
-                   period = 365, t0 = START_TIME))
-
-
-wah_post = with(subset(wah_morts, end > CUT_TIME),  
-               create_cycloSurv(start = pmax(start, CUT_TIME), 
-                                end = end, event = fate == "dead", 
-                                period = 365, t0 = START_TIME2))
+cutoff <- "2016-09-01"
+wah_pre = censor_cycloSurv(wah, censor.time = cutoff)
+wah_post = trim_cycloSurv(wah, trim.time = cutoff)
 
 wah_fit_pre <- fit_cyclomort(wah_pre, n.seasons = 1)
 wah_fit_post <- fit_cyclomort(wah_post, n.seasons = 1)
@@ -133,6 +124,6 @@ summary(wah_fit_pre)
 summary(wah_fit_post)
 
 ## -----------------------------------------------------------------------------
-plot(wah_fit_pre, hist= FALSE, ymax = 0.005, monthlabs = TRUE)
+plot(wah_fit_pre, hist= FALSE, ymax = 0.003, monthlabs = TRUE)
 plot(wah_fit_post, hist= FALSE, add = TRUE, hazcolor = "red")
 

@@ -35,8 +35,9 @@ plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE,
   
   axis(2)
   
-  #is there a better place for me to put this?
   if(legend){
+    par.init <- par(no.readonly = TRUE)
+    on.exit(par(par.init))
     par(xpd = TRUE)
     if (fit == "null") {
       legend("top", col = "black", legend = "Null model", 

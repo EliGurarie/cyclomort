@@ -6,10 +6,10 @@ require(ggplot2); require(magrittr); require(plyr)
 n <- 100
 T.male = simulate_cycloSurv(n, period = 1, meanhazard = 0.3, peaks = .25, durations = .3)
 T.female = simulate_cycloSurv(n, period = 1, meanhazard = 0.3, peaks = .75, durations = .3)
-T <- with(rbind(T.male, T.female) %>% data.frame,
+T.joint <- with(rbind(T.male, T.female) %>% data.frame,
           create_cycloSurv(start = start, end = stop, 
                            event = status, period = 1))
-seasonalsex <- data.frame( sex = rep(c("M","F"), each = n), T = T)
+seasonalsex <- data.frame( sex = rep(c("M","F"), each = n), T = T.joint)
 ## End(**Not run**)
 
 # load and visualize simulated sex-specific survival data

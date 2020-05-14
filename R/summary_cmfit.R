@@ -10,7 +10,8 @@
 #' @export
 
 summary.cmfit = function(object, date = FALSE, ...) {
-  result = list(model = paste0("Multi-seasonal hazard function fit with ", object$n.seasons, " seasons with periodicity ", object$period, ".\n\n"))
+  result = list(model = paste0("Multi-seasonal hazard function fit with ", object$n.seasons, 
+                               " seasons with periodicity ", object$period, ".\n\n"))
   result$estimates = object$estimates
   if (date) {
     result$estimates = lapply(result$estimates, function(obj) {

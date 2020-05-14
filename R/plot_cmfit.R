@@ -1,7 +1,7 @@
 #' Plot cmfit objects
 #' 
 #' @param x a cmfit object
-#' @param CI boolean dictating whether confidence intervals are included in the hazard function estimate
+#' @param plotCI whether confidence intervals should also be drawn. 
 #' @param CI.level confidence level (default 0.95) for CIs (if CI is TRUE)
 #' @param histogram boolean dictating whether a histogram of actual mortalities will be included in the plot
 #' @param add boolean dictating whether the plot will be added to an existing plot
@@ -24,13 +24,13 @@
 #' @example examples/cyclomortFit_example.R
 #' @export
 
-plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE, 
+plot.cmfit = function(x, plotCI = TRUE, CI.level = 0.95, histogram = TRUE, 
                       add = FALSE, monthlabs = FALSE,
                       nreps = 5e3, hazcolor = "black", alpha = 0.3, 
                       ymax = NULL, prediction = NULL, yaxt = par()$yaxt, ...) {
   
   if(is.null(prediction)){
-    prediction <- predict(x, CI = CI, CI.level = CI.level, nreps = nreps, 
+    prediction <- predict(x, CI = plotCI, CI.level = CI.level, nreps = nreps, 
                           type = "hazard")
     prediction$t <- prediction$t / x$period
     CI <- !is.null(prediction$CI)
@@ -91,7 +91,7 @@ plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE,
           "Estimated hazard function", las = 0, col = hazcolor)
     }
   
-  if (CI) {
+  if (plotCI) {
     with(prediction, {
       lines(t, fit*K, col = hazcolor, lwd = 2)
       t.poly <- c(t, t[length(t):1])
@@ -102,7 +102,7 @@ plot.cmfit = function(x, CI = TRUE, CI.level = 0.95, histogram = TRUE,
     })
   } else {
     with(prediction, {
-      lines(t, fit, col = hazcolor, lwd = 2)
+      lines(t, fit*K, col = hazcolor, lwd = 2)
     })
   }
 }

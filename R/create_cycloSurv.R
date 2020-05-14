@@ -32,7 +32,6 @@
 #'morts = create_cycloSurv(start = startTimes, end = endTimes, 
 #'                        event = censored, period = period)
 #'@export
-#'
 
 create_cycloSurv = function(start, end, event, t0 = NULL, period, 
                             timeunits = "days") {
@@ -59,6 +58,7 @@ create_cycloSurv = function(start, end, event, t0 = NULL, period,
   result = Surv(time = startPhased, time2 = endPhased, event = event)
   attributes(result)$period = period
   attributes(result)$t0 = t0
+  attributes(result)$timeunits = timeunits
   class(result) = c("cycloSurv", "Surv")
   result
 }

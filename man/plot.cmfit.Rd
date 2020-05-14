@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{cmfit}(
   x,
-  CI = TRUE,
+  plotCI = TRUE,
   CI.level = 0.95,
   histogram = TRUE,
   add = FALSE,
@@ -23,7 +23,7 @@
 \arguments{
 \item{x}{a cmfit object}
 
-\item{CI}{boolean dictating whether confidence intervals are included in the hazard function estimate}
+\item{plotCI}{whether confidence intervals should also be drawn.}
 
 \item{CI.level}{confidence level (default 0.95) for CIs (if CI is TRUE)}
 

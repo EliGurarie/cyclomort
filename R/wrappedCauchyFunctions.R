@@ -1,16 +1,22 @@
 #' Wrapped Cauchy and Integrated Wrapped Cauchy functions 
 #' 
-#' Fundamental periodic hazard function and its (analytical) integral - required 
-#' for efficient estimation. These are mainly internal functions. They are both 
-#' parameterized in terms of peak mean  \eqn{\mu}, concentration parameter  
-#' \eqn{\rho}, and period \eqn{\tau}. They are "unweighted", i.e. 
+#' Fundamental periodic hazard function, mixed hazard function, and their (analytical) integrals. 
+#' 
+#' These functions are mainly internal. \code{wc} and  \code{iwc} are both parameterized in terms of 
+#' peak mean  \eqn{\mu}, concentration parameter  \eqn{\rho}, and period \eqn{\tau} and are "unweighted", i.e. 
 #' \deqn{\int_0^\tau f(t) dt = \tau}
 #' 
-#' @param t  time
+#' The mixture model versions, \code{mwc} and \code{imwc}, are correspondingly parameterized in terms of 
+#' vectors \code{mus}, \code{rhos}, and also \code{gammas} which correspond to the mean hazard contribution 
+#' of each peak, such that 
+#' \deqn{\int_0^\tau f(t) dt = k\gamma\tau}
+#' 
+#' @param t time (numeric, can be vectorized)
 #' @param mu mean peak
 #' @param rho concentration parameter (0 <= rho <= 1)
 #' @param tau period
 #' @example examples/iwc_example.R
+#' @return numeric value (or vector of values of same length as \code{t}) of the respective function
 #' @export 
 #' @aliases iwc
 
@@ -30,11 +36,6 @@ iwc <- function(t, mu, rho, tau){
 
 #' Mixed Wrapped Cauchy and Integrated Mixed Wrapped Cauchy Functions
 #' 
-#' Allows for the fitting of models with multiple "seasons" of high mortality by 
-#' producing a multimodal version of the wrapped Cauchy function. A simple 
-#' mixture model that evaluates the wrapped Cauchy function for each individual 
-#' component and then combines all components according to the individual linear 
-#' weights.
 #' @param mus k-vector of mean peaks (assuming k seasons)
 #' @param rhos k-vector of concentration parameters
 #' @param gammas k-vector of average hazard values for each component

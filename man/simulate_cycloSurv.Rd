@@ -48,6 +48,7 @@ a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
 Simulate periodic mortality process
 }
 \examples{
+par.init <- par(no.readonly = TRUE)
 par(oma = c(2,0,2,0))
 T.morts1 <- simulate_cycloSurv(1000, period = 1, 
                              meanhazard = 0.3, 
@@ -59,8 +60,6 @@ T.morts1 <- simulate_cycloSurv(1000, period = 1,
 with(attributes(T.morts1),
      title(paste0("mean hazard: ", meanhazard, "; peaks: ",
                   paste(peaks, collapse = ",")), outer = TRUE))
-
-
 
 par(oma = c(2,0,2,0))
 T.morts2 <- simulate_cycloSurv(300, period = 365, 
@@ -85,4 +84,5 @@ h <- with(as.matrix(T.morts1) \%>\% data.frame \%>\% subset(status == 1),
 with(attributes(T.morts1), curve(mwc(x, mus = peaks, 
                                      rhos = findRho(durations), gammas = weights, 
                                      tau = period)* mean(h$counts), add = TRUE))
+par(par.init)
 }

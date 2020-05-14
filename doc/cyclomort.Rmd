@@ -118,7 +118,7 @@ plot(T.morts.null.fit, histogram = FALSE, add = TRUE, hazcolor = "blue")
 
 The plot of the fitted objects includes confidence intervals around the predictions. These are obtained numerically by generating a hazard curve many (by default: 5000) times using parameter value sampled from the MLE estimates using the Hessian to generate a variance covariance matrix across the parameters. This procedure is performed with the `predict` method (`predict.cmfit` function), which returns a set of predictions for a given fit at a time or set of times with a specific parameter sets. 
 
-Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a* **very** *(in fact, embarassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
+Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a* **very** *(in fact, embarrassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
 
 ```{r, eval = 2, echo = 1}
 timetoeventprediction <- predict(T.morts.fit, t = 1:365, type = "timetoevent", CI = TRUE, nreps = 100)
@@ -219,25 +219,15 @@ aes(x = start, y = id, col = fate)) +
   geom_errorbarh(aes(xmin = start, xmax = end))
 ```
 
-
-The western Arctic herd, with two pronounced seasons of mortality, showed an increase in mortality in the 2017-2018 winter season, which we analyze by creating two `cycloSurv` objects, cutting the data off in September 2017:
+The western Arctic herd, with two pronounced seasons of mortality, showed an increase in mortality in the 2017-2018 winter season, which we analyze by converting to a `cycloSurv` objects and censoring and trimming the data in September 2017 using two convenient helper functions, `censor_cycloSurv` and `trim_cycloSurv`:
 
 ```{r}
-require(lubridate)
-START_TIME = ymd("2010-01-01")
-CUT_TIME = ymd("2017-09-01")
-START_TIME2 = ymd("2017-01-01")
+wah <- with(wah_morts, create_cycloSurv(start = start, end = end, 
+                                        event = fate == "dead", period = 365))
 
-wah_pre = with(subset(wah_morts,start < CUT_TIME),  
-  create_cycloSurv(start = start, end = pmin(end, CUT_TIME), 
-                   event = (fate == "dead" & end < CUT_TIME), 
-                   period = 365, t0 = START_TIME))
-
-
-wah_post = with(subset(wah_morts, end > CUT_TIME),  
-               create_cycloSurv(start = pmax(start, CUT_TIME), 
-                                end = end, event = fate == "dead", 
-                                period = 365, t0 = START_TIME2))
+cutoff <- "2016-09-01"
+wah_pre = censor_cycloSurv(wah, censor.time = cutoff)
+wah_post = trim_cycloSurv(wah, trim.time = cutoff)
 
 wah_fit_pre <- fit_cyclomort(wah_pre, n.seasons = 1)
 wah_fit_post <- fit_cyclomort(wah_post, n.seasons = 1)
@@ -249,12 +239,12 @@ summary(wah_fit_post)
 ```
 
 ```{r}
-plot(wah_fit_pre, hist= FALSE, ymax = 0.005, monthlabs = TRUE)
+plot(wah_fit_pre, hist= FALSE, ymax = 0.003, monthlabs = TRUE)
 plot(wah_fit_post, hist= FALSE, add = TRUE, hazcolor = "red")
 ```
 
-Note that this result differs somewhat from that in Gurarie et al. (*in review*) since the data provided in the package is a subset of the complete data set, and are too sparse to fit a more appropriate two season model. 
+Note that this result differs somewhat from that in Gurarie et al. (2020) since the data provided in the package are a subset of the complete data set, and too sparse to fit a more appropriate two season model. 
 
 ## References
 
-E. Gurarie, P. Thompson, A. Kelly,  N. Larter, W. Fagan and K. Joly. (*in review*) For Everything There is a Season: Estimating periodic hazard functions with the `cyclomort` R package. *Methods in Ecology and Evolution*. 
+E. Gurarie, P. Thompson, A. Kelly,  N. Larter, W. Fagan and K. Joly (2020) For Everything There is a Season: Estimating periodic hazard functions with the `cyclomort` R package. *Methods in Ecology and Evolution.*  11(1): 129-138. DOI:10.1111/2041-210X.13305. 

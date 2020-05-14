@@ -23,7 +23,7 @@ plot(sim.morts.fit, CI.level = 0.8, months = FALSE, histogram = FALSE, add = TRU
 plot(sim.morts.fit, CI.level = 0.5, months = FALSE, histogram = FALSE, add = TRUE)
 }
 
-# predict time to event given a start at times (this is a very slower calculation!)
+# predict time to event given a start at times (this is a very slow calculation!)
 
 \dontrun{
 timetoeventprediction <- predict(sim.morts.fit, t = seq(1,365,3), type = "timetoevent",
