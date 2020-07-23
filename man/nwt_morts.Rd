@@ -4,13 +4,15 @@
 \name{nwt_morts}
 \alias{nwt_morts}
 \title{Mortality data for Northwest territory boreal woodland caribou.}
-\format{Data frame with 370 rows and the following columns:
+\format{
+Data frame with 370 rows and the following columns:
 \describe{
   \item{id}{ID of animal}
   \item{start}{Date of beginning of collaring}
   \item{end}{Date of death or censoring}
   \item{status}{"Mort" or "Cens" (dead or censored)}
-  }}
+  }
+}
 \source{
 Government of Northwest Territories, Canada
 }

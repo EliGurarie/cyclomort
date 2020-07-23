@@ -32,29 +32,29 @@ library(cyclomort)
 
 The underlying hazard model is based on a mixture of a modified wrapped Cauchy-like functions. Its simplest iteration is `wc()`, parameterized in terms of a mean `mu`, a concentration parameter `rho` which ranges from 0 to 1, and a periodicity `tau`.  Its mean value is 1.  In the examples below, there is a single mortality season that peaks on day 100 on a period of 365 days (i.e. April 10 in a calendar year): 
 
-```{r plotWC, fig.align = "center", echo = FALSE, echo = -1}
-par(bty = "l", mar = c(4,4,2,2))
+```{r plotWC, fig.align = "center", echo = FALSE, echo = 2:5}
+oldpar <- par(no.readonly =TRUE); par(bty = "l", mar = c(4,4,2,2))
 curve(wc(x, mu = 100, rho = .7, tau = 365), xlim = c(0,365), n = 1e4, ylab = "hazard", xlab = "time")
 curve(wc(x, mu = 100, rho = .5, tau = 365), add = TRUE, col = 2)
 curve(wc(x, mu = 100, rho = .3, tau = 365), add = TRUE, col = 3)
 legend("topright", col = 1:3, legend = c(.7,.5,.3), title = "rho", lty = 1)
+par(oldpar)
 ```
 
 The mixture version `mwc()` takes vectors of the means and concentration parameters, as well as a vector mean hazard values `gammas`.  The sum of `gammas` is the overall mean hazard.  Several examples (on a periodicity of 1, with an overall mean hazard 1) are illustrated below:
 
-```{r plotMWC, fig.align = "center", echo = -1}
-par(bty = "l", mar = c(4,4,2,2), xpd = NA)
-
+```{r plotMWC, fig.align = "center", echo = 2:7}
+oldpar <- par(no.readonly =TRUE); par(bty = "l", mar = c(4,4,2,2), xpd = NA)
 mus <-  c(.3,.5,.9)
 rhos <-  c(.5,.9,.7)
 gammas <- c(.6,.1,.3)
-
 curve(mwc(x, mus = mus[1], rhos = rhos[1], gammas = 1, tau = 1), 
       xlim = c(0,1), ylab = "hazard", xlab = "time")
 curve(mwc(x, mus = mus[1:2], rhos = rhos[1:2], gammas = gammas[1:2]/sum(gammas[1:2]), tau = 1), 
       add = TRUE, col = 2)
 curve(mwc(x, mus = mus, rhos = rhos, gammas = gammas, tau = 1), 
       add = TRUE, col = 3)
+par(oldpar)
 ```
 
 Note that in the three season model above, the second peak is quite pronounced (i.e. has the highest instantaneous hazard), but it accounts for only 1/10 of the total hazard since it has such a short duration.
@@ -107,13 +107,14 @@ plot(T.morts.fit, breaks = 30)
 
 By default, the function plots a histogram of the data as well.  It can be useful to plot only the fit and the confidence interval, for example to compare the 2 season fit with a 1 season and null fit, while suppressing the histogram, for example:
 
-```{r, message = FALSE, echo = -1}
-par(bty = "l", mar = c(4,4,2,2))
+```{r, message = FALSE, echo = 2:6}
+oldpar <- par(no.readonly =TRUE); par(bty = "l", mar = c(4,4,2,2))
 T.morts.1season.fit <- fit_cyclomort(T.morts.sim, n.seasons = 1)
 T.morts.null.fit <- fit_cyclomort(T.morts.sim, n.seasons = 0)
 plot(T.morts.fit, histogram = FALSE, monthlabs = TRUE)
 plot(T.morts.1season.fit, histogram = FALSE, add = TRUE, hazcolor = "red")
 plot(T.morts.null.fit, histogram = FALSE, add = TRUE, hazcolor = "blue")
+par(oldpar)
 ```
 
 The plot of the fitted objects includes confidence intervals around the predictions. These are obtained numerically by generating a hazard curve many (by default: 5000) times using parameter value sampled from the MLE estimates using the Hessian to generate a variance covariance matrix across the parameters. This procedure is performed with the `predict` method (`predict.cmfit` function), which returns a set of predictions for a given fit at a time or set of times with a specific parameter sets. 
@@ -127,13 +128,14 @@ data(timetoeventprediction)
 
 The figure below illustrates the extent to which the expected time to an event depends on when an individual "enters" the process. 
 
-```{r TimeToEventPrediction, fig.align = "center", echo = -1}
-par(bty = "l", mar = c(4,4,2,2))
+```{r TimeToEventPrediction, fig.align = "center", echo = 2}
+oldpar <- par(no.readonly =TRUE); par(bty = "l", mar = c(4,4,2,2))
 with(timetoeventprediction, {
   plot(t, fit, type = "l", ylab = "Time to event", ylim = range(CI), lwd = 2)
   lines(t, CI[1,])
   lines(t, CI[2,])
 })
+par(oldpar)
 ```
 
 ## Identifying the number of mortality seasons within a system using select_seasons
@@ -242,6 +244,11 @@ summary(wah_fit_post)
 plot(wah_fit_pre, hist= FALSE, ymax = 0.003, monthlabs = TRUE)
 plot(wah_fit_post, hist= FALSE, add = TRUE, hazcolor = "red")
 ```
+
+```{r, echo = FALSE}
+par(oldpar)
+```
+
 
 Note that this result differs somewhat from that in Gurarie et al. (2020) since the data provided in the package are a subset of the complete data set, and too sparse to fit a more appropriate two season model. 
 

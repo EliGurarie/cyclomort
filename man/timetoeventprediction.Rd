@@ -4,7 +4,9 @@
 \name{timetoeventprediction}
 \alias{timetoeventprediction}
 \title{Example fitted time to event prediction}
-\format{An object of class \code{list} of length 6.}
+\format{
+An object of class \code{list} of length 6.
+}
 \usage{
 data(timetoeventprediction)
 }

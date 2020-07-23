@@ -28,7 +28,7 @@ of the functionality of the package.
 \references{
 E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. 2020. 
 For Everything There is a Season: Estimating periodic hazard functions with the cyclomort 
-R package. \emph{Methods in Ecology and Evolution}, 11(1):129-139. DOI: K10.1111/2041-210X.13305
+R package. \emph{Methods in Ecology and Evolution}, 11(1):129-139. <doi:10.1111/2041-210X.13305>
 }
 \seealso{
 Useful links:
@@ -41,9 +41,9 @@ Useful links:
 \author{
 \strong{Maintainer}: Eliezer Gurarie \email{egurarie@umd.edu}
 
-Other contributors:
+Authors:
 \itemize{
-  \item Thompson Peter [contributor]
+  \item Thompson Peter
 }
 
 }

@@ -4,11 +4,13 @@
 \name{seasonalsex}
 \alias{seasonalsex}
 \title{Simulated data of seasonal mortality data for two sex groups}
-\format{Simulated data of single-season mortalities for two sex groups:
+\format{
+Simulated data of single-season mortalities for two sex groups:
 \describe{
   \item{sex}{female (F) or male (M)}
   \item{event}{\code{cycloSurv} object of (censored) survival data}
-}}
+}
+}
 \usage{
 data(seasonalsex)
 }
