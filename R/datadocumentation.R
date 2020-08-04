@@ -81,7 +81,7 @@
 #' data(timetoeventprediction)
 #' @keywords data
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' ## Code that generates this object - following example in vignette
 #' set.seed(10)
 #' T.morts.sim <- simulate_cycloSurv(300, period = 365, meanhazard = 1/365, 

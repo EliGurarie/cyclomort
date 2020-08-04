@@ -54,7 +54,7 @@ wah_fit_post <- fit_cyclomort(wah_post, n.seasons = 1)
 summary(wah_fit_pre)
 summary(wah_fit_post)
 
-\dontrun{
+\donttest{
 par(mfrow = c(1,2))
 plot(wah_fit_pre, plotCI = TRUE, breaks = 10); title("pre cut-off")
 plot(wah_fit_post, plotCI = TRUE, breaks = 10); title("post cut-off")}

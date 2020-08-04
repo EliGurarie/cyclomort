@@ -6,7 +6,7 @@ Date: 2020-07-24
 Authors@R: c(person("Eliezer", "Gurarie", role = c("aut", "cre"), email = "egurarie@umd.edu"), person("Thompson", "Peter", role = "aut"))
 Description: Modeling periodic mortality (or other time-to event) processes from right-censored data. Given observations of a process with a known period (e.g. 365 days, 24 hours), functions determine the number, intensity, timing, and duration of peaks of periods of elevated hazard within a period.  The underlying model is a mixed wrapped Cauchy function fitted using maximum likelihoods (details in Gurarie et al. (2020) <doi:10.1111/2041-210X.13305>). The development of these tools was motivated by the strongly seasonal mortality patterns observed in many wild animal populations, such that the respective periods of higher mortality can be identified as "mortality seasons". 
 License: GPL (>= 3)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends: R (>= 3.5.0)
 Imports: flexsurv, lubridate, magrittr, mvtnorm, plyr, scales, stats, survival
 URL: https://github.com/EliGurarie/cyclomort
