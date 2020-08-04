@@ -29,6 +29,9 @@ plot.cmfit = function(x, plotCI = TRUE, CI.level = 0.95, histogram = TRUE,
                       nreps = 5e3, hazcolor = "black", alpha = 0.3, 
                       ymax = NULL, prediction = NULL, yaxt = par()$yaxt, ...) {
   
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   if(is.null(prediction)){
     prediction <- predict(x, CI = plotCI, CI.level = CI.level, nreps = nreps, 
                           type = "hazard")

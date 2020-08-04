@@ -14,6 +14,9 @@
 plot.cmfactorfit = function(x, fit = "both", colors = NULL, legend = TRUE, 
                             ...) {
   
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   if (!fit %in% c("null", "alt", "both")) stop("Invalid \"fit\" parameter.")
 
   if (fit == "null" | fit == "both") {
