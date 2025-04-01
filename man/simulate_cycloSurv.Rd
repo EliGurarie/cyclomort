@@ -42,7 +42,7 @@ simulate_cycloSurv(
 \item{plotme}{if TRUE, produces a set of plots for the simulation to display its accuracy}
 }
 \value{
-a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
+a \code{cycloSurv} object (a subclass of a Surv object; see \code{\link[survival]{Surv}})
 }
 \description{
 Simulate periodic mortality process

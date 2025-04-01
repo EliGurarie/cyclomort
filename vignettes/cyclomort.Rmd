@@ -75,7 +75,7 @@ T.morts.sim <- simulate_cycloSurv(n = 300, period = 365, meanhazard = 1/365,
                              max.periods = 5)
 ```
 
-The function returns an object of the `cyclomort` specific class `cycloSurv`, which is a superclass of the `Surv` data type used widely in survival analysis in R:
+The function returns an object of the `cyclomort` specific class `cycloSurv`, which is a subclass of the `Surv` data type used widely in survival analysis in R:
 
 ```{r}
 T.morts.sim[1:10]
@@ -122,11 +122,13 @@ The plot of the fitted objects includes confidence intervals around the predicti
 Users can also call `predict.cmfit` to estimate the expected time to death for any individual at any given time. *Note, this procedure takes a* **very** *(in fact, embarrassingly) long time even with relatively few samples (e.g. 100). We are working on this!* 
 
 ```{r, eval = 2, echo = 1}
-timetoeventprediction <- predict(T.morts.fit, t = 1:365, type = "timetoevent", CI = TRUE, nreps = 100)
+timetoeventprediction <- predict(T.morts.fit, t = 1:365, 
+                                 type = "timetoevent", CI = TRUE, 
+                                 nreps = 100)
 data(timetoeventprediction)
 ```
 
-The figure below illustrates the extent to which the expected time to an event depends on when an individual "enters" the process. 
+The (non-trivial) figure below illustrates the way the expected time to an event (e.g. the post-collaring lifespan in the wildlife context) depends on when during the period an individual "enters" the process (e.g. the day of collaring). 
 
 ```{r TimeToEventPrediction, fig.align = "center", echo = 2}
 oldpar <- par(no.readonly =TRUE); par(bty = "l", mar = c(4,4,2,2))
@@ -140,9 +142,7 @@ par(oldpar)
 
 ## Identifying the number of mortality seasons within a system using select_seasons
 
-An important aspect of survival modelling is the ability to definitively characterize specific traits of a data set or population. Identifying the probable number of mortality seasons in a system is a powerful and useful claim that one can make using the `select_seasons` function. This function calls `fit_cyclomort` for a number of different seasons (ranging from the null model of 0 seasons to the `max.season` parameter), identifying the best model using Akaike Information Criterion (AIC).
-
-The `select_seasons` function returns a `cmfitlist` object which is equipped with unique print and summary functions. While `cmfitlist` objects are simply lists of `cmfit` objects (each element of the list being the cmfit object representing a different seasonal assumption), the unique `summary.cmfitlist` function allows for easier comparison of the different fits.
+The number of mortality seasons in a system can be assessed statistically using the `select_seasons` function. This function calls `fit_cyclomort` for a number of different seasons (ranging from the null model of 0 seasons to the `max.season` parameter), and computing the Akaike Information Criterion (AIC) value for each fitted model.  The output of the `select_seasons` function is a `cmfitlist` object for which `print` and `summary` methods exist, which allows for easier comparison of the different fits.
 
 ```{r}
 T.select <- select_seasons(T.morts.sim, max.season = 4)
@@ -175,7 +175,7 @@ plot(Survival.factorfit, ymax = 1.2)
 
 ## Data
 
-Aside from the simulated sex-difference process, the package includes two anonymized and randomized caribou mortality data sets.  The code below replicates the analyses presented in Gurarie et al. (*in review*). 
+Aside from the simulated sex-difference process, the package includes two anonymized and randomized caribou mortality data sets.  The code below replicates the analyses presented in Gurarie et al. (2020). 
 
 ### Northwest Territory woodland caribou
 
@@ -190,7 +190,6 @@ aes(x = start, y = id, col = status)) +
 ```
 
 Note these data have been randomized by *year*, such that the seasonal patterns are retained. 
-
 
 These data need to be converted to a `cycloSurv` data type, which inherits from the `Surv` class used in `survival` and other survival modeling packages: 
 

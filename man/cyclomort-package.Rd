@@ -21,9 +21,11 @@ seasons (\code{\link{select_seasons}}), perform simple hypothesis tests
 fits and model predictions.  Several data sets are also included. 
 
 Details of the underlying model, motivation, and examples of implementation on mortality 
-data are in the Gurarie et al. (2020). An active development version is on GitHub at 
+data are Gurarie et al. (2020). An active development version is on GitHub at 
 \url{https://github.com/EliGurarie/cyclomort}. The vignette provides several examples 
 of the functionality of the package.
+
+A future goal is to be able to fit models where some of the parameters (peak timing, duration, intensity) can also vary against covariates.
 }
 \references{
 E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. 2020. 
@@ -39,7 +41,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Eliezer Gurarie \email{egurarie@umd.edu}
+\strong{Maintainer}: Eliezer Gurarie \email{egurarie@esf.edu}
 
 Authors:
 \itemize{

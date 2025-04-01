@@ -12,7 +12,7 @@
 #' @param max.periods maximum number of cycles
 #' @param plotme if TRUE, produces a set of plots for the simulation to display its accuracy
 #' 
-#' @return  a \code{cycloSurv} object (a type of Surv object; see \code{\link{Surv}})
+#' @return  a \code{cycloSurv} object (a subclass of a Surv object; see \code{\link[survival]{Surv}})
 #' 
 #' @example examples/simulate_cycloSurv_example.R
 #' @export

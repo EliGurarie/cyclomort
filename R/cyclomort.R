@@ -5,7 +5,6 @@
 #' It was motivated by the strongly seasonal mortality signal observed in many wild 
 #' animal populations, but the model may be useful for any periodic time-to-event process.  
 #' 
-#' 
 #' @details The central estimation function \code{\link{fit_cyclomort}} produces estimates 
 #' for timing, duration and intensity of mortality peaks from right-censored survival data. 
 #' Other functions simulate survival data from periodic hazard functions 
@@ -15,9 +14,11 @@
 #' fits and model predictions.  Several data sets are also included. 
 #' 
 #' Details of the underlying model, motivation, and examples of implementation on mortality 
-#' data are in the Gurarie et al. (2020). An active development version is on GitHub at 
+#' data are Gurarie et al. (2020). An active development version is on GitHub at 
 #' \url{https://github.com/EliGurarie/cyclomort}. The vignette provides several examples 
 #' of the functionality of the package.
+#' 
+#' A future goal is to be able to fit models where some of the parameters (peak timing, duration, intensity) can also vary against covariates. 
 #' 
 #' @keywords internal
 #' @references E. Gurarie, P. Thompson, A. Kelly, N. Larter, W. Fagan and K. Joly. 2020. 
