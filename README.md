@@ -1,16 +1,18 @@
 # `cyclomort` package 
 
+## UPDATE: 2024-04-04
+
+Links were fixed as per CRAN request, and a few very minor edits to the vignette.  B
+
 ## UPDATE: 2020-08-20
 
-After a few false starts, `cyclomort` is finally up on [CRAN](https://cran.r-project.org/web/packages/cyclomort/index.html).
+After a few false starts, `cyclomort` is finally up on [CRAN](https://CRAN.R-project.org/package=pkgname).
 
 Install away, the standard way:
 
 ```
 install.packages("cyclomort")
 ```
-
-
 
 ## Parametric periodic survival modeling in `R`
 
