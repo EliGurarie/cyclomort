@@ -1,12 +1,12 @@
 # `cyclomort` package 
 
-## UPDATE: 2024-04-04
+## UPDATE: 2025-04-04
 
 Links were fixed as per CRAN request, and a few very minor edits to the vignette.  B
 
 ## UPDATE: 2020-08-20
 
-After a few false starts, `cyclomort` is finally up on [CRAN](https://CRAN.R-project.org/package=pkgname).
+After a few false starts, `cyclomort` is finally up on [CRAN](https://CRAN.R-project.org/package=cyclomort).
 
 Install away, the standard way:
 
